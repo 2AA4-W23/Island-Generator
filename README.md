@@ -2,7 +2,7 @@
 
 - Virochaan Ravichandran Gowri [ravicv3@mcmaster.ca]
 - Ibrahim Quraishi [quraishi@mcmaster.ca]
-- Author #3 [email@mcmaster.ca]
+- Omar Al-Asfar [alasfaro@mcmaster.ca]
 
 ## How to run the product
 
