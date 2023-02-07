@@ -31,9 +31,7 @@ public class GraphicRenderer {
             canvas.setColor(old);
         }
         List<Vertex> VertexList = aMesh.getVerticesList();
-        Line2D line1 = new Line2D.Double(10,20,10,20);
-        canvas.setColor(Color.BLACK);
-        canvas.drawLine(10,20,10,200);
+
         for (Segment s : aMesh.getSegmentsList()) {
             double x1 = VertexList.get(s.getV1Idx()).getX();
             double x2 = VertexList.get(s.getV2Idx()).getX();
@@ -43,7 +41,7 @@ public class GraphicRenderer {
             Color old1 = canvas.getColor();
             canvas.setColor(extractColor(s.getPropertiesList()));
             Line2D line = new Line2D.Double(x1, y1, x2,y2);
-            canvas.fill(line);
+            canvas.draw(line);
 //            canvas.setColor(old1);
         }
     }
