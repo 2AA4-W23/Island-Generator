@@ -1,7 +1,9 @@
 package ca.mcmaster.cas.se2aa4.a2.generator;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Segment;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
@@ -42,13 +44,19 @@ public class DotGen {
         for (int i = 0; i < verticesWithColors.size()-1; i++) {
             if ( ((i+1)%(width/square_size+1))!= 0 || i == 0 ){
                 Segment test = Segment.newBuilder().setV1Idx(i).setV2Idx(i+1).build();
-                Property color = Property.newBuilder().setKey("rgb_color").setValue("223,13,13").build();
+                Vertex v1 = verticesWithColors.get(test.getV1Idx());
+                Vertex v2 = verticesWithColors.get(test.getV2Idx());
+                String color1 = extractColorAverage(v1.getPropertiesList(), v2.getPropertiesList());
+                Property color = Property.newBuilder().setKey("rgb_color").setValue(color1).build();
                 Segment coloredSegment = Segment.newBuilder(test).addProperties(color).build();
                 segments.add(coloredSegment);
             }
             if(i+26 < verticesWithColors.size()){
                 Segment test = Segment.newBuilder().setV1Idx(i).setV2Idx(i+26).build();
-                Property color = Property.newBuilder().setKey("rgb_color").setValue("223,13,13").build();
+                Vertex v1 = verticesWithColors.get(test.getV1Idx());
+                Vertex v2 = verticesWithColors.get(test.getV2Idx());
+                String color1 = extractColorAverage(v1.getPropertiesList(), v2.getPropertiesList());
+                Property color = Property.newBuilder().setKey("rgb_color").setValue(color1).build();
                 Segment coloredSegment = Segment.newBuilder(test).addProperties(color).build();
                 segments.add(coloredSegment);
             }
@@ -60,5 +68,31 @@ public class DotGen {
 
         return Mesh.newBuilder().addAllVertices(verticesWithColors).addAllSegments(segments).build();
     }
-
+    private String extractColorAverage(List<Property> properties1, List<Property> properties2) {
+        String val1 = null;
+        String val2 = null;
+        for(Property p: properties1) {
+            if (p.getKey().equals("rgb_color")) {
+                System.out.println(p.getValue());
+                val1 = p.getValue();
+            }
+        }
+        for(Property p: properties2) {
+            if (p.getKey().equals("rgb_color")) {
+                System.out.println(p.getValue());
+                val2 = p.getValue();
+            }
+        }
+        if (val1 == null)
+            val1 = "0,0,0";
+        if (val2 == null)
+            val2 = "0,0,0";
+        String[] raw1 = val1.split(",");
+        String[] raw2 = val2.split(",");
+        int red = (Integer.parseInt(raw1[0])+Integer.parseInt(raw2[0]))/2;
+        int green = (Integer.parseInt(raw1[1])+Integer.parseInt(raw2[1]))/2;
+        int blue = (Integer.parseInt(raw1[2])+Integer.parseInt(raw2[2]))/2;
+        String color = red + "," + green + "," + blue;
+        return color;
+    }
 }
