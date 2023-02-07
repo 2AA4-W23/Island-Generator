@@ -66,6 +66,6 @@ For a feature to be considered done it must be work without throwing any excepti
 
 | Id  | Feature title | Who? | Start | End | Status |
 | :-: | ------------- | ---- | ----- | --- | ------ |
-|  F01  |  Draw one Segment |      |    Virochaan   |   02/07/2023  |        | S
-|  F02  |  Draw All Segments |      |    Virochaan   |   02/07/2023  |        | S
-|  F03  |  Draw all Segment and average the colours |      |    Virochaan   |   02/07/2023  |        | S
+|  F01  |  Draw one Segment |  Virochaan    |    02/07/2023   |   02/07/2023  |    D   | 
+|  F02  |  Draw All Segments |    Virochaan  |    02/07/2023   |   02/07/2023  |    D   | 
+|  F03  |  Draw all Segment and average the colours |   Virochaan   |    02/07/2023   |   02/07/2023  |      D  | S
