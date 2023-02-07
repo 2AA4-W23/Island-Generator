@@ -11,6 +11,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.util.Collections;
 import java.util.List;
 
 public class GraphicRenderer {
@@ -31,6 +32,9 @@ public class GraphicRenderer {
             canvas.setColor(old);
         }
         List<Vertex> VertexList = aMesh.getVerticesList();
+//        Collections.sort(VertexList, (d1, d2) -> {
+//            return d1.getX() - d2.getX();
+//        });
 
         for (Segment s : aMesh.getSegmentsList()) {
             double x1 = VertexList.get(s.getV1Idx()).getX();
