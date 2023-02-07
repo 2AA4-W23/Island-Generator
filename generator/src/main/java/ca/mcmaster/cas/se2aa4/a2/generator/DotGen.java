@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Random;
 
+import ca.mcmaster.cas.se2aa4.a2.io.Structs.Segment;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Property;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Mesh;
@@ -38,8 +39,20 @@ public class DotGen {
             Vertex colored = Vertex.newBuilder(v).addProperties(color).build();
             verticesWithColors.add(colored);
         }
+        Set<Segment> segments = new HashSet<>();
+        Segment test = Segment.newBuilder().setV1Idx(0).setV2Idx(1).build();
+        Property color = Property.newBuilder().setKey("rgb_color").setValue("223,13,13").build();
+        Segment coloredSegment = Segment.newBuilder(test).addProperties(color).build();
+        segments.add(coloredSegment);
 
-        return Mesh.newBuilder().addAllVertices(verticesWithColors).build();
+
+
+        Segment test2 = Segment.newBuilder().setV1Idx(100).setV2Idx(120).build();
+        Segment coloredSegment2 = Segment.newBuilder(test2).addProperties(color).build();
+        segments.add(coloredSegment2);
+
+
+        return Mesh.newBuilder().addAllVertices(verticesWithColors).addAllSegments(segments).build();
     }
 
 }
