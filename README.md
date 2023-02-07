@@ -60,10 +60,10 @@ When you develop features and enrich the product, remember that you have first t
 
 ### Definition of Done
 
--- Insert here your definition of done for your features --
+For a feature to be considered done it must be work without throwing any exceptions. and implement the desired functionality. Also any features dependent on the done feature must be able to use it without problems.
 
 ### Product Backlog
 
 | Id  | Feature title | Who? | Start | End | Status |
 | :-: | ------------- | ---- | ----- | --- | ------ |
-|     |               |      |       |     |        |
+|  F01  |  Draw segments between vertices to visualize the square          |      |    Virochaan   |   02/07/2023  |        | S
