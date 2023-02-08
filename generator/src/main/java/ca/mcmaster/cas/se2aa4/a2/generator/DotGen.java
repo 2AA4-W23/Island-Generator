@@ -9,7 +9,6 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs.Segment;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Property;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Mesh;
-import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
 
 public class DotGen {
 
@@ -46,7 +45,7 @@ public class DotGen {
         Set<Segment> segments = new HashSet<>();
 
         for (int i = 0; i < verticesWithColors.size() - 1; i++) {
-            if (((i + 1) % (width / square_size + 1)) != 0 || i == 0) {
+            if (((i + 1) % (width / square_size + 1)) != 0 || i == 0) { // horizontal segments
                 Segment test = Segment.newBuilder().setV1Idx(i).setV2Idx(i + 1).build();
                 Vertex v1 = verticesWithColors.get(test.getV1Idx());
                 Vertex v2 = verticesWithColors.get(test.getV2Idx());
@@ -55,7 +54,7 @@ public class DotGen {
                 Segment coloredSegment = Segment.newBuilder(test).addProperties(color).build();
                 segments.add(coloredSegment);
             }
-            if (i + 26 < verticesWithColors.size()) {
+            if (i + 26 < verticesWithColors.size()) { // vertical segements
                 Segment test = Segment.newBuilder().setV1Idx(i).setV2Idx(i + 26).build();
                 Vertex v1 = verticesWithColors.get(test.getV1Idx());
                 Vertex v2 = verticesWithColors.get(test.getV2Idx());
