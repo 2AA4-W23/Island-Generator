@@ -21,7 +21,11 @@ public class DotGen {
         // Create all the vertices
         for (int x = 0; x <= width; x += square_size) {
             for (int y = 0; y <= height; y += square_size) {
-                vertices.add(Vertex.newBuilder().setX((double) x).setY((double) y).build());
+                double xVal = (double) x / 100;
+                double yVal = (double) y / 100;
+                xVal = Math.round(xVal * 100.0) / 100.0;
+                yVal = Math.round(yVal * 100.0) / 100.0;
+                vertices.add(Vertex.newBuilder().setX(xVal).setY(yVal).build());
                 // vertices.add(Vertex.newBuilder().setX((double) x+square_size).setY((double)
                 // y).build());
                 // vertices.add(Vertex.newBuilder().setX((double) x).setY((double)
