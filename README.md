@@ -64,8 +64,17 @@ For a feature to be considered done it must be work without throwing any excepti
 
 ### Product Backlog
 
-| Id  | Feature title | Who? | Start | End | Status |
-| :-: | ------------- | ---- | ----- | --- | ------ |
-|  F01  |  Draw one Segment |  Virochaan    |    02/07/2023   |   02/07/2023  |    D   | 
-|  F02  |  Draw All Segments |    Virochaan  |    02/07/2023   |   02/07/2023  |    D   | 
-|  F03  |  Draw all Segment and average the colours |   Virochaan   |    02/07/2023   |   02/07/2023  |      D  | S
+| Id  | Feature title                                                     | Who?      | Start      | End        | Status |
+| :-: | ----------------------------------------------------------------- | --------- | ---------- | ---------- | ------ |
+| F01 | Draw one Segment                                                  | Virochaan | 02/07/2023 | 02/07/2023 | D      |
+| F02 | Draw All Segments                                                 | Virochaan | 02/07/2023 | 02/07/2023 | D      |
+| F03 | Draw all Segment and average the colours                          | Virochaan | 02/07/2023 | 02/07/2023 | D      |
+| F04 | Segment precision of 2 decimal places                             |           |            |            | P      |
+| F05 | Draw one polygon from segments                                    |           |            |            | P      |
+| F06 | Draw all polygons from segments                                   |           |            |            | B(F05) |
+| F07 | Polygons reference index of neighbors                             |           |            |            | B(F05) |
+| F08 | Polygons reference their centroid                                 |           |            |            | B(F05) |
+| F09 | Coloured Vertices, Segments, Polygons                             |           |            |            | B(F06) |
+| F10 | Vertices, Segments and Polygons can have different transparencies |           |            |            | B(F07) |
+| F11 | Vertices, Segments and Polygons can have different thicknesses    |           |            |            | B(F07) |
+| F12 | Activate debug visualization mode from command line               |           |            |            | B(F11) |
