@@ -58,8 +58,8 @@ public class DotGen {
                 Segment coloredSegment = Segment.newBuilder(test).addProperties(color).build();
                 segments.add(coloredSegment);
             }
-            if (i + 26 < verticesWithColors.size()) { // vertical segements
-                Segment test = Segment.newBuilder().setV1Idx(i).setV2Idx(i + 26).build();
+            if (i + (width / square_size + 1) < verticesWithColors.size()) { // vertical segements
+                Segment test = Segment.newBuilder().setV1Idx(i).setV2Idx(i + (width / square_size + 1)).build();
                 Vertex v1 = verticesWithColors.get(test.getV1Idx());
                 Vertex v2 = verticesWithColors.get(test.getV2Idx());
                 String color1 = extractColorAverage(v1.getPropertiesList(), v2.getPropertiesList());
