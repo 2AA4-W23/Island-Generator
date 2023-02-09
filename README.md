@@ -69,7 +69,7 @@ For a feature to be considered done it must be work without throwing any excepti
 | F01 | Draw one Segment                                                  | Virochaan | 02/07/2023 | 02/07/2023 | D      |
 | F02 | Draw All Segments                                                 | Virochaan | 02/07/2023 | 02/07/2023 | D      |
 | F03 | Draw all Segment and average the colours                          | Virochaan | 02/07/2023 | 02/07/2023 | D      |
-| F04 | Segment precision of 2 decimal places                             | Omar      | 02/07/2023 | 02/07/2023 | D      |
+| F04 | Segment precision of 2 decimal places                             | Omar      | 02/07/2023 | 02/07/2023 | P      |
 | F05 | Draw one polygon from segments                                    |           |            |            | P      |
 | F06 | Draw all polygons from segments                                   |           |            |            | B(F05) |
 | F07 | Polygons reference index of neighbors                             |           |            |            | B(F05) |
