@@ -9,6 +9,7 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs.Segment;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Property;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Mesh;
+import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
 
 public class DotGen {
 
@@ -47,9 +48,9 @@ public class DotGen {
             Vertex colored = Vertex.newBuilder(v).addProperties(color).build();
             verticesWithColors.add(colored);
         }
-        Set<Segment> segments = new HashSet<>();
+        List<Segment> segments = new ArrayList<>();
 
-        for (int i = 0; i < verticesWithColors.size() - 1; i++) {
+        for (int i = 0; i < verticesWithColors.size() ; i++) {
             if (((i + 1) % (width / square_size + 1)) != 0 || i == 0) { // horizontal segments
                 Segment test = Segment.newBuilder().setV1Idx(i).setV2Idx(i + 1).build();
                 Vertex v1 = verticesWithColors.get(test.getV1Idx());
@@ -70,11 +71,29 @@ public class DotGen {
             }
         }
 
+        ArrayList<Polygon> polygons = new ArrayList<>();
+        ArrayList<Integer> pSegments = new ArrayList<>();
+        pSegments.add(0);
+        pSegments.add(1);
+        pSegments.add(51);
+        pSegments.add(3);
+
+        int red = bag.nextInt(255);
+        int green = bag.nextInt(255);
+        int blue = bag.nextInt(255);
+        String colorCode = red + "," + green + "," + blue;
+        Polygon p = Polygon.newBuilder().addAllSegmentIdxs(pSegments).build();
+        Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
+        Polygon pColored = Polygon.newBuilder(p).addProperties(color).build();
+        polygons.add(pColored);
+        // for (int i = 0; i < 10; i++) {
+        // System.out.println(verticesWithColors.get(i));
+
         // for (int i = 0; i < 10; i++) {
         // System.out.println(verticesWithColors.get(i));
         // }
 
-        return Mesh.newBuilder().addAllVertices(verticesWithColors).addAllSegments(segments).build();
+        return Mesh.newBuilder().addAllPolygons(polygons).addAllSegments(segments).addAllVertices(verticesWithColors).build();
     }
 
     private String extractColorAverage(List<Property> properties1, List<Property> properties2) {
