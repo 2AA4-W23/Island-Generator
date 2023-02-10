@@ -72,20 +72,21 @@ public class DotGen {
         }
 
         ArrayList<Polygon> polygons = new ArrayList<>();
-        ArrayList<Integer> pSegments = new ArrayList<>();
-        pSegments.add(0);
-        pSegments.add(1);
-        pSegments.add(51);
-        pSegments.add(3);
-
-        int red = bag.nextInt(255);
-        int green = bag.nextInt(255);
-        int blue = bag.nextInt(255);
-        String colorCode = red + "," + green + "," + blue;
-        Polygon p = Polygon.newBuilder().addAllSegmentIdxs(pSegments).build();
-        Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
-        Polygon pColored = Polygon.newBuilder(p).addProperties(color).build();
-        polygons.add(pColored);
+        for(int i = 0; i < segments.size() - 25; i+=2){
+            ArrayList<Integer> pSegments = new ArrayList<>();
+            pSegments.add(i);
+            pSegments.add(i + 1);
+            pSegments.add(i + 3);
+            pSegments.add(i + 51);
+            int red = bag.nextInt(255);
+            int green = bag.nextInt(255);
+            int blue = bag.nextInt(255);
+            String colorCode = red + "," + green + "," + blue;
+            Polygon p = Polygon.newBuilder().addAllSegmentIdxs(pSegments).build();
+            Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
+            Polygon pColored = Polygon.newBuilder(p).addProperties(color).build();
+            polygons.add(pColored);
+        }
         // for (int i = 0; i < 10; i++) {
         // System.out.println(verticesWithColors.get(i));
 
