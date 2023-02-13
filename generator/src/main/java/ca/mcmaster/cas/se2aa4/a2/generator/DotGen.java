@@ -92,8 +92,22 @@ public class DotGen {
             String colorCode = red + "," + green + "," + blue;
             Polygon p = Polygon.newBuilder().addAllSegmentIdxs(pSegments).build();
             Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
-            Polygon pColored = Polygon.newBuilder(p).addProperties(color).build();
+            Polygon pColored = Polygon.newBuilder(p).addProperties(color).setCentroidIdx(verticesWithColors.size()).build();
+
+
+
+            double x1 = verticesWithColors.get(segments.get(pColored.getSegmentIdxs(0)).getV1Idx()).getX();
+            double y1 = verticesWithColors.get(segments.get(pColored.getSegmentIdxs(0)).getV1Idx()).getY();
+            x1 += square_size/2;
+            y1 += square_size/2;
+
+            Vertex v1 = Vertex.newBuilder().setX(x1).setY(y1).build();
+            colorCode = "0,0,0";
+            color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
+            Vertex coloredv1 = Vertex.newBuilder(v1).addProperties(color).build();
+
             polygons.add(pColored);
+            verticesWithColors.add(coloredv1);
             if((polygons.size())%25==0){
                 i+=3;
             } else {
