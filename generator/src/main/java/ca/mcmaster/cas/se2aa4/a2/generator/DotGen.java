@@ -117,15 +117,15 @@ public class DotGen {
         ArrayList<Polygon> polygonsIndexed = new ArrayList<>();
 
         for(int j = 0; j < polygons.size(); j++){
-            ArrayList neighbouridx = new ArrayList<>();
-            ArrayList seg1 = new ArrayList<>();
+            ArrayList<Integer> neighbouridx = new ArrayList<>();
+            ArrayList<Integer> seg1 = new ArrayList<>();
             seg1.add(polygons.get(j).getSegmentIdxs(0));
             seg1.add(polygons.get(j).getSegmentIdxs(1));
             seg1.add(polygons.get(j).getSegmentIdxs(2));
             seg1.add(polygons.get(j).getSegmentIdxs(3));
             for(int k = 0; k < polygons.size(); k++){
                 if(j!=k){
-                    ArrayList seg2 = new ArrayList<>();
+                    ArrayList<Integer> seg2 = new ArrayList<>();
                     seg2.add(polygons.get(k).getSegmentIdxs(0));
                     seg2.add(polygons.get(k).getSegmentIdxs(1));
                     seg2.add(polygons.get(k).getSegmentIdxs(2));
