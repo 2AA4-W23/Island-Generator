@@ -65,7 +65,7 @@ public class GraphicRenderer {
         String val = null;
         for(Property p: properties) {
             if (p.getKey().equals("rgb_color")) {
-                System.out.println(p.getValue());
+//                System.out.println(p.getValue());
                 val = p.getValue();
             }
         }

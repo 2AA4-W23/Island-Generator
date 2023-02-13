@@ -24,7 +24,7 @@ public class DotGen {
                 double yVal = (double) y;
                 xVal = Math.round(xVal * 100.0) / 100.0;
                 yVal = Math.round(yVal * 100.0) / 100.0;
-                System.out.println("Xval: " + xVal);
+//                System.out.println("Xval: " + xVal + "Yval: " + yVal);
                 vertices.add(Vertex.newBuilder().setX(xVal).setY(yVal).build());
                 // vertices.add(Vertex.newBuilder().setX((double) x+square_size).setY((double)
                 // y).build());
@@ -49,7 +49,7 @@ public class DotGen {
         List<Segment> segments = new ArrayList<>();
 
         for (int i = 0; i < verticesWithColors.size() ; i++) {
-            if (((i + 1) % (width / square_size + 1)) != 0 || i == 0) { // horizontal segments
+            if (((i + 1) % (width / square_size + 1)) != 0 || i == 0) { // vertical segments
                 Segment test = Segment.newBuilder().setV1Idx(i).setV2Idx(i + 1).build();
                 Vertex v1 = verticesWithColors.get(test.getV1Idx());
                 Vertex v2 = verticesWithColors.get(test.getV2Idx());
@@ -58,7 +58,7 @@ public class DotGen {
                 Segment coloredSegment = Segment.newBuilder(test).addProperties(color).build();
                 segments.add(coloredSegment);
             }
-            if (i + (width / square_size + 1) < verticesWithColors.size()) { // vertical segements
+            if (i + (width / square_size + 1) < verticesWithColors.size()) { // horizontal segements
                 Segment test = Segment.newBuilder().setV1Idx(i).setV2Idx(i + (width / square_size + 1)).build();
                 Vertex v1 = verticesWithColors.get(test.getV1Idx());
                 Vertex v2 = verticesWithColors.get(test.getV2Idx());
@@ -69,13 +69,23 @@ public class DotGen {
             }
         }
 
+//        for (int i = 0; i < segments.size(); i++) {
+//            System.out.println("Index: " + i + " V1: " + segments.get(i).getV1Idx() + " V2: " + segments.get(i).getV2Idx());
+//        }
+
         ArrayList<Polygon> polygons = new ArrayList<>();
-        for(int i = 0; i < segments.size() - 25; i+=2){
+        int i = 0;
+        while(i < segments.size() - 25){
             ArrayList<Integer> pSegments = new ArrayList<>();
             pSegments.add(i);
             pSegments.add(i + 1);
-            pSegments.add(i + 3);
             pSegments.add(i + 51);
+            if((polygons.size()+1)%25==0){
+                pSegments.add(i + 2);
+            }else {
+                pSegments.add(i + 3);
+            }
+
             int red = bag.nextInt(255);
             int green = bag.nextInt(255);
             int blue = bag.nextInt(255);
@@ -84,15 +94,46 @@ public class DotGen {
             Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
             Polygon pColored = Polygon.newBuilder(p).addProperties(color).build();
             polygons.add(pColored);
+            if((polygons.size())%25==0){
+                i+=3;
+            } else {
+                i+=2;
+            }
         }
-        // for (int i = 0; i < 10; i++) {
-        // System.out.println(verticesWithColors.get(i));
+        ArrayList<Polygon> polygonsIndexed = new ArrayList<>();
 
-        // for (int i = 0; i < 10; i++) {
-        // System.out.println(verticesWithColors.get(i));
-        // }
-
-        return Mesh.newBuilder().addAllPolygons(polygons).addAllSegments(segments).addAllVertices(verticesWithColors).build();
+        for(int j = 0; j < polygons.size(); j++){
+            ArrayList neighbouridx = new ArrayList<>();
+            ArrayList seg1 = new ArrayList<>();
+            seg1.add(polygons.get(j).getSegmentIdxs(0));
+            seg1.add(polygons.get(j).getSegmentIdxs(1));
+            seg1.add(polygons.get(j).getSegmentIdxs(2));
+            seg1.add(polygons.get(j).getSegmentIdxs(3));
+            for(int k = 0; k < polygons.size(); k++){
+                if(j!=k){
+                    ArrayList seg2 = new ArrayList<>();
+                    seg2.add(polygons.get(k).getSegmentIdxs(0));
+                    seg2.add(polygons.get(k).getSegmentIdxs(1));
+                    seg2.add(polygons.get(k).getSegmentIdxs(2));
+                    seg2.add(polygons.get(k).getSegmentIdxs(3));
+                    seg2.retainAll(seg1);
+                    if(!seg2.isEmpty()){
+                        neighbouridx.add(k);
+                    }
+                }
+            }
+            Polygon p2 = Polygon.newBuilder(polygons.get(j)).addAllNeighborIdxs(neighbouridx).build();
+            polygonsIndexed.add(p2);
+        }
+        for (int j = 0; j < polygonsIndexed.size(); j++) {
+            Polygon x = polygonsIndexed.get(j);
+            System.out.print("Index: " + j);
+            for (int k = 0; k < x.getNeighborIdxsCount(); k++) {
+                System.out.print(" "+ x.getNeighborIdxs(k) + " ");
+            }
+            System.out.print("\n");
+        }
+        return Mesh.newBuilder().addAllPolygons(polygonsIndexed).addAllSegments(segments).addAllVertices(verticesWithColors).build();
     }
 
     private String extractColorAverage(List<Property> properties1, List<Property> properties2) {
@@ -100,13 +141,11 @@ public class DotGen {
         String val2 = null;
         for (Property p : properties1) {
             if (p.getKey().equals("rgb_color")) {
-                System.out.println(p.getValue());
                 val1 = p.getValue();
             }
         }
         for (Property p : properties2) {
             if (p.getKey().equals("rgb_color")) {
-                System.out.println(p.getValue());
                 val2 = p.getValue();
             }
         }
