@@ -72,7 +72,7 @@ For a feature to be considered done it must be work without throwing any excepti
 | F04 | Segment precision of 2 decimal places                             | Omar      | 02/07/2023 | 02/07/2023 | P      |
 | F05 | Draw one polygon from segments                                    | Ibrahim   | 02/09/2023 | 02/10/2023 | D      |
 | F06 | Draw all polygons from segments                                   | Ibrahim   | 02/10/2023 | 02/10/2023 | D      |
-| F07 | Polygons reference index of neighbors                             |           |            |            | B(F05) |
+| F07 | Polygons reference index of neighbors                             | Virochaan | 02/12/2023 | 02/12/2023 | D      |
 | F08 | Polygons reference their centroid                                 |           |            |            | B(F05) |
 | F09 | Coloured Vertices, Segments, Polygons                             | Ibrahim   | 02/11/2023 |            | S      |
 | F10 | Vertices, Segments and Polygons can have different transparencies |           |            |            | B(F07) |
