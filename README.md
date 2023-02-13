@@ -47,6 +47,12 @@ mosser@azrael visualizer % ls -lh sample.svg
 mosser@azrael visualizer %
 ```
 
+To visualize the connections between neighbouring polygons and the general mesh in debug mode include the tag `-X`. This tag is not mandatory and only needs to be included if we are trying to run in debug mode.
+
+```
+mosser@azrael visualizer % java -jar visualizer.jar ../generator/sample.mesh sample.svg -X
+```
+
 To viualize the SVG file:
 
 - Open it with a web browser
@@ -77,4 +83,4 @@ For a feature to be considered done it must be work without throwing any excepti
 | F09 | Coloured Vertices, Segments, Polygons                             | Ibrahim   | 02/11/2023 |            | S      |
 | F10 | Vertices, Segments and Polygons can have different transparencies |           |            |            | B(F07) |
 | F11 | Vertices, Segments and Polygons can have different thicknesses    |           |            |            | B(F07) |
-| F12 | Activate debug visualization mode from command line               |           |            |            | B(F11) |
+| F12 | Activate debug visualization mode from command line               | Virochaan | 02/13/2023 | 02/13/2023 | D      |

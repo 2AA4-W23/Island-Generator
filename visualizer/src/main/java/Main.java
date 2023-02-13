@@ -16,7 +16,9 @@ public class Main {
         Boolean debug = false;
         try{
             String debugText = args[2];
-            debug = true;
+            if(debugText.equals("-X")){
+                debug = true;
+            }
         } catch (Exception e) {
             System.out.println("No Third argument");
         }
