@@ -34,7 +34,7 @@ public class GraphicRenderer {
             double y = VertexList.get(SegmentList.get(p.getSegmentIdxs(0)).getV1Idx()).getY();
             lowCentroidIdx = Math.min(p.getCentroidIdx(), lowCentroidIdx);
             Color old = canvas.getColor();
-            canvas.setColor(extractColor(p.getPropertiesList()));
+            canvas.setColor(averageSegmentColor(p.getSegmentIdxsList(), SegmentList));
             if(debug){
                 canvas.setColor(new Color(0,0,0));
             }
@@ -97,6 +97,31 @@ public class GraphicRenderer {
             count ++;
         }
         
+    }
+
+    private Color averageSegmentColor(List<Integer> edges, List<Segment> allSegments) {
+        Color average;
+        int r = 0;
+        int g = 0;
+        int b = 0;
+        int edgesCounted = 0;
+        for(int s : edges) {
+            try {
+                Segment edge = allSegments.get(s);
+                Color c = extractColor(edge.getPropertiesList());
+                r += c.getRed();
+                g += c.getGreen();
+                b += c.getBlue();
+                edgesCounted++;
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println(s);
+            }
+        }   
+        r /= edgesCounted;
+        g /= edgesCounted;
+        b /= edgesCounted;
+        average = new Color(r, g, b);
+        return average;
     }
 
     private Color extractColor(List<Property> properties) {
