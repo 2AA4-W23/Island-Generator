@@ -15,10 +15,11 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.Line2D;
 import java.util.List;
 
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
+
 public class GraphicRenderer {
 
-    private static final int THICKNESS = 3;
-    public void render(Mesh aMesh, Graphics2D canvas, Boolean debug) {
+    public void render(Mesh aMesh, Graphics2D canvas, Boolean debug, Boolean thickSet, int thick) {
         canvas.setColor(Color.BLACK);
         Stroke stroke = new BasicStroke(0.5f);
         canvas.setStroke(stroke);
@@ -53,6 +54,9 @@ public class GraphicRenderer {
                     double cy1 = VertexList.get(centroidIdx).getY();
                     double cx2 = VertexList.get(PolygonList.get(p.getNeighborIdxs(i)).getCentroidIdx()).getX();
                     double cy2 = VertexList.get(PolygonList.get(p.getNeighborIdxs(i)).getCentroidIdx()).getY();
+                    if(thickSet) {
+                        canvas.setStroke(new BasicStroke(Math.max(1, thick - 1)));
+                    }
                     Line2D line = new Line2D.Double(cx1, cy1, cx2, cy2);
                     Color old1 = canvas.getColor();
                     canvas.setColor(new Color(192, 192, 192));
@@ -69,32 +73,59 @@ public class GraphicRenderer {
             double x2 = VertexList.get(s.getV2Idx()).getX();
             double y1 = VertexList.get(s.getV1Idx()).getY();
             double y2 = VertexList.get(s.getV2Idx()).getY();
+
+            
             Color old1 = canvas.getColor();
+            Stroke oldStroke = canvas.getStroke();
             canvas.setColor(extractColor(s.getPropertiesList()));
+            canvas.setStroke(extractStroke(s.getPropertiesList()));
+            
             if (debug){
                 canvas.setColor(new Color(90,90,90));
+                canvas.setStroke(new BasicStroke(1));
+            } else if(!thickSet) {
+                int v1Thickness = extractThickness(VertexList.get(s.getV1Idx()).getPropertiesList());
+                int v2Thickness = extractThickness(VertexList.get(s.getV2Idx()).getPropertiesList());
+                if(Math.abs(y1 - y2) < 0.01) {
+                    x1 += v1Thickness/2.0d;
+                    x2 -= v2Thickness/2.0d;
+                }
+                else if(Math.abs(x1 - x2) < 0.01) {
+                    y1 += v1Thickness/2.0d;
+                    y2 -= v2Thickness/2.0d;
+                }
             }
+            if(thickSet){
+                canvas.setStroke(new BasicStroke(Math.max(1, thick - 1)));
+            }
+           
             Line2D line = new Line2D.Double(x1, y1, x2,y2);
             canvas.draw(line);
+            canvas.setStroke(oldStroke);
             canvas.setColor(old1);
         }
         int count = 0;
         for (Vertex v: VertexList) {
-            double centre_x = v.getX() - (THICKNESS/2.0d);
-            double centre_y = v.getY() - (THICKNESS/2.0d);
+            int thickness = extractThickness(v.getPropertiesList());
             Color old = canvas.getColor();
             canvas.setColor(extractColor(v.getPropertiesList()));
             if(debug){
+                thickness = 3;
                 if(count < lowCentroidIdx){
                     canvas.setColor(new Color(90,90,90));
                 } else{
                     canvas.setColor(new Color(255,0,0));
                 }
             }
-            Ellipse2D point = new Ellipse2D.Double(centre_x, centre_y, THICKNESS, THICKNESS);
+            if(thickSet){
+                thickness = thick + 1;
+            }
+            double centre_x = v.getX() - (thickness/2.0d);
+            double centre_y = v.getY() - (thickness/2.0d);
+            Ellipse2D point = new Ellipse2D.Double(centre_x, centre_y, thickness, thickness);
             canvas.fill(point);
             canvas.setColor(old);
-            count ++;
+            count++;
         }
         
     }
@@ -139,6 +170,25 @@ public class GraphicRenderer {
         int green = Integer.parseInt(raw[1]);
         int blue = Integer.parseInt(raw[2]);
         return new Color(red, green, blue);
+    }
+    
+    private int extractThickness(List<Property> properties) {
+        String val = null;
+        for(Property p: properties) {
+            if (p.getKey().equals("thickness")) {
+//                System.out.println(p.getValue());
+                val = p.getValue();
+            }
+        }
+        try {
+            return Integer.parseInt(val);
+        } catch (NumberFormatException e) {
+            return 3;
+        }
+    }
+
+    private Stroke extractStroke(List<Property> properties) {
+        return new BasicStroke(extractThickness(properties) - 1);
     }
 
 }

@@ -14,13 +14,20 @@ public class Main {
         String input = args[0];
         String output = args[1];
         Boolean debug = false;
-        try{
-            String debugText = args[2];
-            if(debugText.equals("-X")){
-                debug = true;
+        Boolean thickSet = false;
+        int thick = 0;
+        for(int i = 2; i < args.length; i++){
+            if(args[i].equals("-X")) debug = true;
+            else if(args[i].equals("-T")) {
+                try {
+                    thick = Integer.parseInt(args[i+1]);
+                    thickSet = true;
+                } catch(NumberFormatException e) {
+                    System.out.println("Invalid argument for -T");
+                } catch(IndexOutOfBoundsException e) {
+                    System.out.println("No argument provided for -T");
+                }
             }
-        } catch (Exception e) {
-            System.out.println("No Third argument");
         }
 
         // Getting width and height for the canvas
@@ -35,7 +42,7 @@ public class Main {
         Graphics2D canvas = SVGCanvas.build((int) Math.ceil(max_x), (int) Math.ceil(max_y));
         GraphicRenderer renderer = new GraphicRenderer();
         // Painting the mesh on the canvas
-        renderer.render(aMesh, canvas, debug);
+        renderer.render(aMesh, canvas, debug, thickSet, thick);
         // Storing the result in an SVG file
         SVGCanvas.write(canvas, output);
         // Dump the mesh to stdout
