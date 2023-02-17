@@ -80,7 +80,7 @@ For a feature to be considered done it must be work without throwing any excepti
 | F06 | Draw all polygons from segments                                   | Ibrahim   | 02/10/2023 | 02/10/2023 | D      |
 | F07 | Polygons reference index of neighbors                             | Virochaan | 02/12/2023 | 02/12/2023 | D      |
 | F08 | Polygons reference their centroid                                 | Virochaan | 02/13/2023 | 02/13/2023 | D      |
-| F09 | Coloured Vertices, Segments, Polygons                             | Ibrahim   | 02/11/2023 |02/13/2023| D      |
-| F10 | Vertices, Segments and Polygons can have different transparencies |           |            |            | B(F07) |
-| F11 | Vertices, Segments and Polygons can have different thicknesses    |           |            |            | B(F07) |
+| F09 | Coloured Vertices, Segments, Polygons                             | Ibrahim   | 02/11/2023 |02/13/2023  | D      |
+| F10 | Vertices, Segments and Polygons can have different transparencies | Ibrahim   | 02/16/2023 |02/17/2023  | D      |
+| F11 | Vertices, Segments and Polygons can have different thicknesses    | Ibrahim   | 02/17/2023 |            | S      |
 | F12 | Activate debug visualization mode from command line               | Virochaan | 02/13/2023 | 02/13/2023 | D      |

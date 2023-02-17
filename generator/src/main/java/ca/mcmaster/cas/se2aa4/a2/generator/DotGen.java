@@ -41,9 +41,11 @@ public class DotGen {
             int red = bag.nextInt(255);
             int green = bag.nextInt(255);
             int blue = bag.nextInt(255);
+            String thick = Integer.toString(bag.nextInt(2,7));
             String colorCode = red + "," + green + "," + blue;
             Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
-            Vertex colored = Vertex.newBuilder(v).addProperties(color).build();
+            Property thickness = Property.newBuilder().setKey("thickness").setValue(thick).build();
+            Vertex colored = Vertex.newBuilder(v).addProperties(color).addProperties(thickness).build();
             verticesWithColors.add(colored);
         }
         List<Segment> segments = new ArrayList<>();
@@ -53,18 +55,22 @@ public class DotGen {
                 Segment test = Segment.newBuilder().setV1Idx(i).setV2Idx(i + 1).build();
                 Vertex v1 = verticesWithColors.get(test.getV1Idx());
                 Vertex v2 = verticesWithColors.get(test.getV2Idx());
-                String color1 = extractColorAverage(v1.getPropertiesList(), v2.getPropertiesList());
+                String color1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "rgb_color");
+                String thickness1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "thickness");
                 Property color = Property.newBuilder().setKey("rgb_color").setValue(color1).build();
-                Segment coloredSegment = Segment.newBuilder(test).addProperties(color).build();
+                Property thickness = Property.newBuilder().setKey("thickness").setValue(thickness1).build();
+                Segment coloredSegment = Segment.newBuilder(test).addProperties(color).addProperties(thickness).build();
                 segments.add(coloredSegment);
             }
             if (i + (width / square_size + 1) < verticesWithColors.size()) { // horizontal segements
                 Segment test = Segment.newBuilder().setV1Idx(i).setV2Idx(i + (width / square_size + 1)).build();
                 Vertex v1 = verticesWithColors.get(test.getV1Idx());
                 Vertex v2 = verticesWithColors.get(test.getV2Idx());
-                String color1 = extractColorAverage(v1.getPropertiesList(), v2.getPropertiesList());
+                String color1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "rgb_color");
+                String thickness1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "thickness");
                 Property color = Property.newBuilder().setKey("rgb_color").setValue(color1).build();
-                Segment coloredSegment = Segment.newBuilder(test).addProperties(color).build();
+                Property thickness = Property.newBuilder().setKey("thickness").setValue(thickness1).build();
+                Segment coloredSegment = Segment.newBuilder(test).addProperties(color).addProperties(thickness).build();
                 segments.add(coloredSegment);
             }
         }
@@ -150,29 +156,39 @@ public class DotGen {
         return Mesh.newBuilder().addAllPolygons(polygonsIndexed).addAllSegments(segments).addAllVertices(verticesWithColors).build();
     }
 
-    private String extractColorAverage(List<Property> properties1, List<Property> properties2) {
+    private String extractPropertyAverage(List<Property> properties1, List<Property> properties2, String key) {
         String val1 = null;
         String val2 = null;
         for (Property p : properties1) {
-            if (p.getKey().equals("rgb_color")) {
+            if (p.getKey().equals(key)) {
                 val1 = p.getValue();
             }
         }
         for (Property p : properties2) {
-            if (p.getKey().equals("rgb_color")) {
+            if (p.getKey().equals(key)) {
                 val2 = p.getValue();
             }
         }
-        if (val1 == null)
-            val1 = "0,0,0";
-        if (val2 == null)
-            val2 = "0,0,0";
-        String[] raw1 = val1.split(",");
-        String[] raw2 = val2.split(",");
-        int red = (Integer.parseInt(raw1[0]) + Integer.parseInt(raw2[0])) / 2;
-        int green = (Integer.parseInt(raw1[1]) + Integer.parseInt(raw2[1])) / 2;
-        int blue = (Integer.parseInt(raw1[2]) + Integer.parseInt(raw2[2])) / 2;
-        String color = red + "," + green + "," + blue;
-        return color;
+        if(key.equals("rgb_color")) {
+            if (val1 == null)
+                val1 = "0,0,0";
+            if (val2 == null)
+                val2 = "0,0,0";
+            String[] raw1 = val1.split(",");
+            String[] raw2 = val2.split(",");
+            int red = (Integer.parseInt(raw1[0]) + Integer.parseInt(raw2[0])) / 2;
+            int green = (Integer.parseInt(raw1[1]) + Integer.parseInt(raw2[1])) / 2;
+            int blue = (Integer.parseInt(raw1[2]) + Integer.parseInt(raw2[2])) / 2;
+            String color = red + "," + green + "," + blue;
+            return color;
+        } else if (key.equals("thickness")) {
+            if (val1 == null)
+                val1 = "1";
+            if (val2 == null)
+                val2 = "1";
+            int average = (Integer.parseInt(val1) + Integer.parseInt(val2)) / 2;
+            return Integer.toString(average);
+        } 
+        return null;
     }
 }
