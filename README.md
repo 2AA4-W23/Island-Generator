@@ -58,7 +58,6 @@ To change the thickness of the components, use the tag `-T` followed by the thic
 mosser@azrael visualizer % java -jar visualizer.jar ../generator/sample.mesh sample.svg -T <value>
 ```
 
-```
 To change the transparency or alpha of the components, use the tag `-A` followed by the alpha value (0-255). If not specified, vertex alphas are randomized, segments average the alpha of its vertices, and polygons average the alpha of their segments.
 
 ```
