@@ -97,4 +97,8 @@ For a feature to be considered done it must be work without throwing any excepti
 | F18 | Select mesh type (regular or irregular)                           |           |            |            |        |
 | F19 | Select number of polygons                                         |           |            |            |        |
 | F20 | Select relaxation levels                                          |           |            |            |        |
+<<<<<<< HEAD
 | F21 | Command line help argument                                        |           |            |            |        |
+=======
+| F21 | Command line help argument                                        |           |            |            |        |
+>>>>>>> 34eb282b4c10e6dd9e7aebc7b222283eda31ef2a
