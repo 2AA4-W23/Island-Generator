@@ -18,13 +18,15 @@ public class DotGen {
     public Mesh generate() {
         ArrayList<Vertex> vertices = new ArrayList<>();
         // Create all the vertices
+        Random bag = new Random();
         for (int x = 0; x <= width; x += square_size) {
             for (int y = 0; y <= height; y += square_size) {
-                double xVal = (double) x;
-                double yVal = (double) y;
+                double xVal = (double) bag.nextInt(x, x + square_size);
+                double yVal = (double) bag.nextInt(y, y + square_size);
                 xVal = Math.round(xVal * 100.0) / 100.0;
                 yVal = Math.round(yVal * 100.0) / 100.0;
-//                System.out.println("Xval: " + xVal + "Yval: " + yVal);
+                System.out.println(xVal + " " + yVal);
+                // System.out.println("Xval: " + xVal + "Yval: " + yVal);
                 vertices.add(Vertex.newBuilder().setX(xVal).setY(yVal).build());
                 // vertices.add(Vertex.newBuilder().setX((double) x+square_size).setY((double)
                 // y).build());
@@ -36,7 +38,6 @@ public class DotGen {
         }
         // Distribute colors randomly. Vertices are immutable, need to enrich them
         ArrayList<Vertex> verticesWithColors = new ArrayList<>();
-        Random bag = new Random();
         for (Vertex v : vertices) {
             int red = bag.nextInt(255);
             int green = bag.nextInt(255);
@@ -50,7 +51,7 @@ public class DotGen {
             Vertex colored = Vertex.newBuilder(v).addProperties(color).addProperties(thickness).addProperties(alpha).build();
             verticesWithColors.add(colored);
         }
-        List<Segment> segments = new ArrayList<>();
+        /*List<Segment> segments = new ArrayList<>();
 
         for (int i = 0; i < verticesWithColors.size() ; i++) {
             if (((i + 1) % (width / square_size + 1)) != 0 || i == 0) { // vertical segments
@@ -158,8 +159,8 @@ public class DotGen {
                 System.out.print(" "+ x.getNeighborIdxs(k) + " ");
             }
             System.out.print("\n");
-        }
-        return Mesh.newBuilder().addAllPolygons(polygonsIndexed).addAllSegments(segments).addAllVertices(verticesWithColors).build();
+        }*/
+        return Mesh.newBuilder()/*.addAllPolygons(polygonsIndexed).addAllSegments(segments)*/.addAllVertices(verticesWithColors).build();
     }
 
     private String extractPropertyAverage(List<Property> properties1, List<Property> properties2, String key) {
