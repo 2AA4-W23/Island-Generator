@@ -58,12 +58,6 @@ To change the thickness of the components, use the tag `-T` followed by the thic
 mosser@azrael visualizer % java -jar visualizer.jar ../generator/sample.mesh sample.svg -T <value>
 ```
 
-To change the transparency or alpha of the components, use the tag `-A` followed by the alpha value (0-255). If not specified, vertex alphas are randomized, segments average the alpha of its vertices, and polygons average the alpha of their segments.
-
-```
-mosser@azrael visualizer % java -jar visualizer.jar ../generator/sample.mesh sample.svg -T <value>
-```
-
 To viualize the SVG file:
 
 - Open it with a web browser
@@ -94,4 +88,13 @@ For a feature to be considered done it must be work without throwing any excepti
 | F09 | Coloured Vertices, Segments, Polygons                             | Ibrahim   | 02/11/2023 |02/13/2023  | D      |
 | F10 | Vertices, Segments and Polygons can have different thicknesses    | Ibrahim   | 02/16/2023 |02/17/2023  | D      |
 | F11 | Vertices, Segments and Polygons can have different transparencies | Ibrahim   | 02/17/2023 |02/18/2023  | D      |
-| F12 | Activate debug visualization mode from command line               | Virochaan | 02/13/2023 | 02/13/2023 | D      |
+| F12 | Debug visualization mode                                          | Virochaan | 02/13/2023 | 02/13/2023 | D      |
+| F13 | Random centroid vertex distribution                               | Ibrahim   | 02/18/2023 | 02/18/2023 | D      |
+| F14 | Construct segments and polygons from Voronoi diagram              |           |            |            |        |
+| F15 | Apply Llyod relaxation any number of times                        |           |            |            |        |
+| F16 | Polygons reference neighbors using Delaunay's Triangulation       |           |            |            |        |
+| F17 | Convex hull computation for segment ordering                      |           |            |            |        |
+| F18 | Select mesh type (regular or irregular)                           |           |            |            |        |
+| F19 | Select number of polygons                                         |           |            |            |        |
+| F20 | Select relaxation levels                                          |           |            |            |        |
+| F21 | Command line help argument                                        |           |            |            |        |
