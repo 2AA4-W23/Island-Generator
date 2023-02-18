@@ -16,6 +16,8 @@ public class Main {
         Boolean debug = false;
         Boolean thickSet = false;
         int thick = 0;
+        Boolean alphaSet = false;
+        int alpha = 0;
         for(int i = 2; i < args.length; i++){
             if(args[i].equals("-X")) debug = true;
             else if(args[i].equals("-T")) {
@@ -26,6 +28,16 @@ public class Main {
                     System.out.println("Invalid argument for -T");
                 } catch(IndexOutOfBoundsException e) {
                     System.out.println("No argument provided for -T");
+                }
+            }
+            else if(args[i].equals("-A")) {
+                try {
+                    alpha = Integer.parseInt(args[i+1]) % 256;
+                    alphaSet = true;
+                } catch(NumberFormatException e) {
+                    System.out.println("Invalid argument for -A");
+                } catch(IndexOutOfBoundsException e) {
+                    System.out.println("No argument provided for -A");
                 }
             }
         }
@@ -42,7 +54,7 @@ public class Main {
         Graphics2D canvas = SVGCanvas.build((int) Math.ceil(max_x), (int) Math.ceil(max_y));
         GraphicRenderer renderer = new GraphicRenderer();
         // Painting the mesh on the canvas
-        renderer.render(aMesh, canvas, debug, thickSet, thick);
+        renderer.render(aMesh, canvas, debug, thickSet, thick, alphaSet, alpha);
         // Storing the result in an SVG file
         SVGCanvas.write(canvas, output);
         // Dump the mesh to stdout

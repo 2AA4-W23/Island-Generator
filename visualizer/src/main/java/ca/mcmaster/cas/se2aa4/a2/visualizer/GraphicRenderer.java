@@ -15,11 +15,14 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.Line2D;
 import java.util.List;
 
-import javax.swing.plaf.basic.BasicSplitPaneDivider;
-
 public class GraphicRenderer {
 
-    public void render(Mesh aMesh, Graphics2D canvas, Boolean debug, Boolean thickSet, int thick) {
+    private Boolean alphaSet = false;
+    private int alpha = 0;
+
+    public void render(Mesh aMesh, Graphics2D canvas, Boolean debug, Boolean thickSet, int thick, Boolean alphaSet, int alpha) {
+        this.alphaSet = alphaSet;
+        this.alpha = alpha;
         canvas.setColor(Color.BLACK);
         Stroke stroke = new BasicStroke(0.5f);
         canvas.setStroke(stroke);
@@ -37,7 +40,8 @@ public class GraphicRenderer {
             Color old = canvas.getColor();
             canvas.setColor(averageSegmentColor(p.getSegmentIdxsList(), SegmentList));
             if(debug){
-                canvas.setColor(new Color(0,0,0));
+                if(alphaSet) canvas.setColor(new Color(0,0,0,alpha));
+                else canvas.setColor(new Color(0,0,0));
             }
             Rectangle2D polygon = new Rectangle2D.Double(x,y,20,20);
             canvas.fill(polygon);
@@ -60,6 +64,9 @@ public class GraphicRenderer {
                     Line2D line = new Line2D.Double(cx1, cy1, cx2, cy2);
                     Color old1 = canvas.getColor();
                     canvas.setColor(new Color(192, 192, 192));
+                    if(alphaSet){
+                        canvas.setColor(new Color(192,192,192,alpha));
+                    }
                     canvas.draw(line);
                     canvas.setColor(old1);
                 }
@@ -77,12 +84,15 @@ public class GraphicRenderer {
             
             Color old1 = canvas.getColor();
             Stroke oldStroke = canvas.getStroke();
-            canvas.setColor(extractColor(s.getPropertiesList()));
+            canvas.setColor(extractColor(s.getPropertiesList(), alphaSet, alpha));
             canvas.setStroke(extractStroke(s.getPropertiesList()));
             
             if (debug){
                 canvas.setColor(new Color(90,90,90));
                 canvas.setStroke(new BasicStroke(1));
+                if(alphaSet){
+                    canvas.setColor(new Color(90,90,90,alpha));
+                }
             } else if(!thickSet) {
                 int v1Thickness = extractThickness(VertexList.get(s.getV1Idx()).getPropertiesList());
                 int v2Thickness = extractThickness(VertexList.get(s.getV2Idx()).getPropertiesList());
@@ -98,8 +108,7 @@ public class GraphicRenderer {
             if(thickSet){
                 canvas.setStroke(new BasicStroke(Math.max(1, thick - 1)));
             }
-           
-            Line2D line = new Line2D.Double(x1, y1, x2,y2);
+            Line2D line = new Line2D.Double(x1, y1, x2, y2);
             canvas.draw(line);
             canvas.setStroke(oldStroke);
             canvas.setColor(old1);
@@ -108,13 +117,15 @@ public class GraphicRenderer {
         for (Vertex v: VertexList) {
             int thickness = extractThickness(v.getPropertiesList());
             Color old = canvas.getColor();
-            canvas.setColor(extractColor(v.getPropertiesList()));
+            canvas.setColor(extractColor(v.getPropertiesList(), alphaSet, alpha));
             if(debug){
                 thickness = 3;
                 if(count < lowCentroidIdx){
-                    canvas.setColor(new Color(90,90,90));
+                    if(alphaSet) canvas.setColor(new Color(90,90,90, alpha));
+                    else canvas.setColor(new Color(90,90,90));
                 } else{
-                    canvas.setColor(new Color(255,0,0));
+                    if(alphaSet) canvas.setColor(new Color(255,0,0, alpha));
+                    else canvas.setColor(new Color(255,0,0));
                 }
             }
             if(thickSet){
@@ -135,14 +146,16 @@ public class GraphicRenderer {
         int r = 0;
         int g = 0;
         int b = 0;
+        int a = 0;
         int edgesCounted = 0;
         for(int s : edges) {
             try {
                 Segment edge = allSegments.get(s);
-                Color c = extractColor(edge.getPropertiesList());
+                Color c = extractColor(edge.getPropertiesList(), alphaSet, alpha);
                 r += c.getRed();
                 g += c.getGreen();
                 b += c.getBlue();
+                a += c.getAlpha();
                 edgesCounted++;
             } catch (IndexOutOfBoundsException e) {
                 System.out.println(s);
@@ -151,27 +164,39 @@ public class GraphicRenderer {
         r /= edgesCounted;
         g /= edgesCounted;
         b /= edgesCounted;
-        average = new Color(r, g, b);
+        a /= edgesCounted;
+        if(alphaSet)
+            a = alpha;
+        average = new Color(r, g, b, a);
         return average;
     }
 
-    private Color extractColor(List<Property> properties) {
-        String val = null;
+    private Color extractColor(List<Property> properties, boolean alphaSet, int alphaVal) {
+        String color = null;
+        String alpha = null;
         for(Property p: properties) {
             if (p.getKey().equals("rgb_color")) {
 //                System.out.println(p.getValue());
-                val = p.getValue();
+                color = p.getValue();
+            }
+            if(p.getKey().equals("alpha")) {
+                alpha = p.getValue();
             }
         }
-        if (val == null)
+        if (color == null)
             return Color.BLACK;
-        String[] raw = val.split(",");
+        
+        String[] raw = color.split(",");
         int red = Integer.parseInt(raw[0]);
         int green = Integer.parseInt(raw[1]);
         int blue = Integer.parseInt(raw[2]);
-        return new Color(red, green, blue);
+        if(alphaSet)
+            return new Color(red,green,blue,alphaVal);
+        else if(alpha != null)
+            return new Color(red, green, blue, Integer.parseInt(alpha));
+        else return new Color(red, green, blue, 200);
     }
-    
+
     private int extractThickness(List<Property> properties) {
         String val = null;
         for(Property p: properties) {

@@ -43,9 +43,11 @@ public class DotGen {
             int blue = bag.nextInt(255);
             String thick = Integer.toString(bag.nextInt(2,7));
             String colorCode = red + "," + green + "," + blue;
+            String alphaVal = Integer.toString(bag.nextInt(150,255));
             Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
             Property thickness = Property.newBuilder().setKey("thickness").setValue(thick).build();
-            Vertex colored = Vertex.newBuilder(v).addProperties(color).addProperties(thickness).build();
+            Property alpha = Property.newBuilder().setKey("alpha").setValue(alphaVal).build();
+            Vertex colored = Vertex.newBuilder(v).addProperties(color).addProperties(thickness).addProperties(alpha).build();
             verticesWithColors.add(colored);
         }
         List<Segment> segments = new ArrayList<>();
@@ -57,9 +59,11 @@ public class DotGen {
                 Vertex v2 = verticesWithColors.get(test.getV2Idx());
                 String color1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "rgb_color");
                 String thickness1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "thickness");
+                String alphaVal = Integer.toString(bag.nextInt(0,101));
                 Property color = Property.newBuilder().setKey("rgb_color").setValue(color1).build();
                 Property thickness = Property.newBuilder().setKey("thickness").setValue(thickness1).build();
-                Segment coloredSegment = Segment.newBuilder(test).addProperties(color).addProperties(thickness).build();
+                Property alpha = Property.newBuilder().setKey("alpha").setValue(alphaVal).build();
+                Segment coloredSegment = Segment.newBuilder(test).addProperties(color).addProperties(thickness).addProperties(alpha).build();
                 segments.add(coloredSegment);
             }
             if (i + (width / square_size + 1) < verticesWithColors.size()) { // horizontal segements
@@ -68,9 +72,11 @@ public class DotGen {
                 Vertex v2 = verticesWithColors.get(test.getV2Idx());
                 String color1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "rgb_color");
                 String thickness1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "thickness");
+                String alphaVal = Integer.toString(bag.nextInt(0,101));
                 Property color = Property.newBuilder().setKey("rgb_color").setValue(color1).build();
                 Property thickness = Property.newBuilder().setKey("thickness").setValue(thickness1).build();
-                Segment coloredSegment = Segment.newBuilder(test).addProperties(color).addProperties(thickness).build();
+                Property alpha = Property.newBuilder().setKey("alpha").setValue(alphaVal).build();
+                Segment coloredSegment = Segment.newBuilder(test).addProperties(color).addProperties(thickness).addProperties(alpha).build();
                 segments.add(coloredSegment);
             }
         }
@@ -183,12 +189,19 @@ public class DotGen {
             return color;
         } else if (key.equals("thickness")) {
             if (val1 == null)
-                val1 = "1";
+                val1 = "3";
             if (val2 == null)
-                val2 = "1";
+                val2 = "3";
             int average = (Integer.parseInt(val1) + Integer.parseInt(val2)) / 2;
             return Integer.toString(average);
-        } 
+        } else if (key.equals("alpha")) {
+            if (val1 == null)
+                val1 = "50";
+            if (val2 == null)
+                val2 = "50";
+            int average = (Integer.parseInt(val1) + Integer.parseInt(val2)) / 2;
+            return Integer.toString(average);
+        }
         return null;
     }
 }
