@@ -52,6 +52,11 @@ To visualize the connections between neighbouring polygons and the general mesh 
 ```
 mosser@azrael visualizer % java -jar visualizer.jar ../generator/sample.mesh sample.svg -X
 ```
+To change the thickness of the components, use the tag `-T` followed by the thickness value. If not specified, vertex thicknesses are randomized and segments average the thickness of its vertices.
+
+```
+mosser@azrael visualizer % java -jar visualizer.jar ../generator/sample.mesh sample.svg -T <value>
+```
 
 To viualize the SVG file:
 
