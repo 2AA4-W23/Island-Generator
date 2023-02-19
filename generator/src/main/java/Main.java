@@ -8,7 +8,9 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         DotGen generator = new DotGen();
-        Mesh myMesh = generator.generate();
+        Mesh myMesh;
+        if(args[1] == "irregular") myMesh = generator.generate();
+        else myMesh = generator.generate();
         MeshFactory factory = new MeshFactory();
         factory.write(myMesh, args[0]);
     }

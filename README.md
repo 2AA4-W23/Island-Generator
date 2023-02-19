@@ -101,7 +101,7 @@ For a feature to be considered done it must be work without throwing any excepti
 | F15 | Apply Llyod relaxation any number of times                        |           |            |            |        |
 | F16 | Polygons reference neighbors using Delaunay's Triangulation       |           |            |            |        |
 | F17 | Convex hull computation for segment ordering                      |           |            |            |        |
-| F18 | Select mesh type (regular or irregular)                           |           |            |            |        |
+| F18 | Select mesh type (grid or irregular)                              | Ibrahim   | 02/18/2023 | 02/18/2023 | D      |
 | F19 | Select number of polygons                                         |           |            |            |        |
 | F20 | Select relaxation levels                                          |           |            |            |        |
 | F21 | Command line help argument                                        |           |            |            |        |

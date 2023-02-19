@@ -1,13 +1,18 @@
 package ca.mcmaster.cas.se2aa4.a2.generator;
 
 import java.util.*;
-import java.util.List;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Segment;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Property;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Mesh;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
+
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.triangulate.VoronoiDiagramBuilder;;
 
 public class DotGen {
 
@@ -18,15 +23,13 @@ public class DotGen {
     public Mesh generate() {
         ArrayList<Vertex> vertices = new ArrayList<>();
         // Create all the vertices
-        Random bag = new Random();
         for (int x = 0; x <= width; x += square_size) {
             for (int y = 0; y <= height; y += square_size) {
-                double xVal = (double) bag.nextInt(x, x + square_size);
-                double yVal = (double) bag.nextInt(y, y + square_size);
+                double xVal = (double) x;
+                double yVal = (double) y;
                 xVal = Math.round(xVal * 100.0) / 100.0;
                 yVal = Math.round(yVal * 100.0) / 100.0;
-                System.out.println(xVal + " " + yVal);
-                // System.out.println("Xval: " + xVal + "Yval: " + yVal);
+//                System.out.println("Xval: " + xVal + "Yval: " + yVal);
                 vertices.add(Vertex.newBuilder().setX(xVal).setY(yVal).build());
                 // vertices.add(Vertex.newBuilder().setX((double) x+square_size).setY((double)
                 // y).build());
@@ -38,6 +41,7 @@ public class DotGen {
         }
         // Distribute colors randomly. Vertices are immutable, need to enrich them
         ArrayList<Vertex> verticesWithColors = new ArrayList<>();
+        Random bag = new Random();
         for (Vertex v : vertices) {
             int red = bag.nextInt(255);
             int green = bag.nextInt(255);
@@ -51,7 +55,7 @@ public class DotGen {
             Vertex colored = Vertex.newBuilder(v).addProperties(color).addProperties(thickness).addProperties(alpha).build();
             verticesWithColors.add(colored);
         }
-        /*List<Segment> segments = new ArrayList<>();
+        List<Segment> segments = new ArrayList<>();
 
         for (int i = 0; i < verticesWithColors.size() ; i++) {
             if (((i + 1) % (width / square_size + 1)) != 0 || i == 0) { // vertical segments
@@ -159,7 +163,51 @@ public class DotGen {
                 System.out.print(" "+ x.getNeighborIdxs(k) + " ");
             }
             System.out.print("\n");
-        }*/
+        }
+        return Mesh.newBuilder().addAllPolygons(polygonsIndexed).addAllSegments(segments).addAllVertices(verticesWithColors).build();
+    }
+
+    public Mesh generateIrregular() {
+        ArrayList<Vertex> centroids = new ArrayList<>();
+        ArrayList<Coordinate> centroidCoordinates = new ArrayList<>();
+        // Create all the vertices
+        Random bag = new Random();
+        for (int x = 0; x <= width; x += square_size) {
+            for (int y = 0; y <= height; y += square_size) {
+                double xVal = (double) bag.nextInt(x, x + square_size);
+                double yVal = (double) bag.nextInt(y, y + square_size);
+                xVal = Math.round(xVal * 100.0) / 100.0;
+                yVal = Math.round(yVal * 100.0) / 100.0;
+                System.out.println(xVal + " " + yVal);
+                // System.out.println("Xval: " + xVal + "Yval: " + yVal);
+                centroids.add(Vertex.newBuilder().setX(xVal).setY(yVal).build());
+                centroidCoordinates.add(new Coordinate(xVal, yVal));
+            }
+        }
+        // Distribute colors randomly. Vertices are immutable, need to enrich them
+
+        VoronoiDiagramBuilder vdb = new VoronoiDiagramBuilder();
+        vdb.setClipEnvelope(new Envelope(0,width,0,height));
+        vdb.setSites(centroidCoordinates);
+        Geometry diagram = vdb.getDiagram(new GeometryFactory());
+
+        ArrayList<Vertex> vertices = new ArrayList<>();
+        Set<Coordinate> coordSet = new HashSet<>();
+        for(int i = 0; i < diagram.getNumGeometries(); i++) {
+            Coordinate[] points = diagram.getGeometryN(i).getCoordinates();
+            for(Coordinate point : points) {
+                if(!coordSet.contains(point)){
+                    vertices.add(Vertex.newBuilder().setX(point.x).setY(point.y).build());
+                    coordSet.add(point);
+                }
+            }   
+        }
+
+        ArrayList<Vertex> verticesWithColors = new ArrayList<>();
+        for (Vertex v : vertices) {
+            verticesWithColors.add(Vertex.newBuilder(v).addProperties(Property.newBuilder().setKey("rgb_color").setValue("255,0,0").build()).build());
+        }
+        verticesWithColors.addAll(centroids);
         return Mesh.newBuilder()/*.addAllPolygons(polygonsIndexed).addAllSegments(segments)*/.addAllVertices(verticesWithColors).build();
     }
 
