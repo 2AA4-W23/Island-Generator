@@ -13,7 +13,11 @@ import java.awt.Color;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Line2D;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import org.apache.batik.ext.awt.geom.Polygon2D;
 
 public class GraphicRenderer {
 
@@ -34,8 +38,22 @@ public class GraphicRenderer {
         int lowCentroidIdx = VertexList.size();
 
         for (Polygon p : PolygonList) {
-            double x = VertexList.get(SegmentList.get(p.getSegmentIdxs(0)).getV1Idx()).getX();
-            double y = VertexList.get(SegmentList.get(p.getSegmentIdxs(0)).getV1Idx()).getY();
+            Set<Vertex> points = new HashSet<>();
+            for(int i : p.getSegmentIdxsList()){
+                try{points.add(VertexList.get(SegmentList.get(i).getV1Idx()));
+            
+                }catch(Exception e){}
+            }
+            float x[] = new float[points.size()];
+            float y[] = new float[points.size()];
+            int i = 0;
+            for(Vertex v : points){
+                x[i] = (float) v.getX();
+                y[i] = (float) v.getY();
+                i++;
+            }
+                //double x = VertexList.get(SegmentList.get(p.getSegmentIdxs(0)).getV1Idx()).getX();
+                //double y = VertexList.get(SegmentList.get(p.getSegmentIdxs(0)).getV1Idx()).getY();
             lowCentroidIdx = Math.min(p.getCentroidIdx(), lowCentroidIdx);
             Color old = canvas.getColor();
             canvas.setColor(averageSegmentColor(p.getSegmentIdxsList(), SegmentList));
@@ -43,7 +61,7 @@ public class GraphicRenderer {
                 if(alphaSet) canvas.setColor(new Color(0,0,0,alpha));
                 else canvas.setColor(new Color(0,0,0));
             }
-            Rectangle2D polygon = new Rectangle2D.Double(x,y,20,20);
+            Polygon2D polygon = new Polygon2D(x, y, points.size());
             canvas.fill(polygon);
             canvas.setColor(old);
         }

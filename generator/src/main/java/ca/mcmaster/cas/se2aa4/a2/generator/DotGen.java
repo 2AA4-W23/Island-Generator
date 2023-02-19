@@ -187,8 +187,8 @@ public class DotGen {
         // Distribute colors randomly. Vertices are immutable, need to enrich them
 
         VoronoiDiagramBuilder vdb = new VoronoiDiagramBuilder();
-        vdb.setClipEnvelope(new Envelope(0,width,0,height));
         vdb.setSites(centroidCoordinates);
+        vdb.setClipEnvelope(new Envelope(0,width,0,height));
         Geometry diagram = vdb.getDiagram(new GeometryFactory());
 
         ArrayList<Vertex> vertices = new ArrayList<>();
