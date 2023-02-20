@@ -36,6 +36,8 @@ public class GraphicRenderer {
 
         int lowCentroidIdx = VertexList.size();
         for (Polygon p : PolygonList) {
+            if(p.getSegmentIdxsCount() <= 1) continue;
+            System.out.println(p.getSegmentIdxsCount() + " segments in polygon");
             float x[] = new float[p.getSegmentIdxsCount()];
             float y[] = new float[p.getSegmentIdxsCount()];
             Set<Integer> added = new HashSet<>();
@@ -44,19 +46,23 @@ public class GraphicRenderer {
                 Integer v1 = SegmentList.get(i).getV1Idx();
                 Integer v2 = SegmentList.get(i).getV2Idx();
                 System.out.println("Segment " + i);
-                if(!added.contains(v1)){
-                    x[j] = (float) VertexList.get(SegmentList.get(i).getV1Idx()).getX();
-                    y[j] = (float) VertexList.get(SegmentList.get(i).getV1Idx()).getY();
-                    added.add(v1);
-                    System.out.println(x[j] + ", " + y[j] + ", " + v1);
-                    j++;
-                }
-                if(!added.contains(v2)){
-                    x[j] = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getX();
-                    y[j] = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getY();
-                    added.add(v2);
-                    System.out.println(x[j] + ", " + y[j] + ", " + v2);
-                    j++;
+                try{
+                    if(!added.contains(v1)){
+                        x[j] = (float) VertexList.get(SegmentList.get(i).getV1Idx()).getX();
+                        y[j] = (float) VertexList.get(SegmentList.get(i).getV1Idx()).getY();
+                        added.add(v1);
+                        System.out.println(x[j] + ", " + y[j] + ", " + v1);
+                        j++;
+                    }
+                    if(!added.contains(v2)){
+                        x[j] = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getX();
+                        y[j] = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getY();
+                        added.add(v2);
+                        System.out.println(x[j] + ", " + y[j] + ", " + v2);
+                        j++;
+                    }
+                } catch(Exception e){
+                    break;
                 }
             }
             lowCentroidIdx = Math.min(p.getCentroidIdx(), lowCentroidIdx);
@@ -66,8 +72,10 @@ public class GraphicRenderer {
                 if(alphaSet) canvas.setColor(new Color(0,0,0,alpha));
                 else canvas.setColor(new Color(0,0,0));
             }
-            Polygon2D polygon = new Polygon2D(x,y,x.length);
-            canvas.fill(polygon);
+            if(j != 0) {
+                Polygon2D polygon = new Polygon2D(x,y,x.length);
+                canvas.fill(polygon);
+            }
             canvas.setColor(old);
         }
         int centroidIdx = 0;
@@ -183,11 +191,13 @@ public class GraphicRenderer {
             } catch (IndexOutOfBoundsException e) {
                 System.out.println(s);
             }
-        }   
-        r /= edgesCounted;
-        g /= edgesCounted;
-        b /= edgesCounted;
-        a /= edgesCounted;
+        }
+        if(edgesCounted != 0) {   
+            r /= edgesCounted;
+            g /= edgesCounted;
+            b /= edgesCounted;
+            a /= edgesCounted;
+        }
         if(alphaSet)
             a = alpha;
         average = new Color(r, g, b, a);
