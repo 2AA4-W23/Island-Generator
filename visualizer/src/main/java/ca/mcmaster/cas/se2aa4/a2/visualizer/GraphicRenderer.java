@@ -68,14 +68,14 @@ public class GraphicRenderer {
             lowCentroidIdx = Math.min(p.getCentroidIdx(), lowCentroidIdx);
             Color old = canvas.getColor();
             canvas.setColor(averageSegmentColor(p.getSegmentIdxsList(), SegmentList));
-            if(debug){
-                if(alphaSet) canvas.setColor(new Color(0,0,0,alpha));
-                else canvas.setColor(new Color(0,0,0));
-            }
-            if(j != 0) {
-                Polygon2D polygon = new Polygon2D(x,y,x.length);
-                canvas.fill(polygon);
-            }
+//            if(debug){
+//                if(alphaSet) canvas.setColor(new Color(0,0,0,alpha));
+//                else canvas.setColor(new Color(0,0,0));
+//            }
+//            if(j != 0) {
+//                Polygon2D polygon = new Polygon2D(x,y,x.length);
+//                canvas.fill(polygon);
+//            }
             canvas.setColor(old);
         }
         int centroidIdx = 0;

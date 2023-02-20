@@ -4,6 +4,7 @@ import java.util.*;
 
 import javax.rmi.ssl.SslRMIClientSocketFactory;
 
+import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Segment;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Property;
@@ -186,68 +187,49 @@ public class DotGen {
             }
         }
         // Distribute colors randomly. Vertices are immutable, need to enrich them
+        ArrayList<Vertex> vertices = null;
+        ArrayList<String> coordSet = null;
+        ArrayList<String> segSet = null;
+        ArrayList<Segment> segments = null;
+        ArrayList<Polygon> polygons = null;
+        for (int z = 0; z < 5; z++) {
+            VoronoiDiagramBuilder vdb = new VoronoiDiagramBuilder();
+            vdb.setSites(centroidCoordinates);
+            vdb.setClipEnvelope(new Envelope(0, width, 0, height));
+            Geometry diagram = vdb.getDiagram(new GeometryFactory());
 
-        VoronoiDiagramBuilder vdb = new VoronoiDiagramBuilder();
-        vdb.setSites(centroidCoordinates);
-        vdb.setClipEnvelope(new Envelope(0,width,0,height));
-        Geometry diagram = vdb.getDiagram(new GeometryFactory());
-
-        ArrayList<Vertex> vertices = new ArrayList<>();
-        ArrayList<String> coordSet = new ArrayList<>();
-        ArrayList<String> segSet = new ArrayList<>();
-        ArrayList<Segment> segments = new ArrayList<>();
-        ArrayList<Polygon> polygons = new ArrayList<>();
-        int lastVertexIdx = -1;
-        for(int i = 0; i < diagram.getNumGeometries(); i++) {
-            Coordinate[] points = diagram.getGeometryN(i).getCoordinates();
-            ArrayList<Integer> pSegments = new ArrayList<>(); 
-            for(Coordinate point : points) {
-                double x = (double) point.x;
-                double y = (double) point.y;
-                x = Math.round(x * 100.0) /100.0;
-                y = Math.round(y * 100.0) /100.0;
-                if(!coordSet.contains(x + "," + y)){
-                    Vertex v = Vertex.newBuilder().setX(x).setY(y).build();
-                    int red = bag.nextInt(255);
-                    int green = bag.nextInt(255);
-                    int blue = bag.nextInt(255);
-                    String thick = Integer.toString(bag.nextInt(2,6));
-                    String colorCode = red + "," + green + "," + blue;
-                    String alphaVal = Integer.toString(bag.nextInt(150,255));
-                    Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
-                    Property thickness = Property.newBuilder().setKey("thickness").setValue(thick).build();
-                    Property alpha = Property.newBuilder().setKey("alpha").setValue(alphaVal).build();
-                    Vertex colored = Vertex.newBuilder(v).addProperties(color).addProperties(thickness).addProperties(alpha).build();
-                    vertices.add(colored);
-                    coordSet.add(x + "," + y);
-                    if(lastVertexIdx != -1) {
-                        Segment s = Segment.newBuilder().setV1Idx(lastVertexIdx).setV2Idx(vertices.size() - 1).build();
-                        Vertex v1 = vertices.get(s.getV1Idx());
-                        Vertex v2 = vertices.get(s.getV2Idx());       
-                        String color1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "rgb_color");
-                        String thickness1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "thickness");
-                        String alpha1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "alpha");
-                        Property colorS = Property.newBuilder().setKey("rgb_color").setValue(color1).build();
-                        Property thicknessS = Property.newBuilder().setKey("thickness").setValue(thickness1).build();
-                        Property alphaS = Property.newBuilder().setKey("alpha").setValue(alpha1).build();
-                        Segment coloredSegment = Segment.newBuilder(s).addProperties(colorS).addProperties(thicknessS).addProperties(alphaS).build();
-                        segments.add(coloredSegment);
-                        String sEntry1 = v1.getX() + "," + v1.getY() + "," + v2.getX() + "," + v2.getY();
-                        String sEntry2 = v2.getX() + "," + v2.getY() + "," + v1.getX() + "," + v1.getY();
-                        segSet.add(sEntry1);
-                        segSet.add(sEntry2);
-                        //System.out.println(sEntry1);
-                        pSegments.add(segments.size() - 1);
-                    }
-                    lastVertexIdx = vertices.size() - 1;
-                } else {
-                    //System.out.println("duplicate vertex found");
-                    int idx = coordSet.indexOf(x + "," + y);
-                    if(lastVertexIdx != -1) {
-                        Vertex v1 = vertices.get(lastVertexIdx);
-                        Vertex v2 = vertices.get(idx);  
-                        if(!segSet.contains(v1.getX() + "," + v1.getY() + "," + v2.getX() + "," + v2.getY())){
-                            Segment s = Segment.newBuilder().setV1Idx(lastVertexIdx).setV2Idx(idx).build();     
+            vertices = new ArrayList<>();
+            coordSet = new ArrayList<>();
+            segSet = new ArrayList<>();
+            segments = new ArrayList<>();
+            polygons = new ArrayList<>();
+            int lastVertexIdx = -1;
+            for (int i = 0; i < diagram.getNumGeometries(); i++) {
+                Coordinate[] points = diagram.getGeometryN(i).getCoordinates();
+                ArrayList<Integer> pSegments = new ArrayList<>();
+                for (Coordinate point : points) {
+                    double x = (double) point.x;
+                    double y = (double) point.y;
+                    x = Math.round(x * 100.0) / 100.0;
+                    y = Math.round(y * 100.0) / 100.0;
+                    if (!coordSet.contains(x + "," + y)) {
+                        Vertex v = Vertex.newBuilder().setX(x).setY(y).build();
+                        int red = bag.nextInt(255);
+                        int green = bag.nextInt(255);
+                        int blue = bag.nextInt(255);
+                        String thick = Integer.toString(bag.nextInt(2, 6));
+                        String colorCode = red + "," + green + "," + blue;
+                        String alphaVal = Integer.toString(bag.nextInt(150, 255));
+                        Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
+                        Property thickness = Property.newBuilder().setKey("thickness").setValue(thick).build();
+                        Property alpha = Property.newBuilder().setKey("alpha").setValue(alphaVal).build();
+                        Vertex colored = Vertex.newBuilder(v).addProperties(color).addProperties(thickness).addProperties(alpha).build();
+                        vertices.add(colored);
+                        coordSet.add(x + "," + y);
+                        if (lastVertexIdx != -1) {
+                            Segment s = Segment.newBuilder().setV1Idx(lastVertexIdx).setV2Idx(vertices.size() - 1).build();
+                            Vertex v1 = vertices.get(s.getV1Idx());
+                            Vertex v2 = vertices.get(s.getV2Idx());
                             String color1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "rgb_color");
                             String thickness1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "thickness");
                             String alpha1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "alpha");
@@ -260,29 +242,101 @@ public class DotGen {
                             String sEntry2 = v2.getX() + "," + v2.getY() + "," + v1.getX() + "," + v1.getY();
                             segSet.add(sEntry1);
                             segSet.add(sEntry2);
-                           // System.out.println(sEntry1);
+                            //System.out.println(sEntry1);
                             pSegments.add(segments.size() - 1);
-                        } else {
-                            pSegments.add(segSet.indexOf(v1.getX() + "," + v1.getY() + "," + v2.getX() + "," + v2.getY()) / 2);
-                            //System.out.println("duplicate segment found");
+                        }
+                        lastVertexIdx = vertices.size() - 1;
+                    } else {
+                        //System.out.println("duplicate vertex found");
+                        int idx = coordSet.indexOf(x + "," + y);
+                        if (lastVertexIdx != -1) {
+                            Vertex v1 = vertices.get(lastVertexIdx);
+                            Vertex v2 = vertices.get(idx);
+                            if (!segSet.contains(v1.getX() + "," + v1.getY() + "," + v2.getX() + "," + v2.getY())) {
+                                Segment s = Segment.newBuilder().setV1Idx(lastVertexIdx).setV2Idx(idx).build();
+                                String color1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "rgb_color");
+                                String thickness1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "thickness");
+                                String alpha1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "alpha");
+                                Property colorS = Property.newBuilder().setKey("rgb_color").setValue(color1).build();
+                                Property thicknessS = Property.newBuilder().setKey("thickness").setValue(thickness1).build();
+                                Property alphaS = Property.newBuilder().setKey("alpha").setValue(alpha1).build();
+                                Segment coloredSegment = Segment.newBuilder(s).addProperties(colorS).addProperties(thicknessS).addProperties(alphaS).build();
+                                segments.add(coloredSegment);
+                                String sEntry1 = v1.getX() + "," + v1.getY() + "," + v2.getX() + "," + v2.getY();
+                                String sEntry2 = v2.getX() + "," + v2.getY() + "," + v1.getX() + "," + v1.getY();
+                                segSet.add(sEntry1);
+                                segSet.add(sEntry2);
+                                // System.out.println(sEntry1);
+                                pSegments.add(segments.size() - 1);
+                            } else {
+                                pSegments.add(segSet.indexOf(v1.getX() + "," + v1.getY() + "," + v2.getX() + "," + v2.getY()) / 2);
+                                //System.out.println("duplicate segment found");
+                            }
+                        }
+                        lastVertexIdx = idx;
+                    }
+                    List<List<Property>> props = new ArrayList<>();
+                    for (int idx : pSegments) {
+                        props.add(segments.get(idx).getPropertiesList());
+                    }
+                    Polygon p = Polygon.newBuilder().addAllSegmentIdxs(pSegments).build();
+                    Property color = Property.newBuilder().setKey("color").setValue(extractPropertyAverageN(props, "rgb_color")).build();
+                    Property alpha = Property.newBuilder().setKey("alpha").setValue(extractPropertyAverageN(props, "alpha")).build();
+                    Polygon pColored = Polygon.newBuilder(p).addProperties(alpha).addProperties(color).build();
+                    polygons.add(pColored);
+                }
+                lastVertexIdx = -1;
+            }
+            if(z < 4){
+                ArrayList prev = new ArrayList<>();
+                System.out.println(centroids.size());
+                System.out.println(centroidCoordinates.size());
+                centroids = new ArrayList<>();
+                centroidCoordinates = new ArrayList<>();
+                for (Polygon x: polygons) {
+                    System.out.println(x.getCentroidIdx());
+                    ArrayList initialCoordinates = new ArrayList<>();
+                    for (int i = 0; i < x.getSegmentIdxsCount(); i++) {
+                        Segment s = segments.get(x.getSegmentIdxs(i));
+                        if (!initialCoordinates.contains(s.getV1Idx())){
+                            initialCoordinates.add(s.getV1Idx());
+                        }
+                        if (!initialCoordinates.contains(s.getV2Idx())){
+                            initialCoordinates.add(s.getV2Idx());
                         }
                     }
-                    lastVertexIdx = idx;
+                    if (prev.equals(initialCoordinates) && initialCoordinates.size() != 0){
+                        double coord[] = extractCentroidPolygon(vertices, initialCoordinates);
+                        centroids.add(Vertex.newBuilder().setX(coord[0]).setY(coord[1]).build());
+                        centroidCoordinates.add(new Coordinate(coord[0], coord[1]));
+                        System.out.println(initialCoordinates);
+                    }
+                    prev = initialCoordinates;
                 }
-                List<List<Property>> props = new ArrayList<>();
-                for(int idx : pSegments){
-                    props.add(segments.get(idx).getPropertiesList());
-                }
-                Polygon p = Polygon.newBuilder().addAllSegmentIdxs(pSegments).build();
-                Property color = Property.newBuilder().setKey("color").setValue(extractPropertyAverageN(props, "rgb_color")).build();
-                Property alpha = Property.newBuilder().setKey("alpha").setValue(extractPropertyAverageN(props, "alpha")).build();
-                Polygon pColored = Polygon.newBuilder(p).addProperties(alpha).addProperties(color).build();
-                polygons.add(pColored);
+                System.out.println(centroids.size());
+                System.out.println(centroidCoordinates.size());
             }
-            lastVertexIdx = -1;
+
+
         }
         vertices.addAll(centroids);
         return Mesh.newBuilder().addAllPolygons(polygons).addAllSegments(segments).addAllVertices(vertices).build();
+    }
+
+    private double[] extractCentroidPolygon(ArrayList vertices, ArrayList initCoordinates){
+        double x = (double) 0;
+        double y = (double) 0;
+        for(Object coord : initCoordinates){
+            Vertex v = (Vertex) vertices.get((int) coord);
+            x += v.getX();
+            y += v.getY();
+        }
+        double xVal = x/initCoordinates.size();
+        double yVal = y/initCoordinates.size();
+
+        xVal = Math.round(xVal * 100.0) / 100.0;
+        yVal = Math.round(yVal * 100.0) / 100.0;
+        return new double[]{xVal, yVal};
     }
 
     private String extractPropertyAverage(List<Property> properties1, List<Property> properties2, String key) {
