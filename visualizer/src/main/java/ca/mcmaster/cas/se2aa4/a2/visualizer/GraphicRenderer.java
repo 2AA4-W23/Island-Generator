@@ -11,7 +11,6 @@ import java.awt.Stroke;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.geom.Line2D;
 import java.util.HashSet;
 import java.util.List;
@@ -36,24 +35,30 @@ public class GraphicRenderer {
         List<Polygon> PolygonList = aMesh.getPolygonsList();
 
         int lowCentroidIdx = VertexList.size();
-
         for (Polygon p : PolygonList) {
-            Set<Vertex> points = new HashSet<>();
+            float x[] = new float[p.getSegmentIdxsCount()];
+            float y[] = new float[p.getSegmentIdxsCount()];
+            Set<Integer> added = new HashSet<>();
+            int j = 0;
             for(int i : p.getSegmentIdxsList()){
-                try{points.add(VertexList.get(SegmentList.get(i).getV1Idx()));
-            
-                }catch(Exception e){}
+                Integer v1 = SegmentList.get(i).getV1Idx();
+                Integer v2 = SegmentList.get(i).getV2Idx();
+                System.out.println("Segment " + i);
+                if(!added.contains(v1)){
+                    x[j] = (float) VertexList.get(SegmentList.get(i).getV1Idx()).getX();
+                    y[j] = (float) VertexList.get(SegmentList.get(i).getV1Idx()).getY();
+                    added.add(v1);
+                    System.out.println(x[j] + ", " + y[j] + ", " + v1);
+                    j++;
+                }
+                if(!added.contains(v2)){
+                    x[j] = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getX();
+                    y[j] = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getY();
+                    added.add(v2);
+                    System.out.println(x[j] + ", " + y[j] + ", " + v2);
+                    j++;
+                }
             }
-            float x[] = new float[points.size()];
-            float y[] = new float[points.size()];
-            int i = 0;
-            for(Vertex v : points){
-                x[i] = (float) v.getX();
-                y[i] = (float) v.getY();
-                i++;
-            }
-                //double x = VertexList.get(SegmentList.get(p.getSegmentIdxs(0)).getV1Idx()).getX();
-                //double y = VertexList.get(SegmentList.get(p.getSegmentIdxs(0)).getV1Idx()).getY();
             lowCentroidIdx = Math.min(p.getCentroidIdx(), lowCentroidIdx);
             Color old = canvas.getColor();
             canvas.setColor(averageSegmentColor(p.getSegmentIdxsList(), SegmentList));
@@ -61,7 +66,7 @@ public class GraphicRenderer {
                 if(alphaSet) canvas.setColor(new Color(0,0,0,alpha));
                 else canvas.setColor(new Color(0,0,0));
             }
-            Polygon2D polygon = new Polygon2D(x, y, points.size());
+            Polygon2D polygon = new Polygon2D(x,y,x.length);
             canvas.fill(polygon);
             canvas.setColor(old);
         }

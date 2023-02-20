@@ -12,6 +12,7 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.triangulate.DelaunayTriangulationBuilder;
 import org.locationtech.jts.triangulate.VoronoiDiagramBuilder;;
 
 public class DotGen {
@@ -31,6 +32,7 @@ public class DotGen {
                 yVal = Math.round(yVal * 100.0) / 100.0;
 //                System.out.println("Xval: " + xVal + "Yval: " + yVal);
                 vertices.add(Vertex.newBuilder().setX(xVal).setY(yVal).build());
+                //System.out.println(x + " " + y + " " + (x / 20 * 26 + y / 20));
                 // vertices.add(Vertex.newBuilder().setX((double) x+square_size).setY((double)
                 // y).build());
                 // vertices.add(Vertex.newBuilder().setX((double) x).setY((double)
@@ -64,7 +66,7 @@ public class DotGen {
                 Vertex v2 = verticesWithColors.get(test.getV2Idx());
                 String color1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "rgb_color");
                 String thickness1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "thickness");
-                String alphaVal = Integer.toString(bag.nextInt(0,101));
+                String alphaVal = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "alpha");
                 Property color = Property.newBuilder().setKey("rgb_color").setValue(color1).build();
                 Property thickness = Property.newBuilder().setKey("thickness").setValue(thickness1).build();
                 Property alpha = Property.newBuilder().setKey("alpha").setValue(alphaVal).build();
@@ -77,7 +79,7 @@ public class DotGen {
                 Vertex v2 = verticesWithColors.get(test.getV2Idx());
                 String color1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "rgb_color");
                 String thickness1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "thickness");
-                String alphaVal = Integer.toString(bag.nextInt(0,101));
+                String alphaVal = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "alpha");
                 Property color = Property.newBuilder().setKey("rgb_color").setValue(color1).build();
                 Property thickness = Property.newBuilder().setKey("thickness").setValue(thickness1).build();
                 Property alpha = Property.newBuilder().setKey("alpha").setValue(alphaVal).build();
@@ -92,17 +94,20 @@ public class DotGen {
 
         ArrayList<Polygon> polygons = new ArrayList<>();
         int i = 0;
+        int offset = 0;
         while(i < segments.size() - 25){
             ArrayList<Integer> pSegments = new ArrayList<>();
             pSegments.add(i);
-            pSegments.add(i + 1);
-            pSegments.add(i + 51);
             if((polygons.size()+1)%25==0){
                 pSegments.add(i + 2);
-            }else {
+            } else {
                 pSegments.add(i + 3);
-            }
-
+            }      
+            if(polygons.size() >= ((width / square_size) - 1) * (height / square_size)){
+                pSegments.add(i + 51 - offset);
+                offset++;
+            } else pSegments.add(i + 51);
+            pSegments.add(i + 1);
             int red = bag.nextInt(255);
             int green = bag.nextInt(255);
             int blue = bag.nextInt(255);
@@ -110,25 +115,21 @@ public class DotGen {
             Polygon p = Polygon.newBuilder().addAllSegmentIdxs(pSegments).build();
             Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
             Polygon pColored = Polygon.newBuilder(p).addProperties(color).setCentroidIdx(verticesWithColors.size()).build();
-
-
-
-            double x1 = verticesWithColors.get(segments.get(pColored.getSegmentIdxs(0)).getV1Idx()).getX();
-            double y1 = verticesWithColors.get(segments.get(pColored.getSegmentIdxs(0)).getV1Idx()).getY();
-            x1 += square_size/2;
-            y1 += square_size/2;
-
-            Vertex v1 = Vertex.newBuilder().setX(x1).setY(y1).build();
-            colorCode = "0,0,0";
-            color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
-            Vertex coloredv1 = Vertex.newBuilder(v1).addProperties(color).build();
-
             polygons.add(pColored);
-            verticesWithColors.add(coloredv1);
             if((polygons.size())%25==0){
                 i+=3;
             } else {
                 i+=2;
+            }
+        }
+
+        for(int x = square_size /2; x <= width; x += square_size){
+            for(int y = square_size / 2; y <= height; y += square_size){
+                Vertex v1 = Vertex.newBuilder().setX(x).setY(y).build();
+                String colorCode = "0,0,0";
+                Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
+                Vertex coloredv1 = Vertex.newBuilder(v1).addProperties(color).build();
+                verticesWithColors.add(coloredv1);
             }
         }
         ArrayList<Polygon> polygonsIndexed = new ArrayList<>();
@@ -158,11 +159,8 @@ public class DotGen {
         }
         for (int j = 0; j < polygonsIndexed.size(); j++) {
             Polygon x = polygonsIndexed.get(j);
-            System.out.print("Index: " + j);
             for (int k = 0; k < x.getNeighborIdxsCount(); k++) {
-                System.out.print(" "+ x.getNeighborIdxs(k) + " ");
             }
-            System.out.print("\n");
         }
         return Mesh.newBuilder().addAllPolygons(polygonsIndexed).addAllSegments(segments).addAllVertices(verticesWithColors).build();
     }
@@ -178,7 +176,6 @@ public class DotGen {
                 double yVal = (double) bag.nextInt(y, y + square_size);
                 xVal = Math.round(xVal * 100.0) / 100.0;
                 yVal = Math.round(yVal * 100.0) / 100.0;
-                System.out.println(xVal + " " + yVal);
                 // System.out.println("Xval: " + xVal + "Yval: " + yVal);
                 centroids.add(Vertex.newBuilder().setX(xVal).setY(yVal).build());
                 centroidCoordinates.add(new Coordinate(xVal, yVal));
@@ -199,8 +196,13 @@ public class DotGen {
                 if(!coordSet.contains(point)){
                     vertices.add(Vertex.newBuilder().setX(point.x).setY(point.y).build());
                     coordSet.add(point);
+                } else {
+
                 }
-            }   
+            }
+            for(int j = 0; j < points.length; j++){
+                
+            }
         }
 
         ArrayList<Vertex> verticesWithColors = new ArrayList<>();
