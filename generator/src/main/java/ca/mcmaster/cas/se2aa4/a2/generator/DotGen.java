@@ -23,6 +23,7 @@ public class DotGen {
     private final int width = 500;
     private final int height = 500;
     private final int square_size = 20;
+    private final int num_iterations = 10;
 
     public Mesh generate() {
         ArrayList<Vertex> vertices = new ArrayList<>();
@@ -192,7 +193,7 @@ public class DotGen {
         ArrayList<String> segSet = null;
         ArrayList<Segment> segments = null;
         ArrayList<Polygon> polygons = null;
-        for (int z = 0; z < 5; z++) {
+        for (int z = 0; z < num_iterations; z++) {
             VoronoiDiagramBuilder vdb = new VoronoiDiagramBuilder();
             vdb.setSites(centroidCoordinates);
             vdb.setClipEnvelope(new Envelope(0, width, 0, height));
@@ -287,7 +288,7 @@ public class DotGen {
                 }
                 lastVertexIdx = -1;
             }
-            if(z < 4){
+            if(z < num_iterations-1){
                 ArrayList prev = new ArrayList<>();
                 System.out.println(centroids.size());
                 System.out.println(centroidCoordinates.size());
