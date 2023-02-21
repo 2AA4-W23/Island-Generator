@@ -17,9 +17,10 @@ import org.locationtech.jts.triangulate.VoronoiDiagramBuilder;;
 
 public class DotGen {
 
-    private int width = 500;
-    private int height = 500;
+    private final int width = 500;
+    private final int height = 500;
     private final int square_size = 20;
+    private final int num_iterations = 10;
 
     public Mesh generate() {
         ArrayList<Vertex> vertices = new ArrayList<>();
@@ -165,17 +166,15 @@ public class DotGen {
         return Mesh.newBuilder().addAllPolygons(polygonsIndexed).addAllSegments(segments).addAllVertices(verticesWithColors).build();
     }
 
-    public Mesh generateIrregular(int num_iterations, int canvas_width, int canvas_height) {
+    public Mesh generateIrregular(int num_iterations2, int canvas_width, int canvas_height) {
         ArrayList<Vertex> centroids = new ArrayList<>();
         ArrayList<Coordinate> centroidCoordinates = new ArrayList<>();
-        width = canvas_width;
-        height = canvas_height;
         // Create all the vertices
         Random bag = new Random();
         int numCentroids = 200;
-        int spacing = width / 3;
+        int spacing = canvas_width / 3;
         int centroidsPerArea = numCentroids / 9;
-        for (int x = 0; x <= width; x += spacing) {
+        for (int x = 0; x <= canvas_width; x += spacing) {
             for (int y = 0; y <= height; y += spacing) {
                 for(int i = 0; i < centroidsPerArea; i++) {
                     double xVal = (double) bag.nextInt(x, x + spacing);
@@ -197,10 +196,7 @@ public class DotGen {
         for (int z = 0; z < num_iterations; z++) {
             VoronoiDiagramBuilder vdb = new VoronoiDiagramBuilder();
             vdb.setSites(centroidCoordinates);
-            Coordinate widthCoord = new Coordinate(0, 0);
-            Coordinate heightCoord = new Coordinate(width, height);
-            Envelope canvas = new Envelope(widthCoord, heightCoord);
-            vdb.setClipEnvelope(canvas);
+            vdb.setClipEnvelope(new Envelope(0, width, 0, height));
             Geometry diagram = vdb.getDiagram(new GeometryFactory());
 
             vertices = new ArrayList<>();
@@ -211,9 +207,6 @@ public class DotGen {
             int lastVertexIdx = -1;
             for (int i = 0; i < diagram.getNumGeometries(); i++) {
                 Coordinate[] points = diagram.getGeometryN(i).getCoordinates();
-                for (int j = 0; j < points.length; j++) {
-                    System.out.println(points[j]);
-                }
                 ArrayList<Integer> pSegments = new ArrayList<>();
                 for (Coordinate point : points) {
                     double x = (double) point.x;
@@ -296,14 +289,14 @@ public class DotGen {
                 lastVertexIdx = -1;
             }
             if(z < num_iterations-1){
-                ArrayList prev = new ArrayList<>();
-//                System.out.println(centroids.size());
-//                System.out.println(centroidCoordinates.size());
+                ArrayList<Integer> prev = new ArrayList<>();
+                System.out.println(centroids.size());
+                System.out.println(centroidCoordinates.size());
                 centroids = new ArrayList<>();
                 centroidCoordinates = new ArrayList<>();
                 for (Polygon x: polygons) {
-//                    System.out.println(x.getCentroidIdx());
-                    ArrayList initialCoordinates = new ArrayList<>();
+                    System.out.println(x.getCentroidIdx());
+                    ArrayList<Integer> initialCoordinates = new ArrayList<>();
                     for (int i = 0; i < x.getSegmentIdxsCount(); i++) {
                         Segment s = segments.get(x.getSegmentIdxs(i));
                         if (!initialCoordinates.contains(s.getV1Idx())){
@@ -317,12 +310,12 @@ public class DotGen {
                         double coord[] = extractCentroidPolygon(vertices, initialCoordinates);
                         centroids.add(Vertex.newBuilder().setX(coord[0]).setY(coord[1]).build());
                         centroidCoordinates.add(new Coordinate(coord[0], coord[1]));
-//                        System.out.println(initialCoordinates);
+                        System.out.println(initialCoordinates);
                     }
                     prev = initialCoordinates;
                 }
-//                System.out.println(centroids.size());
-//                System.out.println(centroidCoordinates.size());
+                System.out.println(centroids.size());
+                System.out.println(centroidCoordinates.size());
             }
 
 

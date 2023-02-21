@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.batik.ext.awt.geom.Polygon2D;
+import org.locationtech.jts.algorithm.ConvexHull;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;;
 
 public class GraphicRenderer {
 
@@ -38,8 +41,7 @@ public class GraphicRenderer {
         for (Polygon p : PolygonList) {
             if(p.getSegmentIdxsCount() <= 1) continue;
             System.out.println(p.getSegmentIdxsCount() + " segments in polygon");
-            float x[] = new float[p.getSegmentIdxsCount()];
-            float y[] = new float[p.getSegmentIdxsCount()];
+            Coordinate points[] = new Coordinate[p.getSegmentIdxsCount()];
             Set<Integer> added = new HashSet<>();
             int j = 0;
             for(int i : p.getSegmentIdxsList()){
@@ -48,17 +50,17 @@ public class GraphicRenderer {
                 System.out.println("Segment " + i);
                 try{
                     if(!added.contains(v1)){
-                        x[j] = (float) VertexList.get(SegmentList.get(i).getV1Idx()).getX();
-                        y[j] = (float) VertexList.get(SegmentList.get(i).getV1Idx()).getY();
+                        float x = (float) VertexList.get(SegmentList.get(i).getV1Idx()).getX();
+                        float y = (float) VertexList.get(SegmentList.get(i).getV1Idx()).getY();
+                        points[j] = new Coordinate(x, y);
                         added.add(v1);
-                        System.out.println(x[j] + ", " + y[j] + ", " + v1);
                         j++;
                     }
                     if(!added.contains(v2)){
-                        x[j] = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getX();
-                        y[j] = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getY();
+                        float x = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getX();
+                        float y = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getY();
+                        points[j] = new Coordinate(x, y);
                         added.add(v2);
-                        System.out.println(x[j] + ", " + y[j] + ", " + v2);
                         j++;
                     }
                 } catch(Exception e){
@@ -68,14 +70,22 @@ public class GraphicRenderer {
             lowCentroidIdx = Math.min(p.getCentroidIdx(), lowCentroidIdx);
             Color old = canvas.getColor();
             canvas.setColor(averageSegmentColor(p.getSegmentIdxsList(), SegmentList));
-//            if(debug){
-//                if(alphaSet) canvas.setColor(new Color(0,0,0,alpha));
-//                else canvas.setColor(new Color(0,0,0));
-//            }
-//            if(j != 0) {
-//                Polygon2D polygon = new Polygon2D(x,y,x.length);
-//                canvas.fill(polygon);
-//            }
+            if(debug){
+                if(alphaSet) canvas.setColor(new Color(0,0,0,alpha));
+                else canvas.setColor(new Color(0,0,0));
+            }
+            if(j != 0) {
+                float[] x = new float[p.getSegmentIdxsCount()];
+                float[] y = new float[p.getSegmentIdxsCount()];
+                ConvexHull cv = new ConvexHull(points, new GeometryFactory());
+                Coordinate[] orderedPoints = cv.getConvexHull().getCoordinates();    
+                for(int i = 0; i < p.getSegmentIdxsCount(); i++) {
+                    x[i] = (float) orderedPoints[i].getX();
+                    y[i] = (float) orderedPoints[i].getY();
+                }
+                Polygon2D polygon = new Polygon2D(x,y,x.length);
+                canvas.fill(polygon);
+            }
             canvas.setColor(old);
         }
         int centroidIdx = 0;
