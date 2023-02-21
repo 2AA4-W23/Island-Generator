@@ -32,10 +32,22 @@ mosser@azrael generator % ls -lh sample.mesh
 mosser@azrael generator %
 ```
 
-To visualize the connections between neighbouring polygons and the general mesh in debug mode include the tag `-X`. This tag is not mandatory and only needs to be included if we are trying to run in debug mode.
+To choose the type of mesh generated include the `-mt` tag with a string of either grid or irregular for each respective mesh. If the tag is not provided it will default to a grid mesh.
 
 ```
-mosser@azrael visualizer % java -jar visualizer.jar ../generator/sample.mesh sample.svg -X
+mosser@azrael generator % java -jar generator.jar sample.mesh -mt <mesh_type>
+```
+
+To modify the number of polygons/centroids that are generated, use the `-np` tag followed by a value which is an Integer. If the tag is not provided it will default to a random number between 300 and 750.
+
+```
+mosser@azrael generator % java -jar generator.jar sample.mesh -np <value>
+```
+
+To modify the number of times llyod relaxation is done, use the `-lr` tag followed by a value which is an Integer. If the tag is not provided it will default to 10 iterations.
+
+```
+mosser@azrael generator % java -jar generator.jar sample.mesh -lr <value>
 ```
 
 ### Visualizer
