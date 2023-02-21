@@ -165,14 +165,12 @@ public class DotGen {
         return Mesh.newBuilder().addAllPolygons(polygonsIndexed).addAllSegments(segments).addAllVertices(verticesWithColors).build();
     }
 
-    public Mesh generateIrregular(int num_iterations, int canvas_width, int canvas_height) {
+    public Mesh generateIrregular(int num_iterations, int numPolygons) {
         ArrayList<Vertex> centroids = new ArrayList<>();
         ArrayList<Coordinate> centroidCoordinates = new ArrayList<>();
-        width = canvas_width;
-        height = canvas_height;
         // Create all the vertices
         Random bag = new Random();
-        int numCentroids = 200;
+        int numCentroids = numPolygons;
         int spacing = width / 3;
         int centroidsPerArea = numCentroids / 9;
         for (int x = 0; x <= width; x += spacing) {
@@ -296,14 +294,14 @@ public class DotGen {
                 lastVertexIdx = -1;
             }
             if(z < num_iterations-1){
-                ArrayList prev = new ArrayList<>();
+                ArrayList prev = new ArrayList<Integer>();
 //                System.out.println(centroids.size());
 //                System.out.println(centroidCoordinates.size());
                 centroids = new ArrayList<>();
                 centroidCoordinates = new ArrayList<>();
                 for (Polygon x: polygons) {
 //                    System.out.println(x.getCentroidIdx());
-                    ArrayList initialCoordinates = new ArrayList<>();
+                    ArrayList initialCoordinates = new ArrayList<Integer>();
                     for (int i = 0; i < x.getSegmentIdxsCount(); i++) {
                         Segment s = segments.get(x.getSegmentIdxs(i));
                         if (!initialCoordinates.contains(s.getV1Idx())){
