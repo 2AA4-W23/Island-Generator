@@ -171,7 +171,7 @@ public class DotGen {
         ArrayList<Coordinate> centroidCoordinates = new ArrayList<>();
         // Create all the vertices
         Random bag = new Random();
-        int numCentroids = 200;
+        int numCentroids = numPolygons;
         int spacing = width / 3;
         int centroidsPerArea = numCentroids / 9;
         for (int x = 0; x <= width; x += spacing) {
