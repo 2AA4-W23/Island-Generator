@@ -104,5 +104,5 @@ For a feature to be considered done it must be work without throwing any excepti
 | F18 | Select mesh type (grid or irregular)                              | Ibrahim   | 02/18/2023 | 02/18/2023 | D      |
 | F19 | Crop Mesh at canvas Size                                          | Virochaan |            |            | S      |
 | F20 | Select number of polygons                                         |           |            |            |        |
-| F21 | Select relaxation levels                                          |           |            |            |        |
+| F21 | Select relaxation levels                                          | Virochaan | 02/21/2023 | 02/21/2023 | D      |
 | F22 | Command line help argument                                        |           |            |            |        |
