@@ -24,7 +24,6 @@ public class DotGen {
     private final int height = 500;
     private final int square_size = 20;
     private final int num_iterations = 10;
-
     public Mesh generate() {
         ArrayList<Vertex> vertices = new ArrayList<>();
         // Create all the vertices
