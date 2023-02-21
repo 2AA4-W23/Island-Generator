@@ -18,6 +18,8 @@ public class Main {
 
         String meshType = cmd.getOptionValue("mt");
         int num_iterations = 10;
+        int canvas_width = 500;
+        int canvas_height = 500;
         try {
             num_iterations = Integer.parseInt(cmd.getOptionValue("lr"));
         } catch (Exception e) {
@@ -33,7 +35,7 @@ public class Main {
             factory.write(myMesh, args[0]);
         }
         else if(meshType.equals("irregular")){
-            myMesh = generator.generateIrregular(num_iterations);
+            myMesh = generator.generateIrregular(num_iterations, canvas_width, canvas_height);
             System.out.println("Irregular Created");
             MeshFactory factory = new MeshFactory();
             factory.write(myMesh, args[0]);

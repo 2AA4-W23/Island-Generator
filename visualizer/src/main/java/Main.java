@@ -52,30 +52,6 @@ public class Main {
             System.out.println("Thick value not valid. Proceeding with default.");
         }
 
-//        for(int i = 2; i < args.length; i++){
-//            if(args[i].equals("-X")) debug = true;
-//            else if(args[i].equals("-T")) {
-//                try {
-//                    thick = Integer.parseInt(args[i+1]);
-//                    thickSet = true;
-//                } catch(NumberFormatException e) {
-//                    System.out.println("Invalid argument for -T");
-//                } catch(IndexOutOfBoundsException e) {
-//                    System.out.println("No argument provided for -T");
-//                }
-//            }
-//            else if(args[i].equals("-A")) {
-//                try {
-//                    alpha = Integer.parseInt(args[i+1]) % 256;
-//                    alphaSet = true;
-//                } catch(NumberFormatException e) {
-//                    System.out.println("Invalid argument for -A");
-//                } catch(IndexOutOfBoundsException e) {
-//                    System.out.println("No argument provided for -A");
-//                }
-//            }
-//        }
-
         // Getting width and height for the canvas
         Structs.Mesh aMesh = new MeshFactory().read(input);
         double max_x = Double.MIN_VALUE;

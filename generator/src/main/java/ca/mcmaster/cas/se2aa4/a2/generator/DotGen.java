@@ -20,8 +20,8 @@ import org.locationtech.jts.triangulate.VoronoiDiagramBuilder;;
 
 public class DotGen {
 
-    private final int width = 500;
-    private final int height = 500;
+    private int width = 500;
+    private int height = 500;
     private final int square_size = 20;
 
     public Mesh generate() {
@@ -168,9 +168,11 @@ public class DotGen {
         return Mesh.newBuilder().addAllPolygons(polygonsIndexed).addAllSegments(segments).addAllVertices(verticesWithColors).build();
     }
 
-    public Mesh generateIrregular(int num_iterations) {
+    public Mesh generateIrregular(int num_iterations, int canvas_width, int canvas_height) {
         ArrayList<Vertex> centroids = new ArrayList<>();
         ArrayList<Coordinate> centroidCoordinates = new ArrayList<>();
+        width = canvas_width;
+        height = canvas_height;
         // Create all the vertices
         Random bag = new Random();
         int numCentroids = 200;
@@ -195,7 +197,10 @@ public class DotGen {
         for (int z = 0; z < num_iterations; z++) {
             VoronoiDiagramBuilder vdb = new VoronoiDiagramBuilder();
             vdb.setSites(centroidCoordinates);
-            vdb.setClipEnvelope(new Envelope(0, width, 0, height));
+            Coordinate widthCoord = new Coordinate(0, 0);
+            Coordinate heightCoord = new Coordinate(width, height);
+            Envelope canvas = new Envelope(widthCoord, heightCoord);
+            vdb.setClipEnvelope(canvas);
             Geometry diagram = vdb.getDiagram(new GeometryFactory());
 
             vertices = new ArrayList<>();
@@ -206,6 +211,9 @@ public class DotGen {
             int lastVertexIdx = -1;
             for (int i = 0; i < diagram.getNumGeometries(); i++) {
                 Coordinate[] points = diagram.getGeometryN(i).getCoordinates();
+                for (int j = 0; j < points.length; j++) {
+                    System.out.println(points[j]);
+                }
                 ArrayList<Integer> pSegments = new ArrayList<>();
                 for (Coordinate point : points) {
                     double x = (double) point.x;
@@ -289,12 +297,12 @@ public class DotGen {
             }
             if(z < num_iterations-1){
                 ArrayList prev = new ArrayList<>();
-                System.out.println(centroids.size());
-                System.out.println(centroidCoordinates.size());
+//                System.out.println(centroids.size());
+//                System.out.println(centroidCoordinates.size());
                 centroids = new ArrayList<>();
                 centroidCoordinates = new ArrayList<>();
                 for (Polygon x: polygons) {
-                    System.out.println(x.getCentroidIdx());
+//                    System.out.println(x.getCentroidIdx());
                     ArrayList initialCoordinates = new ArrayList<>();
                     for (int i = 0; i < x.getSegmentIdxsCount(); i++) {
                         Segment s = segments.get(x.getSegmentIdxs(i));
@@ -309,12 +317,12 @@ public class DotGen {
                         double coord[] = extractCentroidPolygon(vertices, initialCoordinates);
                         centroids.add(Vertex.newBuilder().setX(coord[0]).setY(coord[1]).build());
                         centroidCoordinates.add(new Coordinate(coord[0], coord[1]));
-                        System.out.println(initialCoordinates);
+//                        System.out.println(initialCoordinates);
                     }
                     prev = initialCoordinates;
                 }
-                System.out.println(centroids.size());
-                System.out.println(centroidCoordinates.size());
+//                System.out.println(centroids.size());
+//                System.out.println(centroidCoordinates.size());
             }
 
 
