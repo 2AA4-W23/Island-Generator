@@ -175,16 +175,19 @@ public class DotGen {
         // Create all the vertices
         Random bag = new Random();
         int numCentroids = 200;
-        int spacing = width / ((int) Math.sqrt(numCentroids));
+        int spacing = width / 3;
+        int centroidsPerArea = numCentroids / 9;
         for (int x = 0; x <= width; x += spacing) {
             for (int y = 0; y <= height; y += spacing) {
-                double xVal = (double) bag.nextInt(x, x + spacing);
-                double yVal = (double) bag.nextInt(y, y + spacing);
-                xVal = Math.round(xVal * 100.0) / 100.0;
-                yVal = Math.round(yVal * 100.0) / 100.0;
-                // System.out.println("Xval: " + xVal + "Yval: " + yVal);
-                centroids.add(Vertex.newBuilder().setX(xVal).setY(yVal).build());
-                centroidCoordinates.add(new Coordinate(xVal, yVal));
+                for(int i = 0; i < centroidsPerArea; i++) {
+                    double xVal = (double) bag.nextInt(x, x + spacing);
+                    double yVal = (double) bag.nextInt(y, y + spacing);
+                    xVal = Math.round(xVal * 100.0) / 100.0;
+                    yVal = Math.round(yVal * 100.0) / 100.0;
+                    // System.out.println("Xval: " + xVal + "Yval: " + yVal);
+                    centroids.add(Vertex.newBuilder().setX(xVal).setY(yVal).build());
+                    centroidCoordinates.add(new Coordinate(xVal, yVal));
+                }
             }
         }
         // Distribute colors randomly. Vertices are immutable, need to enrich them
