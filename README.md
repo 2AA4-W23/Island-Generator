@@ -32,6 +32,12 @@ mosser@azrael generator % ls -lh sample.mesh
 mosser@azrael generator %
 ```
 
+To visualize the connections between neighbouring polygons and the general mesh in debug mode include the tag `-X`. This tag is not mandatory and only needs to be included if we are trying to run in debug mode.
+
+```
+mosser@azrael visualizer % java -jar visualizer.jar ../generator/sample.mesh sample.svg -X
+```
+
 ### Visualizer
 
 To visualize an existing mesh, go the the `visualizer` directory, and use `java -jar` to run the product. The product take two arguments (so far): the file containing the mesh, and the name of the file to store the visualization (as an SVG image).
@@ -102,6 +108,6 @@ For a feature to be considered done it must be work without throwing any excepti
 | F16 | Polygons reference neighbors using Delaunay's Triangulation       |           |            |            |        |
 | F17 | Convex hull computation for segment ordering                      |           |            |            |        |
 | F18 | Select mesh type (grid or irregular)                              | Ibrahim   | 02/18/2023 | 02/18/2023 | D      |
-| F19 | Select number of polygons                                         |           |            |            |        |
+| F19 | Select number of polygons                                         | Virochaan | 02/21/2023 | 02/21/2023 | D      |
 | F20 | Select relaxation levels                                          | Virochaan | 02/21/2023 | 02/21/2023 | D      |
 | F21 | Command line help argument                                        |           |            |            |        |
