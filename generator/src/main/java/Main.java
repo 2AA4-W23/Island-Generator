@@ -10,14 +10,19 @@ public class Main {
     public static void main(String[] args) throws IOException, ParseException {
         Options options = new Options();
         options.addOption("mt", true, "decide the mesh type. default is grid.");
-
+        options.addOption("lr", true, "decide how many times llyod relaxation occurs");
 
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
 
         String meshType = cmd.getOptionValue("mt");
-
+        int num_iterations = 10;
+        try {
+            num_iterations = Integer.parseInt(cmd.getOptionValue("lr"));
+        } catch (Exception e) {
+            System.out.println("Not an integer. Using Default value of 10");
+        }
 
         DotGen generator = new DotGen();
         Mesh myMesh;
@@ -28,7 +33,7 @@ public class Main {
             factory.write(myMesh, args[0]);
         }
         else if(meshType.equals("irregular")){
-            myMesh = generator.generateIrregular();
+            myMesh = generator.generateIrregular(num_iterations);
             System.out.println("Irregular Created");
             MeshFactory factory = new MeshFactory();
             factory.write(myMesh, args[0]);
