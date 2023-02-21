@@ -32,6 +32,24 @@ mosser@azrael generator % ls -lh sample.mesh
 mosser@azrael generator %
 ```
 
+To choose the type of mesh generated include the `-mt` tag with a string of either grid or irregular for each respective mesh. If the tag is not provided it will default to a grid mesh.
+
+```
+mosser@azrael generator % java -jar generator.jar sample.mesh -mt <mesh_type>
+```
+
+To modify the number of polygons/centroids that are generated, use the `-np` tag followed by a value which is an Integer. If the tag is not provided it will default to a random number between 300 and 750.
+
+```
+mosser@azrael generator % java -jar generator.jar sample.mesh -np <value>
+```
+
+To modify the number of times llyod relaxation is done, use the `-lr` tag followed by a value which is an Integer. If the tag is not provided it will default to 10 iterations.
+
+```
+mosser@azrael generator % java -jar generator.jar sample.mesh -lr <value>
+```
+
 ### Visualizer
 
 To visualize an existing mesh, go the the `visualizer` directory, and use `java -jar` to run the product. The product take two arguments (so far): the file containing the mesh, and the name of the file to store the visualization (as an SVG image).
@@ -102,7 +120,6 @@ For a feature to be considered done it must be work without throwing any excepti
 | F16 | Polygons reference neighbors using Delaunay's Triangulation       |           |            |            |        |
 | F17 | Convex hull computation for segment ordering                      | Ibrahim   | 02/21/2023 | 02/21/2023 | D      |
 | F18 | Select mesh type (grid or irregular)                              | Ibrahim   | 02/18/2023 | 02/18/2023 | D      |
-| F19 | Crop Mesh at canvas Size                                          | Virochaan |            |            | S      |
-| F20 | Select number of polygons                                         |           |            |            |        |
-| F21 | Select relaxation levels                                          | Virochaan | 02/21/2023 | 02/21/2023 | D      |
-| F22 | Command line help argument                                        |           |            |            |        |
+| F19 | Select number of polygons                                         | Virochaan | 02/21/2023 | 02/21/2023 | D      |
+| F20 | Select relaxation levels                                          | Virochaan | 02/21/2023 | 02/21/2023 | D      |
+| F21 | Command line help argument                                        |           |            |            |        |

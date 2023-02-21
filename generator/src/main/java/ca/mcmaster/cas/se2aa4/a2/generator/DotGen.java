@@ -166,15 +166,15 @@ public class DotGen {
         return Mesh.newBuilder().addAllPolygons(polygonsIndexed).addAllSegments(segments).addAllVertices(verticesWithColors).build();
     }
 
-    public Mesh generateIrregular(int num_iterations2, int canvas_width, int canvas_height) {
+    public Mesh generateIrregular(int num_iterations, int numPolygons) {
         ArrayList<Vertex> centroids = new ArrayList<>();
         ArrayList<Coordinate> centroidCoordinates = new ArrayList<>();
         // Create all the vertices
         Random bag = new Random();
         int numCentroids = 200;
-        int spacing = canvas_width / 3;
+        int spacing = width / 3;
         int centroidsPerArea = numCentroids / 9;
-        for (int x = 0; x <= canvas_width; x += spacing) {
+        for (int x = 0; x <= width; x += spacing) {
             for (int y = 0; y <= height; y += spacing) {
                 for(int i = 0; i < centroidsPerArea; i++) {
                     double xVal = (double) bag.nextInt(x, x + spacing);
@@ -289,14 +289,14 @@ public class DotGen {
                 lastVertexIdx = -1;
             }
             if(z < num_iterations-1){
-                ArrayList<Integer> prev = new ArrayList<>();
-                System.out.println(centroids.size());
-                System.out.println(centroidCoordinates.size());
+                ArrayList prev = new ArrayList<>();
+//                System.out.println(centroids.size());
+//                System.out.println(centroidCoordinates.size());
                 centroids = new ArrayList<>();
                 centroidCoordinates = new ArrayList<>();
                 for (Polygon x: polygons) {
-                    System.out.println(x.getCentroidIdx());
-                    ArrayList<Integer> initialCoordinates = new ArrayList<>();
+//                    System.out.println(x.getCentroidIdx());
+                    ArrayList initialCoordinates = new ArrayList<>();
                     for (int i = 0; i < x.getSegmentIdxsCount(); i++) {
                         Segment s = segments.get(x.getSegmentIdxs(i));
                         if (!initialCoordinates.contains(s.getV1Idx())){
