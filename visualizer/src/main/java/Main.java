@@ -3,14 +3,23 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.a2.visualizer.GraphicRenderer;
 import ca.mcmaster.cas.se2aa4.a2.visualizer.MeshDump;
 import ca.mcmaster.cas.se2aa4.a2.visualizer.SVGCanvas;
+import org.apache.commons.cli.*;
 
 import java.awt.*;
 import java.io.IOException;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ParseException {
         // Extracting command line parameters
+        Options options = new Options();
+        options.addOption("X", false, "Debug Mode Parameter");
+        options.addOption("T", true, "Thickness of Segments. If empty then random.");
+        options.addOption("A", true, "Transparencies of parts of the mesh. If empty then random.");
+
+        CommandLineParser parser = new DefaultParser();
+        CommandLine cmd = parser.parse(options, args);
+
         String input = args[0];
         String output = args[1];
         Boolean debug = false;
@@ -18,29 +27,54 @@ public class Main {
         int thick = 0;
         Boolean alphaSet = false;
         int alpha = 0;
-        for(int i = 2; i < args.length; i++){
-            if(args[i].equals("-X")) debug = true;
-            else if(args[i].equals("-T")) {
-                try {
-                    thick = Integer.parseInt(args[i+1]);
-                    thickSet = true;
-                } catch(NumberFormatException e) {
-                    System.out.println("Invalid argument for -T");
-                } catch(IndexOutOfBoundsException e) {
-                    System.out.println("No argument provided for -T");
-                }
-            }
-            else if(args[i].equals("-A")) {
-                try {
-                    alpha = Integer.parseInt(args[i+1]) % 256;
-                    alphaSet = true;
-                } catch(NumberFormatException e) {
-                    System.out.println("Invalid argument for -A");
-                } catch(IndexOutOfBoundsException e) {
-                    System.out.println("No argument provided for -A");
-                }
-            }
+
+        if(cmd.hasOption("X")){
+            debug = true;
         }
+        try {
+            alpha = Integer.parseInt(cmd.getOptionValue("A"));
+            if(alpha <= 255 || alpha >= 0){
+                alphaSet = true;
+            } else {
+                System.out.println("Alpha Value not in range");
+            }
+        } catch (Exception e) {
+            System.out.println("Alpha value not valid. Proceeding with Default");
+        }
+        try {
+            thick = Integer.parseInt(cmd.getOptionValue("T"));
+            if(alpha <= 7 || alpha >= 2){
+                thickSet = true;
+            } else {
+                System.out.println("Thickness Value not in expected range");
+            }
+        } catch (Exception e) {
+            System.out.println("Thick value not valid. Proceeding with default.");
+        }
+
+//        for(int i = 2; i < args.length; i++){
+//            if(args[i].equals("-X")) debug = true;
+//            else if(args[i].equals("-T")) {
+//                try {
+//                    thick = Integer.parseInt(args[i+1]);
+//                    thickSet = true;
+//                } catch(NumberFormatException e) {
+//                    System.out.println("Invalid argument for -T");
+//                } catch(IndexOutOfBoundsException e) {
+//                    System.out.println("No argument provided for -T");
+//                }
+//            }
+//            else if(args[i].equals("-A")) {
+//                try {
+//                    alpha = Integer.parseInt(args[i+1]) % 256;
+//                    alphaSet = true;
+//                } catch(NumberFormatException e) {
+//                    System.out.println("Invalid argument for -A");
+//                } catch(IndexOutOfBoundsException e) {
+//                    System.out.println("No argument provided for -A");
+//                }
+//            }
+//        }
 
         // Getting width and height for the canvas
         Structs.Mesh aMesh = new MeshFactory().read(input);
