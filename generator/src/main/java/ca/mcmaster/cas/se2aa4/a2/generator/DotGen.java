@@ -2,9 +2,6 @@ package ca.mcmaster.cas.se2aa4.a2.generator;
 
 import java.util.*;
 
-import javax.rmi.ssl.SslRMIClientSocketFactory;
-
-import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Segment;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Property;
@@ -176,16 +173,19 @@ public class DotGen {
         // Create all the vertices
         Random bag = new Random();
         int numCentroids = 200;
-        int spacing = width / ((int) Math.sqrt(numCentroids));
+        int spacing = width / 3;
+        int centroidsPerArea = numCentroids / 9;
         for (int x = 0; x <= width; x += spacing) {
             for (int y = 0; y <= height; y += spacing) {
-                double xVal = (double) bag.nextInt(x, x + spacing);
-                double yVal = (double) bag.nextInt(y, y + spacing);
-                xVal = Math.round(xVal * 100.0) / 100.0;
-                yVal = Math.round(yVal * 100.0) / 100.0;
-                // System.out.println("Xval: " + xVal + "Yval: " + yVal);
-                centroids.add(Vertex.newBuilder().setX(xVal).setY(yVal).build());
-                centroidCoordinates.add(new Coordinate(xVal, yVal));
+                for(int i = 0; i < centroidsPerArea; i++) {
+                    double xVal = (double) bag.nextInt(x, x + spacing);
+                    double yVal = (double) bag.nextInt(y, y + spacing);
+                    xVal = Math.round(xVal * 100.0) / 100.0;
+                    yVal = Math.round(yVal * 100.0) / 100.0;
+                    // System.out.println("Xval: " + xVal + "Yval: " + yVal);
+                    centroids.add(Vertex.newBuilder().setX(xVal).setY(yVal).build());
+                    centroidCoordinates.add(new Coordinate(xVal, yVal));
+                }
             }
         }
         // Distribute colors randomly. Vertices are immutable, need to enrich them
@@ -331,7 +331,7 @@ public class DotGen {
         return Mesh.newBuilder().addAllPolygons(polygons).addAllSegments(segments).addAllVertices(vertices).build();
     }
 
-    private double[] extractCentroidPolygon(ArrayList vertices, ArrayList initCoordinates){
+    private double[] extractCentroidPolygon(ArrayList<Vertex> vertices, ArrayList<Integer> initCoordinates){
         double x = (double) 0;
         double y = (double) 0;
         for(Object coord : initCoordinates){
