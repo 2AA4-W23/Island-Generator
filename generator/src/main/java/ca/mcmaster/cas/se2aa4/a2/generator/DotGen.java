@@ -205,6 +205,7 @@ public class DotGen {
             segments = new ArrayList<>();
             polygons = new ArrayList<>();
             centroids = new ArrayList<>();
+            centroidCoordinates = new ArrayList<>();
             int lastVertexIdx = -1;
             for (int i = 0; i < diagram.getNumGeometries(); i++) {
                 Geometry g = diagram.getGeometryN(i);
@@ -289,8 +290,14 @@ public class DotGen {
                     Polygon pColored = Polygon.newBuilder(p).addProperties(alpha).addProperties(color).build();
                     if(pSegments.size() > 2) {
                         polygons.add(pColored);
-                        Vertex centroid = Vertex.newBuilder().setX(g.getCentroid().getX()).setY(g.getCentroid().getY()).build();
+                        double xVal = g.getCentroid().getX();
+                        double yVal = g.getCentroid().getY();
+                        xVal = Math.round(xVal * 100.0) / 100.0;
+                        yVal = Math.round(yVal * 100.0) / 100.0;
+
+                        Vertex centroid = Vertex.newBuilder().setX(xVal).setY(yVal).build();
                         centroids.add(centroid);
+                        centroidCoordinates.add(new Coordinate(xVal,yVal));
                     }
                 }
                 lastVertexIdx = -1;
@@ -317,7 +324,7 @@ public class DotGen {
                         double coord[] = extractCentroidPolygon(vertices, initialCoordinates);
                         centroids.add(Vertex.newBuilder().setX(coord[0]).setY(coord[1]).build());
                         centroidCoordinates.add(new Coordinate(coord[0], coord[1]));
-                        System.out.println(initialCoordinates);
+//                        System.out.println(initialCoordinates);
                     }
                     prev = initialCoordinates;
                 }
@@ -327,11 +334,76 @@ public class DotGen {
 
 
         }
+
+//        System.out.println(centroids);
+//        System.out.println(centroidCoordinates);
+//
+//        System.out.println(centroids.size());
+//        System.out.println(polygons.size());
+
+        int initialVerticesSize = vertices.size();
         for(int i = 0; i < polygons.size(); i++){
             Polygon pCentroid = Polygon.newBuilder(polygons.get(i)).setCentroidIdx(vertices.size() + i).build();
             polygons.set(i, pCentroid);
         }
         vertices.addAll(centroids);
+        for (int i = 0; i < centroids.size(); i++) {
+            Vertex v = centroids.get(i);
+            String x = String.valueOf(v.getX());
+            String y = String.valueOf(v.getY());
+            coordSet.add(x+","+y);
+        }
+//        System.out.println(initialVerticesSize);
+        DelaunayTriangulationBuilder dtb = new DelaunayTriangulationBuilder();
+        dtb.setSites(centroidCoordinates);
+        Geometry neighbours_diagram = dtb.getEdges(new GeometryFactory());
+        HashMap <Integer, ArrayList> neighbourVals = new HashMap<>();
+        for (int i = 0; i < neighbours_diagram.getNumGeometries(); i++) {
+            Geometry nd = neighbours_diagram.getGeometryN(i);
+            Coordinate points[] = nd.getCoordinates();
+            Coordinate a = points[0];
+            Coordinate b = points[1];
+            String aCoord = a.x+","+a.y;
+            String bCoord = b.x+","+b.y;
+            System.out.println(aCoord + " " + bCoord);
+            System.out.println(coordSet.contains(aCoord));
+            int aidx = coordSet.indexOf(aCoord)-initialVerticesSize;
+            int bidx = coordSet.indexOf(bCoord)-initialVerticesSize;
+//            System.out.println(aidx);
+//            System.out.println(bidx);
+            ArrayList aInputList = new ArrayList<>();
+            ArrayList bInputList = new ArrayList<>();
+            aInputList.add(bidx);
+            bInputList.add(aidx);
+            if(neighbourVals.containsKey(aidx)){
+                ArrayList ans = neighbourVals.get(aidx);
+                ans.add(bidx);
+                neighbourVals.put(aidx,ans);
+            } else {
+                neighbourVals.put(aidx, aInputList);
+            }
+            if(neighbourVals.containsKey(bidx)){
+                ArrayList ans = neighbourVals.get(bidx);
+                ans.add(aidx);
+                neighbourVals.put(bidx,ans);
+            } else {
+                neighbourVals.put(aidx, bInputList);
+            }
+        }
+//        System.out.println(centroids.size());
+//        System.out.println(coordSet);
+//        System.out.println(neighbours_diagram);
+        System.out.println(neighbourVals);
+        for(int i = 0; i < polygons.size(); i++){
+            try{
+                ArrayList nList = neighbourVals.get(i);
+                Polygon pNeighbours = Polygon.newBuilder(polygons.get(i)).addAllNeighborIdxs(nList).build();
+                polygons.set(i, pNeighbours);
+            } catch (Exception e){
+                System.out.println("Null");
+            }
+
+        }
         return Mesh.newBuilder().addAllPolygons(polygons).addAllSegments(segments).addAllVertices(vertices).build();
     }
 
