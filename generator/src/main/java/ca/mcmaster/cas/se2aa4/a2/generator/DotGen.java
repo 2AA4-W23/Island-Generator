@@ -304,8 +304,8 @@ public class DotGen {
             }
             if(z < num_iterations-1){
                 ArrayList prev = new ArrayList<>();
-//                System.out.println(centroids.size());
-//                System.out.println(centroidCoordinates.size());
+                System.out.println(centroids.size());
+                System.out.println(centroidCoordinates.size());
                 centroids = new ArrayList<>();
                 centroidCoordinates = new ArrayList<>();
                 for (Polygon x: polygons) {
@@ -377,12 +377,13 @@ public class DotGen {
         for (int i = 0; i < neighbours_diagram.getNumGeometries(); i++) {
             Geometry nd = neighbours_diagram.getGeometryN(i);
             Coordinate points[] = nd.getCoordinates();
+            System.out.println(points.length);
             Coordinate a = points[0];
             Coordinate b = points[1];
             String aCoord = a.x+","+a.y;
             String bCoord = b.x+","+b.y;
-            System.out.println(aCoord + " " + bCoord);
-            System.out.println(coordSet.contains(aCoord));
+            //System.out.println(aCoord + " " + bCoord);
+            //System.out.println(coordSet.contains(aCoord));
             int aidx = coordSet.indexOf(aCoord)-initialVerticesSize;
             int bidx = coordSet.indexOf(bCoord)-initialVerticesSize;
 //            System.out.println(aidx);
@@ -397,26 +398,32 @@ public class DotGen {
                 neighbourVals.put(aidx,ans);
             } else {
                 neighbourVals.put(aidx, aInputList);
+                ArrayList ans = neighbourVals.get(aidx);
+                ans.add(bidx);
+                neighbourVals.put(aidx,ans);
             }
             if(neighbourVals.containsKey(bidx)){
                 ArrayList ans = neighbourVals.get(bidx);
                 ans.add(aidx);
                 neighbourVals.put(bidx,ans);
             } else {
-                neighbourVals.put(aidx, bInputList);
+                neighbourVals.put(bidx, bInputList);
+                ArrayList ans = neighbourVals.get(bidx);
+                ans.add(aidx);
+                neighbourVals.put(bidx,ans);
             }
         }
 //        System.out.println(centroids.size());
 //        System.out.println(coordSet);
 //        System.out.println(neighbours_diagram);
-        System.out.println(neighbourVals);
+       // System.out.println(neighbourVals);
         for(int i = 0; i < polygons.size(); i++){
             try{
                 ArrayList nList = neighbourVals.get(i);
                 Polygon pNeighbours = Polygon.newBuilder(polygons.get(i)).addAllNeighborIdxs(nList).build();
                 polygons.set(i, pNeighbours);
             } catch (Exception e){
-                System.out.println("Null");
+                //System.out.println("Null");
             }
 
         }

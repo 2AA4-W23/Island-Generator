@@ -39,7 +39,6 @@ public class GraphicRenderer {
 
         int lowCentroidIdx = VertexList.size();
         for (Polygon p : PolygonList) {
-            if(p.getSegmentIdxsCount() <= 1) continue;
             System.out.println(p.getSegmentIdxsCount() + " segments in polygon");
             Coordinate points[] = new Coordinate[p.getSegmentIdxsCount()];
             Set<Integer> added = new HashSet<>();
