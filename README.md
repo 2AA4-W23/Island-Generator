@@ -50,6 +50,12 @@ To modify the number of times llyod relaxation is done, use the `-lr` tag follow
 mosser@azrael generator % java -jar generator.jar sample.mesh -lr <value>
 ```
 
+To view all available options and how to interact with tool, us the `-h`, or `--help` tags.
+
+```
+mosser@azrael generator % java -jar generator.jar sample.mesh -h
+```
+
 ### Visualizer
 
 To visualize an existing mesh, go the the `visualizer` directory, and use `java -jar` to run the product. The product take two arguments (so far): the file containing the mesh, and the name of the file to store the visualization (as an SVG image).
