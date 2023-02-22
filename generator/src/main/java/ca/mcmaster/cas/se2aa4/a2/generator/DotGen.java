@@ -346,6 +346,22 @@ public class DotGen {
             Polygon pCentroid = Polygon.newBuilder(polygons.get(i)).setCentroidIdx(vertices.size() + i).build();
             polygons.set(i, pCentroid);
         }
+
+//        DelaunayTriangulationBuilder dt = new DelaunayTriangulationBuilder();
+//        dt.setSites(centroidCoordinates);
+//        Geometry delaunay = dt.getTriangles(new GeometryFactory());
+//        for (int i = 0; i < delaunay.getNumGeometries(); i++) {
+//            Coordinate[] coords = delaunay.getGeometryN(i).getCoordinates();
+//            ArrayList<Vertex> triangleVertices = new ArrayList<>();
+//            for (Coordinate c : coords) {
+ //               double x = (double) c.x;
+//                double y = (double) c.y;
+//                x = Math.round(x * 100.0) / 100.0;
+//                y = Math.round(y * 100.0) / 100.0;
+//               Vertex v = Vertex.newBuilder().setX(x).setY(y).build();
+//                triangleVertices.add(v);
+//            }
+
         vertices.addAll(centroids);
         for (int i = 0; i < centroids.size(); i++) {
             Vertex v = centroids.get(i);
