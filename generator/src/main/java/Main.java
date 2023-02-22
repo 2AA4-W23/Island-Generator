@@ -13,9 +13,16 @@ public class Main {
         options.addOption("mt", true, "decide the mesh type. default is grid.");
         options.addOption("lr", true, "decide how many times llyod relaxation occurs. defaults to 10.");
         options.addOption("np", true, "decide how many polygons should be generated. defaults to randomize.");
+        options.addOption("h","help", false, "print instructions for tool interaction");
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
+
+        if (cmd.hasOption("h")) {
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("Generator", options);
+            System.exit(0);
+        }
 
         String meshType = cmd.getOptionValue("mt");
         int num_iterations = 10;
@@ -31,7 +38,6 @@ public class Main {
         } catch (Exception e) {
             System.out.println("Not an integer. Using Random Value");
         }
-
 
 
         DotGen generator = new DotGen();
