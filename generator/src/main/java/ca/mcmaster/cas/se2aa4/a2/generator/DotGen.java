@@ -204,9 +204,12 @@ public class DotGen {
             segSet = new ArrayList<>();
             segments = new ArrayList<>();
             polygons = new ArrayList<>();
+            centroids = new ArrayList<>();
             int lastVertexIdx = -1;
             for (int i = 0; i < diagram.getNumGeometries(); i++) {
-                Coordinate[] points = diagram.getGeometryN(i).getCoordinates();
+                Geometry g = diagram.getGeometryN(i);
+                Coordinate[] points = g.getCoordinates();
+                if(points.length <= 2) continue;
                 ArrayList<Integer> pSegments = new ArrayList<>();
                 for (Coordinate point : points) {
                     double x = (double) point.x;
@@ -284,7 +287,11 @@ public class DotGen {
                     Property color = Property.newBuilder().setKey("color").setValue(extractPropertyAverageN(props, "rgb_color")).build();
                     Property alpha = Property.newBuilder().setKey("alpha").setValue(extractPropertyAverageN(props, "alpha")).build();
                     Polygon pColored = Polygon.newBuilder(p).addProperties(alpha).addProperties(color).build();
-                    polygons.add(pColored);
+                    if(pSegments.size() > 2) {
+                        polygons.add(pColored);
+                        Vertex centroid = Vertex.newBuilder().setX(g.getCentroid().getX()).setY(g.getCentroid().getY()).build();
+                        centroids.add(centroid);
+                    }
                 }
                 lastVertexIdx = -1;
             }
@@ -319,6 +326,10 @@ public class DotGen {
             }
 
 
+        }
+        for(int i = 0; i < polygons.size(); i++){
+            Polygon pCentroid = Polygon.newBuilder(polygons.get(i)).setCentroidIdx(vertices.size() + i).build();
+            polygons.set(i, pCentroid);
         }
         vertices.addAll(centroids);
         return Mesh.newBuilder().addAllPolygons(polygons).addAllSegments(segments).addAllVertices(vertices).build();
