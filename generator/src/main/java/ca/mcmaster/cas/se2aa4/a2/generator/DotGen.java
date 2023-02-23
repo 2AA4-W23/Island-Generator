@@ -301,15 +301,18 @@ public class DotGen {
                     centroidCoordinates.add(new Coordinate(xVal,yVal));
                 }
                 lastVertexIdx = -1;
+
             }
+//            System.out.println(polygons);
             if(z < num_iterations-1){
                 ArrayList prev = new ArrayList<>();
-                System.out.println(centroids.size());
-                System.out.println(centroidCoordinates.size());
+//                System.out.println(centroids.size());
+//                System.out.println(centroidCoordinates.size());
                 centroids = new ArrayList<>();
                 centroidCoordinates = new ArrayList<>();
                 for (Polygon x: polygons) {
 //                    System.out.println(x.getCentroidIdx());
+//                    System.out.println(x);
                     ArrayList initialCoordinates = new ArrayList<>();
                     for (int i = 0; i < x.getSegmentIdxsCount(); i++) {
                         Segment s = segments.get(x.getSegmentIdxs(i));
@@ -320,12 +323,11 @@ public class DotGen {
                             initialCoordinates.add(s.getV2Idx());
                         }
                     }
-                    if (prev.equals(initialCoordinates) && initialCoordinates.size() != 0){
-                        double coord[] = extractCentroidPolygon(vertices, initialCoordinates);
-                        centroids.add(Vertex.newBuilder().setX(coord[0]).setY(coord[1]).build());
-                        centroidCoordinates.add(new Coordinate(coord[0], coord[1]));
-//                        System.out.println(initialCoordinates);
-                    }
+//                    System.out.println(initialCoordinates);
+
+                    double coord[] = extractCentroidPolygon(vertices, initialCoordinates);
+                    centroids.add(Vertex.newBuilder().setX(coord[0]).setY(coord[1]).build());
+                    centroidCoordinates.add(new Coordinate(coord[0], coord[1]));
                     prev = initialCoordinates;
                 }
                 System.out.println(centroids.size());
@@ -377,7 +379,7 @@ public class DotGen {
         for (int i = 0; i < neighbours_diagram.getNumGeometries(); i++) {
             Geometry nd = neighbours_diagram.getGeometryN(i);
             Coordinate points[] = nd.getCoordinates();
-            System.out.println(points.length);
+//            System.out.println(points.length);
             Coordinate a = points[0];
             Coordinate b = points[1];
             String aCoord = a.x+","+a.y;
