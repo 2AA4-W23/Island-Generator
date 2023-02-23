@@ -280,25 +280,25 @@ public class DotGen {
                         }
                         lastVertexIdx = idx;
                     }
-                    List<List<Property>> props = new ArrayList<>();
-                    for (int idx : pSegments) {
-                        props.add(segments.get(idx).getPropertiesList());
-                    }
-                    Polygon p = Polygon.newBuilder().addAllSegmentIdxs(pSegments).build();
-                    Property color = Property.newBuilder().setKey("color").setValue(extractPropertyAverageN(props, "rgb_color")).build();
-                    Property alpha = Property.newBuilder().setKey("alpha").setValue(extractPropertyAverageN(props, "alpha")).build();
-                    Polygon pColored = Polygon.newBuilder(p).addProperties(alpha).addProperties(color).build();
-                    if(pSegments.size() > 2) {
-                        polygons.add(pColored);
-                        double xVal = g.getCentroid().getX();
-                        double yVal = g.getCentroid().getY();
-                        xVal = Math.round(xVal * 100.0) / 100.0;
-                        yVal = Math.round(yVal * 100.0) / 100.0;
+                }
+                List<List<Property>> props = new ArrayList<>();
+                for (int idx : pSegments) {
+                    props.add(segments.get(idx).getPropertiesList());
+                }
+                Polygon p = Polygon.newBuilder().addAllSegmentIdxs(pSegments).build();
+                Property color = Property.newBuilder().setKey("color").setValue(extractPropertyAverageN(props, "rgb_color")).build();
+                Property alpha = Property.newBuilder().setKey("alpha").setValue(extractPropertyAverageN(props, "alpha")).build();
+                Polygon pColored = Polygon.newBuilder(p).addProperties(alpha).addProperties(color).build();
+                if(pSegments.size() > 2) {
+                    polygons.add(pColored);
+                    double xVal = g.getCentroid().getX();
+                    double yVal = g.getCentroid().getY();
+                    xVal = Math.round(xVal * 100.0) / 100.0;
+                    yVal = Math.round(yVal * 100.0) / 100.0;
 
-                        Vertex centroid = Vertex.newBuilder().setX(xVal).setY(yVal).build();
-                        centroids.add(centroid);
-                        centroidCoordinates.add(new Coordinate(xVal,yVal));
-                    }
+                    Vertex centroid = Vertex.newBuilder().setX(xVal).setY(yVal).build();
+                    centroids.add(centroid);
+                    centroidCoordinates.add(new Coordinate(xVal,yVal));
                 }
                 lastVertexIdx = -1;
             }
