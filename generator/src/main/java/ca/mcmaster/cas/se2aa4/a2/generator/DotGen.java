@@ -296,7 +296,7 @@ public class DotGen {
                     xVal = Math.round(xVal * 100.0) / 100.0;
                     yVal = Math.round(yVal * 100.0) / 100.0;
 
-                    Vertex centroid = Vertex.newBuilder().setX(xVal).setY(yVal).build();
+                    Vertex centroid = Vertex.newBuilder().setX(xVal).setY(yVal).addProperties(alpha).addProperties(color).build();
                     centroids.add(centroid);
                     centroidCoordinates.add(new Coordinate(xVal,yVal));
                 }

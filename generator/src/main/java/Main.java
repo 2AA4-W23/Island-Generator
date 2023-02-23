@@ -30,6 +30,10 @@ public class Main {
         int numPolygons = bag.nextInt(300, 800);
         try {
             num_iterations = Integer.parseInt(cmd.getOptionValue("lr"));
+            if(num_iterations == 0){
+                num_iterations = 1;
+                System.out.println("Defaulting to 1. Zero Not allowed.");
+            }
         } catch (Exception e) {
             System.out.println("Not an integer. Using Default value of 10");
         }
