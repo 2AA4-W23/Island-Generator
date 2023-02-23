@@ -101,7 +101,7 @@ To viualize the SVG file:
 
 ### Scenario
 
-To generate and visualize an irregular mesh, use the above Generator and Visualizer commands in their respective directories with the associated tags. For instance:
+To generate and visualize an irregular mesh, use the above commands in their respective directories with the associated tags. For instance, to generate/visualize an irregular mesh with 500 polygons/centroids, 15 lloyd relaxations, component thickness of 5, and alpha value of 250 in debug mode: 
 
 ```
 mosser@azrael A2 % cd generator
