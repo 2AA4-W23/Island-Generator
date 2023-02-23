@@ -123,7 +123,7 @@ For a feature to be considered done it must be work without throwing any excepti
 | F13 | Random centroid vertex distribution                               | Ibrahim   | 02/18/2023 | 02/18/2023 | D      |
 | F14 | Construct segments and polygons from Voronoi diagram              | Ibrahim   | 02/18/2023 | 02/21/2023 | D      |
 | F15 | Apply Llyod relaxation any number of times                        | Virochaan | 02/20/2023 | 02/21/2023 | D      |
-| F16 | Polygons reference neighbors using Delaunay's Triangulation       |           |            |            |        |
+| F16 | Polygons reference neighbors using Delaunay's Triangulation       | Virochaan | 02/22/2023 | 02/23/2023 | D      |
 | F17 | Convex hull computation for segment ordering                      | Ibrahim   | 02/21/2023 | 02/21/2023 | D      |
 | F18 | Select mesh type (grid or irregular)                              | Ibrahim   | 02/18/2023 | 02/18/2023 | D      |
 | F19 | Select number of polygons                                         | Virochaan | 02/21/2023 | 02/21/2023 | D      |
