@@ -87,7 +87,7 @@ public class GraphicRenderer {
             }
             canvas.setColor(old);
         }
-        int centroidIdx = 0;
+        int centroidIdx;
 
         if (debug) {
             for (Polygon p : PolygonList) {
@@ -158,6 +158,9 @@ public class GraphicRenderer {
             int thickness = extractThickness(v.getPropertiesList());
             Color old = canvas.getColor();
             canvas.setColor(extractColor(v.getPropertiesList(), alphaSet, alpha));
+            if(count > lowCentroidIdx){
+                canvas.setColor(new Color(0,0,0,0));
+            }
             if(debug){
                 thickness = 3;
                 if(count < lowCentroidIdx){

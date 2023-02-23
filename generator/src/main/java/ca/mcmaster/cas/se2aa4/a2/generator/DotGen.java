@@ -347,6 +347,7 @@ public class DotGen {
         for(int i = 0; i < polygons.size(); i++){
             Polygon pCentroid = Polygon.newBuilder(polygons.get(i)).setCentroidIdx(vertices.size() + i).build();
             polygons.set(i, pCentroid);
+            System.out.println(centroids.get(i).getPropertiesList());
         }
 
 //        DelaunayTriangulationBuilder dt = new DelaunayTriangulationBuilder();
