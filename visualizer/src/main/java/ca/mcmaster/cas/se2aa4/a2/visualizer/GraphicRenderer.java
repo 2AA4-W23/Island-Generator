@@ -158,7 +158,7 @@ public class GraphicRenderer {
             int thickness = extractThickness(v.getPropertiesList());
             Color old = canvas.getColor();
             canvas.setColor(extractColor(v.getPropertiesList(), alphaSet, alpha));
-            if(count > lowCentroidIdx){
+            if(count >= lowCentroidIdx){
                 canvas.setColor(new Color(0,0,0,0));
             }
             if(debug){

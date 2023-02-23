@@ -163,6 +163,7 @@ public class DotGen {
             for (int k = 0; k < x.getNeighborIdxsCount(); k++) {
             }
         }
+        System.out.println(polygonsIndexed);
         return Mesh.newBuilder().addAllPolygons(polygonsIndexed).addAllSegments(segments).addAllVertices(verticesWithColors).build();
     }
 
