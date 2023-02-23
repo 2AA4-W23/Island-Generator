@@ -50,7 +50,7 @@ To modify the number of times llyod relaxation is done, use the `-lr` tag follow
 mosser@azrael generator % java -jar generator.jar sample.mesh -lr <value>
 ```
 
-To view all available options and how to interact with tool, use the `-h`, or `--help` tags.
+To view all available options and how to interact with generator tool, use the `-h`, or `--help` tags.
 
 ```
 mosser@azrael generator % java -jar generator.jar sample.mesh -h
@@ -88,6 +88,11 @@ To change the transparency/alpha of the components, use the tag `-A` followed by
 mosser@azrael visualizer % java -jar visualizer.jar ../generator/sample.mesh sample.svg -A <value>
 ```
 
+To view all available options and how to interact with visualizer tool, use the `-h`, or `--help` tags.
+
+```
+mosser@azrael visualizer % java -jar visualizer.jar ../generator/sample.mesh sample.svg -h
+```
 
 To viualize the SVG file:
 
