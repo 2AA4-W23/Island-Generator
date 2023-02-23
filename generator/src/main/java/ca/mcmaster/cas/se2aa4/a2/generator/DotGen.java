@@ -20,7 +20,6 @@ public class DotGen {
     private final int width = 500;
     private final int height = 500;
     private final int square_size = 20;
-    private final int num_iterations = 10;
 
     public Mesh generate() {
         ArrayList<Vertex> vertices = new ArrayList<>();
@@ -93,6 +92,19 @@ public class DotGen {
 //            System.out.println("Index: " + i + " V1: " + segments.get(i).getV1Idx() + " V2: " + segments.get(i).getV2Idx());
 //        }
 
+        List<Vertex> centroids = new ArrayList<>();
+        for(int x = square_size /2; x <= width; x += square_size){
+            for(int y = square_size / 2; y <= height; y += square_size){
+                x = Math.round(x * 100) / 100;
+                y = Math.round(y * 100) / 100;
+                Vertex v1 = Vertex.newBuilder().setX(x).setY(y).build();
+                String colorCode = "0,0,0";
+                Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
+                Vertex coloredv1 = Vertex.newBuilder(v1).addProperties(color).build();
+                centroids.add(coloredv1);
+            }
+        }
+
         ArrayList<Polygon> polygons = new ArrayList<>();
         int i = 0;
         int offset = 0;
@@ -113,9 +125,9 @@ public class DotGen {
             int green = bag.nextInt(255);
             int blue = bag.nextInt(255);
             String colorCode = red + "," + green + "," + blue;
-            Polygon p = Polygon.newBuilder().addAllSegmentIdxs(pSegments).build();
+            Polygon p = Polygon.newBuilder().addAllSegmentIdxs(pSegments).setCentroidIdx(verticesWithColors.size() + polygons.size()).build();
             Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
-            Polygon pColored = Polygon.newBuilder(p).addProperties(color).setCentroidIdx(verticesWithColors.size()).build();
+            Polygon pColored = Polygon.newBuilder(p).addProperties(color).build();
             polygons.add(pColored);
             if((polygons.size())%25==0){
                 i+=3;
@@ -124,15 +136,6 @@ public class DotGen {
             }
         }
 
-        for(int x = square_size /2; x <= width; x += square_size){
-            for(int y = square_size / 2; y <= height; y += square_size){
-                Vertex v1 = Vertex.newBuilder().setX(x).setY(y).build();
-                String colorCode = "0,0,0";
-                Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
-                Vertex coloredv1 = Vertex.newBuilder(v1).addProperties(color).build();
-                verticesWithColors.add(coloredv1);
-            }
-        }
         ArrayList<Polygon> polygonsIndexed = new ArrayList<>();
 
         for(int j = 0; j < polygons.size(); j++){
@@ -153,14 +156,7 @@ public class DotGen {
             polygonsIndexed.add(p2);
         }
 
-        for (int j = 0; j < polygonsIndexed.size(); j++) {
-            Polygon x = polygonsIndexed.get(j);
-            for (int k = 0; k < x.getNeighborIdxsCount(); k++) {
-                
-            }
-        }
-
-        System.out.println(polygonsIndexed);
+        verticesWithColors.addAll(centroids);
         return Mesh.newBuilder().addAllPolygons(polygonsIndexed).addAllSegments(segments).addAllVertices(verticesWithColors).build();
     }
 
