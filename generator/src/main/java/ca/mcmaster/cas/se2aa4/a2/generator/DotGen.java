@@ -137,18 +137,12 @@ public class DotGen {
 
         for(int j = 0; j < polygons.size(); j++){
             ArrayList<Integer> neighbouridx = new ArrayList<>();
-            ArrayList<Integer> seg1 = new ArrayList<>();
-            seg1.add(polygons.get(j).getSegmentIdxs(0));
-            seg1.add(polygons.get(j).getSegmentIdxs(1));
-            seg1.add(polygons.get(j).getSegmentIdxs(2));
-            seg1.add(polygons.get(j).getSegmentIdxs(3));
+            Set<Integer> seg1 = new HashSet<>();
+            seg1.addAll(polygons.get(j).getSegmentIdxsList());
             for(int k = 0; k < polygons.size(); k++){
                 if(j!=k){
-                    ArrayList<Integer> seg2 = new ArrayList<>();
-                    seg2.add(polygons.get(k).getSegmentIdxs(0));
-                    seg2.add(polygons.get(k).getSegmentIdxs(1));
-                    seg2.add(polygons.get(k).getSegmentIdxs(2));
-                    seg2.add(polygons.get(k).getSegmentIdxs(3));
+                    Set<Integer> seg2 = new HashSet<>();
+                    seg2.addAll(polygons.get(k).getSegmentIdxsList());
                     seg2.retainAll(seg1);
                     if(!seg2.isEmpty()){
                         neighbouridx.add(k);
@@ -158,11 +152,14 @@ public class DotGen {
             Polygon p2 = Polygon.newBuilder(polygons.get(j)).addAllNeighborIdxs(neighbouridx).build();
             polygonsIndexed.add(p2);
         }
+
         for (int j = 0; j < polygonsIndexed.size(); j++) {
             Polygon x = polygonsIndexed.get(j);
             for (int k = 0; k < x.getNeighborIdxsCount(); k++) {
+                
             }
         }
+
         System.out.println(polygonsIndexed);
         return Mesh.newBuilder().addAllPolygons(polygonsIndexed).addAllSegments(segments).addAllVertices(verticesWithColors).build();
     }
