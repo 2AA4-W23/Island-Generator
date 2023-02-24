@@ -21,7 +21,7 @@ public class DotGen {
     private final int height = 500;
     private final int square_size = 20;
     private final int num_iterations = 10;
-
+    private Random bag = new Random();
     public Mesh generate() {
         ArrayList<Vertex> vertices = new ArrayList<>();
         // Create all the vertices
@@ -44,14 +44,13 @@ public class DotGen {
         }
         // Distribute colors randomly. Vertices are immutable, need to enrich them
         ArrayList<Vertex> verticesWithColors = new ArrayList<>();
-        Random bag = new Random();
         for (Vertex v : vertices) {
-            int red = bag.nextInt(255);
-            int green = bag.nextInt(255);
-            int blue = bag.nextInt(255);
-            String thick = Integer.toString(bag.nextInt(2,7));
+            int red = this.bag.nextInt(255);
+            int green = this.bag.nextInt(255);
+            int blue = this.bag.nextInt(255);
+            String thick = Integer.toString(this.bag.nextInt(2,7));
             String colorCode = red + "," + green + "," + blue;
-            String alphaVal = Integer.toString(bag.nextInt(150,255));
+            String alphaVal = Integer.toString(this.bag.nextInt(150,255));
             Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
             Property thickness = Property.newBuilder().setKey("thickness").setValue(thick).build();
             Property alpha = Property.newBuilder().setKey("alpha").setValue(alphaVal).build();
@@ -109,9 +108,9 @@ public class DotGen {
                 offset++;
             } else pSegments.add(i + 51);
             pSegments.add(i + 1);
-            int red = bag.nextInt(255);
-            int green = bag.nextInt(255);
-            int blue = bag.nextInt(255);
+            int red = this.bag.nextInt(255);
+            int green = this.bag.nextInt(255);
+            int blue = this.bag.nextInt(255);
             String colorCode = red + "," + green + "," + blue;
             Polygon p = Polygon.newBuilder().addAllSegmentIdxs(pSegments).build();
             Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
@@ -171,15 +170,14 @@ public class DotGen {
         ArrayList<Vertex> centroids = new ArrayList<>();
         ArrayList<Coordinate> centroidCoordinates = new ArrayList<>();
         // Create all the vertices
-        Random bag = new Random();
         int numCentroids = numPolygons;
         int spacing = width / 3;
         int centroidsPerArea = numCentroids / 9;
         for (int x = 0; x <= width; x += spacing) {
             for (int y = 0; y <= height; y += spacing) {
                 for(int i = 0; i < centroidsPerArea; i++) {
-                    double xVal = (double) bag.nextInt(x, x + spacing);
-                    double yVal = (double) bag.nextInt(y, y + spacing);
+                    double xVal = (double) this.bag.nextInt(x, x + spacing);
+                    double yVal = (double) this.bag.nextInt(y, y + spacing);
                     xVal = Math.round(xVal * 100.0) / 100.0;
                     yVal = Math.round(yVal * 100.0) / 100.0;
                     // System.out.println("Xval: " + xVal + "Yval: " + yVal);
@@ -220,12 +218,12 @@ public class DotGen {
                     y = Math.round(y * 100.0) / 100.0;
                     if (!coordSet.contains(x + "," + y)) {
                         Vertex v = Vertex.newBuilder().setX(x).setY(y).build();
-                        int red = bag.nextInt(255);
-                        int green = bag.nextInt(255);
-                        int blue = bag.nextInt(255);
-                        String thick = Integer.toString(bag.nextInt(2, 6));
+                        int red = this.bag.nextInt(255);
+                        int green = this.bag.nextInt(255);
+                        int blue = this.bag.nextInt(255);
+                        String thick = Integer.toString(this.bag.nextInt(2, 6));
                         String colorCode = red + "," + green + "," + blue;
-                        String alphaVal = Integer.toString(bag.nextInt(150, 255));
+                        String alphaVal = Integer.toString(this.bag.nextInt(150, 255));
                         Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
                         Property thickness = Property.newBuilder().setKey("thickness").setValue(thick).build();
                         Property alpha = Property.newBuilder().setKey("alpha").setValue(alphaVal).build();
