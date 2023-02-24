@@ -98,6 +98,7 @@ public class GraphicRenderer {
                     double cy1 = VertexList.get(centroidIdx).getY();
                     double cx2 = VertexList.get(PolygonList.get(p.getNeighborIdxs(i)).getCentroidIdx()).getX();
                     double cy2 = VertexList.get(PolygonList.get(p.getNeighborIdxs(i)).getCentroidIdx()).getY();
+                    //System.out.println(centroidIdx + ": " + cx1 + " " + PolygonList.get(p.getNeighborIdxs(i)).getCentroidIdx() + ": " + cy1 + " " + cx2 + " " + cy2);
                     if(thickSet) {
                         canvas.setStroke(new BasicStroke(Math.max(1, thick - 1)));
                     }

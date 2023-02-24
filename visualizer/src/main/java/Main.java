@@ -16,6 +16,7 @@ public class Main {
         options.addOption("X", false, "Debug Mode Parameter");
         options.addOption("T", true, "Thickness of Segments. If empty then random.");
         options.addOption("A", true, "Transparencies of parts of the mesh. If empty then random.");
+        options.addOption("h","help", false, "print instructions for tool interaction");
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
@@ -27,6 +28,12 @@ public class Main {
         int thick = 0;
         Boolean alphaSet = false;
         int alpha = 0;
+
+        if (cmd.hasOption("h")) {
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("Generator", options);
+            System.exit(0);
+        }
 
         if(cmd.hasOption("X")){
             debug = true;

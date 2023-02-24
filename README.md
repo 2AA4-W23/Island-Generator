@@ -50,7 +50,7 @@ To modify the number of times llyod relaxation is done, use the `-lr` tag follow
 mosser@azrael generator % java -jar generator.jar sample.mesh -lr <value>
 ```
 
-To view all available options and how to interact with tool, use the `-h`, or `--help` tags.
+To view all available options and how to interact with generator tool, use the `-h`, or `--help` tags.
 
 ```
 mosser@azrael generator % java -jar generator.jar sample.mesh -h
@@ -88,11 +88,46 @@ To change the transparency/alpha of the components, use the tag `-A` followed by
 mosser@azrael visualizer % java -jar visualizer.jar ../generator/sample.mesh sample.svg -A <value>
 ```
 
+To view all available options and how to interact with visualizer tool, use the `-h`, or `--help` tags.
+
+```
+mosser@azrael visualizer % java -jar visualizer.jar ../generator/sample.mesh sample.svg -h
+```
 
 To viualize the SVG file:
 
 - Open it with a web browser
 - Convert it into something else with tool slike `rsvg-convert`
+
+### Scenario
+
+To generate and visualize an irregular mesh, use the above commands in their respective directories with the associated tags. For instance, to generate/visualize an irregular mesh with 500 polygons/centroids, 15 lloyd relaxations, component thickness of 5, and alpha value of 250 in debug mode: 
+
+```
+mosser@azrael A2 % cd generator
+mosser@azrael generator % java -jar generator.jar sample.mesh -mt irregular -np 500 -lr 15
+
+... (debug information printed to stdout) ...
+
+mosser@azrael generator % ls -lh sample.mesh
+-rw-r--r--  1 mosser  staff    29K 29 Jan 10:52 sample.mesh
+mosser@azrael generator %
+```
+
+Followed by:
+
+```
+mosser@azrael A2 % cd ../visualizer
+mosser@azrael visualizer % java -jar visualizer.jar ../generator/sample.mesh sample.svg -X -T 5 -A 250
+
+... (debug information printed to stdout) ...
+
+mosser@azrael visualizer % ls -lh sample.svg
+-rw-r--r--  1 mosser  staff    56K 29 Jan 10:53 sample.svg
+mosser@azrael visualizer %
+```
+
+If the tags are used in a different order, the result will be the same. This example implements all the possible tags, but they can easily be ommitted, in which case the program will act accordingly and generate/visualize the mesh based on the default values. 
 
 ## How to contribute to the project
 
