@@ -222,7 +222,7 @@ public class GraphicRenderer {
         String alpha = null;
         for(Property p: properties) {
             if (p.getKey().equals("rgb_color")) {
-//                System.out.println(p.getValue());
+//System.out.println(p.getValue());
                 color = p.getValue();
             }
             if(p.getKey().equals("alpha")) {

@@ -2,6 +2,7 @@ import ca.mcmaster.cas.se2aa4.a2.io.MeshFactory;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.a2.visualizer.GraphicRenderer;
 import ca.mcmaster.cas.se2aa4.a2.visualizer.MeshDump;
+import ca.mcmaster.cas.se2aa4.a2.visualizer.OBJBuilder;
 import ca.mcmaster.cas.se2aa4.a2.visualizer.SVGCanvas;
 import org.apache.commons.cli.*;
 
@@ -17,6 +18,7 @@ public class Main {
         options.addOption("T", true, "Thickness of Segments. If empty then random.");
         options.addOption("A", true, "Transparencies of parts of the mesh. If empty then random.");
         options.addOption("h","help", false, "print instructions for tool interaction");
+        options.addOption("O","obj", false, "creates an additional obj file");
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
@@ -74,6 +76,10 @@ public class Main {
         renderer.render(aMesh, canvas, debug, thickSet, thick, alphaSet, alpha);
         // Storing the result in an SVG file
         SVGCanvas.write(canvas, output);
+        if(cmd.hasOption("O")){
+            OBJBuilder ob = new OBJBuilder();
+            ob.generateOBJ(aMesh);
+        }
         // Dump the mesh to stdout
         MeshDump dumper = new MeshDump();
         dumper.dump(aMesh);

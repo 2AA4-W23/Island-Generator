@@ -6,4 +6,6 @@ target
 *.mesh
 *.iml
 *.svg
+*.mtl
+*.obj
 

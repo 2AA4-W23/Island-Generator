@@ -127,7 +127,7 @@ public class DotGen {
             Polygon p = Polygon.newBuilder().addAllSegmentIdxs(pSegments).setCentroidIdx(verticesWithColors.size() + polygons.size()).build();
             Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
             Polygon pColored = Polygon.newBuilder(p).addProperties(color).build();
-            polygons.add(pColored);
+            polygons.add(pColored); 
             if((polygons.size())%25==0){
                 i+=3;
             } else {
@@ -484,48 +484,47 @@ public class DotGen {
         return null;
     }
     private String extractPropertyAverageN(List<List<Property>> properties, String key) {
-        List<String> vals = new ArrayList<>();
         String result = "";
         for(List<Property> props : properties) {
             String prop = "";
+            int counted = props.size() * 2;
             for(Property p : props){
                 if(p.getKey().equals(key)) {
                     prop = p.getValue();
                 }
             }
-            vals.add(prop);
             if(key.equals("rgb_color")) {
                 if(prop.equals("")){
                     prop = "0,0,0";
                 }
                 String[] raw = prop.split(",");
-                int red = Integer.parseInt(raw[0]);
+                int red = Integer.parseInt(raw[0]) ;
                 int green = Integer.parseInt(raw[1]);
                 int blue = Integer.parseInt(raw[2]);
                 String[] currentRaw = result.split(",");
                 int currentRed,currentBlue,currentGreen;
-                if(result.equals("result")){
-                    currentRed = Integer.parseInt(currentRaw[0]);
-                    currentGreen = Integer.parseInt(currentRaw[1]);
-                    currentBlue = Integer.parseInt(currentRaw[2]);
+                if(!result.equals("")){
+                    currentRed = Integer.parseInt(currentRaw[0]) / counted;
+                    currentGreen = Integer.parseInt(currentRaw[1]) / counted;
+                    currentBlue = Integer.parseInt(currentRaw[2]) / counted;
                 } else {
                     currentRed = 0;
                     currentGreen = 0;
                     currentBlue = 0;
                 }
-                result = (red + currentRed) + "," + (green + currentGreen) + "," + (blue + currentBlue);
+                result = (red / counted + currentRed)  + "," + (green/ counted + currentGreen) + "," + (blue/ counted + currentBlue);
             } else if (key.equals("thickness")) {
                 if(prop.equals("")){
                     prop = "3";
                 }
                 if(result.equals("")) result = "0";
-                result = Integer.parseInt(result) + Integer.parseInt(prop) + "";
+                result = Integer.parseInt(result) + (Integer.parseInt(prop) /counted)+ "";
             } else if (key.equals("alpha")) {
                 if (prop.equals("")){
                     prop = "75";
                 }
                 if(result.equals("")) result = "0";
-                result = Integer.parseInt(result) + Integer.parseInt(prop) + "";
+                result = Integer.parseInt(result) + (Integer.parseInt(prop) / counted) + "";
             }
         }
         return result;
