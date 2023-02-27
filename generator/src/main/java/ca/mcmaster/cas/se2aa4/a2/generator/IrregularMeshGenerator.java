@@ -15,10 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class IrregularMeshGenerator implements MeshGenerator{
-    public int num_iterations = 10;
-    public int numPolygons = 0;
+
     @Override
-    public Structs.Mesh generate() {
+    public Structs.Mesh generate(int num_iterations, int numPolygons) {
         ArrayList<Structs.Vertex> centroids = new ArrayList<>();
         ArrayList<Coordinate> centroidCoordinates = new ArrayList<>();
         // Create all the vertices
@@ -276,10 +275,6 @@ public class IrregularMeshGenerator implements MeshGenerator{
         return Structs.Mesh.newBuilder().addAllPolygons(polygons).addAllSegments(segments).addAllVertices(vertices).build();
     }
 
-    public void SetInitialValues(int iter, int numP) {
-        this.num_iterations = iter;
-        this.numPolygons = numP;
-    }
     
     private double[] extractCentroidPolygon(ArrayList<Structs.Vertex> vertices, ArrayList<Integer> initCoordinates){
         double x = (double) 0;
@@ -387,8 +382,7 @@ public class IrregularMeshGenerator implements MeshGenerator{
     }
 
     @Override
-    public Mesh generate(int num_iter, int numP) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'generate'");
+    public Mesh generate() {
+        return null;
     }
 }
