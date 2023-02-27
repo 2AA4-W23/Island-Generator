@@ -88,6 +88,12 @@ To change the transparency/alpha of the components, use the tag `-A` followed by
 mosser@azrael visualizer % java -jar visualizer.jar ../generator/sample.mesh sample.svg -A <value>
 ```
 
+To generate a Wavefront .obj and .mtl file, use the tag `-O`. This file can be viewed in programs like Blender.
+
+```
+mosser@azrael visualizer % java -jar visualizer.jar ../generator/sample.mesh sample.svg -O
+```
+
 To view all available options and how to interact with visualizer tool, use the `-h`, or `--help` tags.
 
 ```
