@@ -4,6 +4,7 @@ import ca.mcmaster.cas.se2aa4.a2.generator.IrregularMeshGenerator;
 import ca.mcmaster.cas.se2aa4.a2.generator.MeshGenerator;
 import ca.mcmaster.cas.se2aa4.a2.io.MeshFactory;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Mesh;
+import jdk.jshell.spi.ExecutionControl;
 import org.apache.commons.cli.*;
 
 import java.io.IOException;
@@ -11,7 +12,7 @@ import java.util.Random;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException, ParseException {
+    public static void main(String[] args) throws IOException, ParseException, ExecutionControl.NotImplementedException {
         Options options = new Options();
         options.addOption("mt", true, "decide the mesh type. default is grid.");
         options.addOption("lr", true, "decide how many times llyod relaxation occurs. defaults to 10.");
@@ -46,8 +47,6 @@ public class Main {
             System.out.println("Not an integer. Using Random Value");
         }
 
-
-        DotGen generator = new DotGen();
         Mesh myMesh;
         if(meshType == null || meshType.equals("grid")){
             MeshGenerator gridgen = new GridMeshGenerator();
@@ -59,8 +58,7 @@ public class Main {
         }
         else if(meshType.equals("irregular")){
             MeshGenerator irregulargen = new IrregularMeshGenerator();
-            irregulargen.SetInitialValues(num_iterations, numPolygons);
-            myMesh = irregulargen.generate();
+            myMesh = irregulargen.generate(num_iterations, numPolygons);
             System.out.println("Irregular Created");
             MeshFactory factory = new MeshFactory();
             factory.write(myMesh, args[0]);
