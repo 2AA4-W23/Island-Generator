@@ -4,10 +4,15 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+
+import org.locationtech.jts.algorithm.ConvexHull;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Mesh;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
@@ -39,10 +44,21 @@ public class OBJBuilder {
        
         fwo.write("mtllib mesh.mtl\n");
 
+        List<String> vertexSet = new ArrayList<>();
+
         for(Vertex v : VertexList) {
             // String mtlName = getMtlName();
             // fwo.write("usemtl " + mtlName + "\n");
-            fwo.write("v " + v.getX() + " " + v.getY() + " 0 " + extractPropString(v.getPropertiesList(), "rbg_color") + "\n");
+            double x = v.getX() / 100.0;
+            double y = v.getY() / 100.0;
+            x = Math.round(x * 1000.0) / 1000.0;
+            y = Math.round(y * 1000.0) / 1000.0;
+            // if(x > 5.0) x = 5.0;
+            // else if(x < 0.0) x = 0.0;
+            // if(y > 5.0) y = 5.0;
+            // else if(y < 0.0) y = 0.0;
+            fwo.write("v " + x +  " 0.00 " + " " + y  + extractPropString(v.getPropertiesList(), "rbg_color") + "\n");
+            vertexSet.add(x + " " + y);
         }
 
         fwo.write("\nvn 0.00 0.00 1.00\n\n");
@@ -52,15 +68,53 @@ public class OBJBuilder {
             fwo.write("usemtl " + mtlName + "\n"); 
             fwm.write("newmtl " + mtlName + "\n");
             fwm.write("\tKa " + extractPropString(p.getPropertiesList(), "color") + "\n");
+            // fwm.write("\tKd " + extractPropString(p.getPropertiesList(), "color") + "\n");
+            // fwm.write("\tKs " + extractPropString(p.getPropertiesList(), "color") + "\n");
             fwm.write("\td " + extractPropString(p.getPropertiesList(), "alpha") + "\n\n");
             fwo.write("f ");
+            int j = 0;
+            Coordinate points[] = new Coordinate[p.getSegmentIdxsCount()];
+            Set<Integer> added = new HashSet<>();
             for(Integer i : p.getSegmentIdxsList()){
-                int vIdx = SegmentList.get(i).getV1Idx() + 1;
-                fwo.write(vIdx + "//1 ");
+                Integer v1 = SegmentList.get(i).getV1Idx();
+                Integer v2 = SegmentList.get(i).getV2Idx();
+                System.out.println("Segment " + i);
+                try{
+                    if(!added.contains(v1)){
+                        double x = VertexList.get(SegmentList.get(i).getV1Idx()).getX() / 100.0;
+                        double y = VertexList.get(SegmentList.get(i).getV1Idx()).getY() / 100.0;
+                        x = Math.round(x * 1000.0) / 1000.0;
+                        y = Math.round(y * 1000.0) / 1000.0;
+                        points[j] = new Coordinate(x, y);
+                        added.add(v1);
+                        j++;
+                    }
+                    if(!added.contains(v2)){
+                        double x = VertexList.get(SegmentList.get(i).getV2Idx()).getX() / 100.0;
+                        double y = VertexList.get(SegmentList.get(i).getV2Idx()).getY() / 100.0;
+                        x = Math.round(x * 1000.0) / 1000.0;
+                        y = Math.round(y * 1000.0) / 1000.0;
+                        points[j] = new Coordinate(x, y);
+                        added.add(v2);
+                        j++;
+                    }
+                } catch(Exception e){
+                    break;
+                }
+            }
+            if(j != 0) {
+                ConvexHull cv = new ConvexHull(points, new GeometryFactory());
+                Coordinate[] orderedPoints = cv.getConvexHull().getCoordinates();    
+                for(int i = 0; i < orderedPoints.length; i++) {
+                    double x = orderedPoints[i].getX();
+                    double y = orderedPoints[i].getY();
+                    x = Math.round(x * 1000.0) / 1000.0;
+                    y = Math.round(y * 1000.0) / 1000.0;
+                    fwo.write(vertexSet.indexOf(orderedPoints[i].getX() + " " + orderedPoints[i].getY()) + 1 + "//1 ");
+                }
             }
             fwo.write("\n\n");
         }
-        
         fwo.close();
         fwm.close();
     }
