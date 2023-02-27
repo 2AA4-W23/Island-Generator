@@ -1,4 +1,6 @@
 import ca.mcmaster.cas.se2aa4.a2.generator.DotGen;
+import ca.mcmaster.cas.se2aa4.a2.generator.GridMeshGenerator;
+import ca.mcmaster.cas.se2aa4.a2.generator.MeshGenerator;
 import ca.mcmaster.cas.se2aa4.a2.io.MeshFactory;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Mesh;
 import org.apache.commons.cli.*;
@@ -47,7 +49,8 @@ public class Main {
         DotGen generator = new DotGen();
         Mesh myMesh;
         if(meshType == null || meshType.equals("grid")){
-            myMesh = generator.generate();
+            MeshGenerator gridgen = new GridMeshGenerator();
+            myMesh = gridgen.generate();
             System.out.println(":grid created");
             MeshFactory factory = new MeshFactory();
             factory.write(myMesh, args[0]);
