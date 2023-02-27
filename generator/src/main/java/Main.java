@@ -1,4 +1,3 @@
-import ca.mcmaster.cas.se2aa4.a2.generator.DotGen;
 import ca.mcmaster.cas.se2aa4.a2.generator.GridMeshGenerator;
 import ca.mcmaster.cas.se2aa4.a2.generator.IrregularMeshGenerator;
 import ca.mcmaster.cas.se2aa4.a2.generator.MeshGenerator;

@@ -9,9 +9,13 @@ public class DotGenTest {
 
     @Test
     public void meshIsNotNull() {
-        DotGen generator = new DotGen();
-        Structs.Mesh aMesh = generator.generate();
+        IrregularMeshGenerator generator = new IrregularMeshGenerator();
+        Structs.Mesh aMesh = generator.generate(10, 200);
+
+        GridMeshGenerator generator1 = new GridMeshGenerator();
+        Structs.Mesh bMesh = generator1.generate();
         assertNotNull(aMesh);
+        assertNotNull(bMesh);
     }
 
 }
