@@ -88,9 +88,9 @@ public class IrregularMeshGenerator implements MeshGenerator{
                             Structs.Segment s = Structs.Segment.newBuilder().setV1Idx(lastVertexIdx).setV2Idx(vertices.size() - 1).build();
                             Structs.Vertex v1 = vertices.get(s.getV1Idx());
                             Structs.Vertex v2 = vertices.get(s.getV2Idx());
-                            String color1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "rgb_color");
-                            String thickness1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "thickness");
-                            String alpha1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "alpha");
+                            String color1 = pavgExtractor.extractValues(v1.getPropertiesList(), v2.getPropertiesList(), "rgb_color");
+                            String thickness1 = pavgExtractor.extractValues(v1.getPropertiesList(), v2.getPropertiesList(), "thickness");
+                            String alpha1 = pavgExtractor.extractValues(v1.getPropertiesList(), v2.getPropertiesList(), "alpha");
                             Structs.Property colorS = Structs.Property.newBuilder().setKey("rgb_color").setValue(color1).build();
                             Structs.Property thicknessS = Structs.Property.newBuilder().setKey("thickness").setValue(thickness1).build();
                             Structs.Property alphaS = Structs.Property.newBuilder().setKey("alpha").setValue(alpha1).build();
@@ -112,9 +112,9 @@ public class IrregularMeshGenerator implements MeshGenerator{
                             Structs.Vertex v2 = vertices.get(idx);
                             if (!segSet.contains(v1.getX() + "," + v1.getY() + "," + v2.getX() + "," + v2.getY())) {
                                 Structs.Segment s = Structs.Segment.newBuilder().setV1Idx(lastVertexIdx).setV2Idx(idx).build();
-                                String color1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "rgb_color");
-                                String thickness1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "thickness");
-                                String alpha1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "alpha");
+                                String color1 = pavgExtractor.extractValues(v1.getPropertiesList(), v2.getPropertiesList(), "rgb_color");
+                                String thickness1 = pavgExtractor.extractValues(v1.getPropertiesList(), v2.getPropertiesList(), "thickness");
+                                String alpha1 = pavgExtractor.extractValues(v1.getPropertiesList(), v2.getPropertiesList(), "alpha");
                                 Structs.Property colorS = Structs.Property.newBuilder().setKey("rgb_color").setValue(color1).build();
                                 Structs.Property thicknessS = Structs.Property.newBuilder().setKey("thickness").setValue(thickness1).build();
                                 Structs.Property alphaS = Structs.Property.newBuilder().setKey("alpha").setValue(alpha1).build();
@@ -139,8 +139,8 @@ public class IrregularMeshGenerator implements MeshGenerator{
                     props.add(segments.get(idx).getPropertiesList());
                 }
                 Structs.Polygon p = Structs.Polygon.newBuilder().addAllSegmentIdxs(pSegments).build();
-                Structs.Property color = Structs.Property.newBuilder().setKey("color").setValue(extractPropertyAverageN(props, "rgb_color")).build();
-                Structs.Property alpha = Structs.Property.newBuilder().setKey("alpha").setValue(extractPropertyAverageN(props, "alpha")).build();
+                Structs.Property color = Structs.Property.newBuilder().setKey("color").setValue(plavgExtractor.extractValues(props, "rgb_color")).build();
+                Structs.Property alpha = Structs.Property.newBuilder().setKey("alpha").setValue(plavgExtractor.extractValues(props, "alpha")).build();
                 Structs.Polygon pColored = Structs.Polygon.newBuilder(p).addProperties(alpha).addProperties(color).build();
                 if(pSegments.size() > 2) {
                     polygons.add(pColored);
@@ -293,94 +293,5 @@ public class IrregularMeshGenerator implements MeshGenerator{
         xVal = Math.round(xVal * 100.0) / 100.0;
         yVal = Math.round(yVal * 100.0) / 100.0;
         return new double[]{xVal, yVal};
-    }
-
-    private String extractPropertyAverage(List<Structs.Property> properties1, List<Structs.Property> properties2, String key) {
-        String val1 = null;
-        String val2 = null;
-        for (Structs.Property p : properties1) {
-            if (p.getKey().equals(key)) {
-                val1 = p.getValue();
-            }
-        }
-        for (Structs.Property p : properties2) {
-            if (p.getKey().equals(key)) {
-                val2 = p.getValue();
-            }
-        }
-        if(key.equals("rgb_color")) {
-            if (val1 == null)
-                val1 = "0,0,0";
-            if (val2 == null)
-                val2 = "0,0,0";
-            String[] raw1 = val1.split(",");
-            String[] raw2 = val2.split(",");
-            int red = (Integer.parseInt(raw1[0]) + Integer.parseInt(raw2[0])) / 2;
-            int green = (Integer.parseInt(raw1[1]) + Integer.parseInt(raw2[1])) / 2;
-            int blue = (Integer.parseInt(raw1[2]) + Integer.parseInt(raw2[2])) / 2;
-            String color = red + "," + green + "," + blue;
-            return color;
-        } else if (key.equals("thickness")) {
-            if (val1 == null)
-                val1 = "3";
-            if (val2 == null)
-                val2 = "3";
-            int average = (Integer.parseInt(val1) + Integer.parseInt(val2)) / 2;
-            return Integer.toString(average);
-        } else if (key.equals("alpha")) {
-            if (val1 == null)
-                val1 = "50";
-            if (val2 == null)
-                val2 = "50";
-            int average = (Integer.parseInt(val1) + Integer.parseInt(val2)) / 2;
-            return Integer.toString(average);
-        }
-        return null;
-    }
-    private String extractPropertyAverageN(List<List<Structs.Property>> properties, String key) {
-        String result = "";
-        for(List<Structs.Property> props : properties) {
-            String prop = "";
-            int counted = props.size() * 2;
-            for(Structs.Property p : props){
-                if(p.getKey().equals(key)) {
-                    prop = p.getValue();
-                }
-            }
-            if(key.equals("rgb_color")) {
-                if(prop.equals("")){
-                    prop = "0,0,0";
-                }
-                String[] raw = prop.split(",");
-                int red = Integer.parseInt(raw[0]) ;
-                int green = Integer.parseInt(raw[1]);
-                int blue = Integer.parseInt(raw[2]);
-                String[] currentRaw = result.split(",");
-                int currentRed,currentBlue,currentGreen;
-                if(!result.equals("")){
-                    currentRed = Integer.parseInt(currentRaw[0]) / counted;
-                    currentGreen = Integer.parseInt(currentRaw[1]) / counted;
-                    currentBlue = Integer.parseInt(currentRaw[2]) / counted;
-                } else {
-                    currentRed = 0;
-                    currentGreen = 0;
-                    currentBlue = 0;
-                }
-                result = (red / counted + currentRed)  + "," + (green/ counted + currentGreen) + "," + (blue/ counted + currentBlue);
-            } else if (key.equals("thickness")) {
-                if(prop.equals("")){
-                    prop = "3";
-                }
-                if(result.equals("")) result = "0";
-                result = Integer.parseInt(result) + (Integer.parseInt(prop) /counted)+ "";
-            } else if (key.equals("alpha")) {
-                if (prop.equals("")){
-                    prop = "75";
-                }
-                if(result.equals("")) result = "0";
-                result = Integer.parseInt(result) + (Integer.parseInt(prop) / counted) + "";
-            }
-        }
-        return result;
     }
 }

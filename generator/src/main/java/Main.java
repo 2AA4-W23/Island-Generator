@@ -58,8 +58,7 @@ public class Main {
         }
         else if(meshType.equals("irregular")){
             MeshGenerator irregulargen = new IrregularMeshGenerator();
-            irregulargen.SetInitialValues(num_iterations, numPolygons);
-            myMesh = irregulargen.generate();
+            myMesh = irregulargen.generate(num_iterations, numPolygons);
             System.out.println("Irregular Created");
             MeshFactory factory = new MeshFactory();
             factory.write(myMesh, args[0]);

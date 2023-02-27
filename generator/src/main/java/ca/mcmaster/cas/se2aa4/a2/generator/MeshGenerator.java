@@ -10,6 +10,7 @@ public interface MeshGenerator {
     int height = 500;
     int square_size = 20;
     Extractor pavgExtractor = new PropertyAverageExtractor();
+    Extractor plavgExtractor = new ListPropertyAverageExtractor();
     Random bag = new Random();
     public Mesh generate();
     public Mesh generate(int num_iter, int numP);
