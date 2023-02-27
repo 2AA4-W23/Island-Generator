@@ -164,3 +164,4 @@ For a feature to be considered done it must be work without throwing any excepti
 | F19 | Select number of polygons                                         | Virochaan | 02/21/2023 | 02/21/2023 | D      |
 | F20 | Select relaxation levels                                          | Virochaan | 02/21/2023 | 02/21/2023 | D      |
 | F21 | Command line help argument                                        | Omar      | 02/22/2023 | 02/22/2023 | D      |
+| F22 | Generate obj files from mesh                                      | Ibrahim   | 02/26/2023 | 02/27/2023 | D      |
