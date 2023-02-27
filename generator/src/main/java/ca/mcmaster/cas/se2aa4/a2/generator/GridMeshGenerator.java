@@ -117,10 +117,12 @@ public class GridMeshGenerator implements  MeshGenerator{
             int red = this.bag.nextInt(255);
             int green = this.bag.nextInt(255);
             int blue = this.bag.nextInt(255);
+            int a = this.bag.nextInt(255);
             String colorCode = red + "," + green + "," + blue;
             Polygon p = Polygon.newBuilder().addAllSegmentIdxs(pSegments).setCentroidIdx(verticesWithColors.size() + polygons.size()).build();
             Property color = Property.newBuilder().setKey("rgb_color").setValue(colorCode).build();
-            Polygon pColored = Polygon.newBuilder(p).addProperties(color).build();
+            Property alpha = Property.newBuilder().setKey("alpha").setValue(a + "").build();
+            Polygon pColored = Polygon.newBuilder(p).addProperties(color).addProperties(alpha).build();
             polygons.add(pColored);
             if((polygons.size())%25==0){
                 i+=3;

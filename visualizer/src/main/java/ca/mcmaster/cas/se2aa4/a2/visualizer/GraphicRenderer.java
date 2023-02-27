@@ -239,7 +239,7 @@ public class GraphicRenderer {
         if(alphaSet)
             return new Color(red,green,blue,alphaVal);
         else if(alpha != null)
-            return new Color(red, green, blue, Integer.parseInt(alpha));
+            return new Color(red, green, blue, Integer.parseInt(alpha) % 255);
         else return new Color(red, green, blue, 200);
     }
 

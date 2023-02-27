@@ -135,7 +135,7 @@ public class IrregularMeshGenerator implements MeshGenerator{
                     props.add(segments.get(idx).getPropertiesList());
                 }
                 Structs.Polygon p = Structs.Polygon.newBuilder().addAllSegmentIdxs(pSegments).build();
-                Structs.Property color = Structs.Property.newBuilder().setKey("color").setValue(extractPropertyAverageN(props, "rgb_color")).build();
+                Structs.Property color = Structs.Property.newBuilder().setKey("rgb_color").setValue(extractPropertyAverageN(props, "rgb_color")).build();
                 Structs.Property alpha = Structs.Property.newBuilder().setKey("alpha").setValue(extractPropertyAverageN(props, "alpha")).build();
                 Structs.Polygon pColored = Structs.Polygon.newBuilder(p).addProperties(alpha).addProperties(color).build();
                 if(pSegments.size() > 2) {

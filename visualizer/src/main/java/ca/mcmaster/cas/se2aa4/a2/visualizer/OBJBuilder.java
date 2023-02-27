@@ -30,14 +30,12 @@ public class OBJBuilder {
         List<Vertex> VertexList = mesh.getVerticesList();
         List<Segment> SegmentList = mesh.getSegmentsList();
         List<Polygon> PolygonList = mesh.getPolygonsList();
-        File obj = new File("mesh.obj");
-        File mtl = new File("mesh.mtl");
-        PrintWriter writer = new PrintWriter("mesh.obj");
-        writer.print("");
-        writer.close();
-        PrintWriter writer2 = new PrintWriter("mesh.mtl");
-        writer2.print("");
-        writer2.close();
+        File old_obj = new File("mesh.obj");
+        File old_mtl = new File("mesh.mtl");
+        old_obj.delete();
+        old_mtl.delete();
+        new File("mesh.obj");
+        new File("mesh.mtl");
 
         FileWriter fwo = new FileWriter("mesh.obj", true);
         FileWriter fwm = new FileWriter("mesh.mtl", true);
@@ -61,13 +59,6 @@ public class OBJBuilder {
         fwo.write("\nvn 0.00 0.00 1.00\n\n");
 
         for(Polygon p : PolygonList){ 
-            String mtlName = getMtlName();
-            fwo.write("usemtl " + mtlName + "\n"); 
-            fwm.write("newmtl " + mtlName + "\n");
-            fwm.write("\tKa " + extractPropString(p.getPropertiesList(), "color") + "\n");
-            fwm.write("\tKd " + extractPropString(p.getPropertiesList(), "color") + "\n");
-            fwm.write("\tKs " + extractPropString(p.getPropertiesList(), "color") + "\n");
-            fwm.write("\td " + extractPropString(p.getPropertiesList(), "alpha") + "\n\n");
             int j = 0;
             Coordinate points[] = new Coordinate[p.getSegmentIdxsCount()];
             Set<Integer> added = new HashSet<>();
@@ -115,11 +106,12 @@ public class OBJBuilder {
                     polyString += idx + "//1 ";
                 }
                 if(!polyString.equals("")) {
+                    String mtlName = getMtlName();
                     fwo.write("usemtl " + mtlName + "\n"); 
                     fwm.write("newmtl " + mtlName + "\n");
-                    fwm.write("\tKa " + extractPropString(p.getPropertiesList(), "color") + "\n");
-                    fwm.write("\tKd " + extractPropString(p.getPropertiesList(), "color") + "\n");
-                    fwm.write("\tKs " + extractPropString(p.getPropertiesList(), "color") + "\n");
+                    fwm.write("\tKa " + extractPropString(p.getPropertiesList(), "rgb_color") + "\n");
+                    fwm.write("\tKd " + extractPropString(p.getPropertiesList(), "rgb_color") + "\n");
+                    fwm.write("\tKs 0.5 0.5 0.5\n");
                     fwm.write("\td " + extractPropString(p.getPropertiesList(), "alpha") + "\n\n");
                     fwo.write(polyString + "\n\n");
                 }
@@ -127,6 +119,7 @@ public class OBJBuilder {
         }
         fwo.close();
         fwm.close();
+        System.out.println("mesh.obj created");
     }
 
     // fwm.write("new mtl " + mtlName + "\n");
@@ -154,14 +147,14 @@ public class OBJBuilder {
             }
         }
         if (propString == "") return propString;
-        if(key.equals("color")){
+        if(key.equals("rgb_color")){
             String[] raw = propString.split(",");
             double r = (double) Integer.parseInt(raw[0])/ 255;
             double g = (double) Integer.parseInt(raw[1])/ 255;
             double b = (double) Integer.parseInt(raw[2])/ 255;
-            r = Math.round(r * 100.0) / 100.0;
-            g = Math.round(g * 100.0) / 100.0;
-            b = Math.round(b * 100.0) / 100.0;
+            r = Math.round(r * 100.0) / 10.0;
+            g = Math.round(g * 100.0) / 10.0;
+            b = Math.round(b * 100.0) / 10.0;
             propString = r + " " + g + " " + b;
             //System.out.println("found");
         }
