@@ -329,11 +329,6 @@ public class DotGen {
 
         }
 
-//        System.out.println(centroids);
-//        System.out.println(centroidCoordinates);
-//
-//        System.out.println(centroids.size());
-//        System.out.println(polygons.size());
 
         int initialVerticesSize = vertices.size();
         for(int i = 0; i < polygons.size(); i++){
