@@ -10,6 +10,11 @@ import java.util.Set;
 public class GridMeshGenerator implements  MeshGenerator{
 
     @Override
+    public void SetInitialValues(int num_iterations, int numPolygons) {
+
+    }
+
+    @Override
     public Mesh generate() {
         ArrayList<Vertex> vertices = new ArrayList<>();
         // Create all the vertices

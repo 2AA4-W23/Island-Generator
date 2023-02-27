@@ -1,5 +1,6 @@
 import ca.mcmaster.cas.se2aa4.a2.generator.DotGen;
 import ca.mcmaster.cas.se2aa4.a2.generator.GridMeshGenerator;
+import ca.mcmaster.cas.se2aa4.a2.generator.IrregularMeshGenerator;
 import ca.mcmaster.cas.se2aa4.a2.generator.MeshGenerator;
 import ca.mcmaster.cas.se2aa4.a2.io.MeshFactory;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Mesh;
@@ -57,7 +58,9 @@ public class Main {
             System.out.println(numPolygons);
         }
         else if(meshType.equals("irregular")){
-            myMesh = generator.generateIrregular(num_iterations, numPolygons);
+            MeshGenerator irregulargen = new IrregularMeshGenerator();
+            irregulargen.SetInitialValues(num_iterations, numPolygons);
+            myMesh = irregulargen.generate();
             System.out.println("Irregular Created");
             MeshFactory factory = new MeshFactory();
             factory.write(myMesh, args[0]);
