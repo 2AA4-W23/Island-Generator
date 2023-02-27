@@ -1,10 +1,11 @@
-package ca.mcmaster.cas.se2aa4.a2.generator;
+package ca.mcmaster.cas.se2aa4.a2.generator.extractors;
 
+import ca.mcmaster.cas.se2aa4.a2.generator.extractors.Extractor;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 
 import java.util.List;
 
-public class PropertyAverageExtractor implements Extractor{
+public class PropertyAverageExtractor implements Extractor {
 
     @Override
     public String extractValues(List<Structs.Property> properties1, List<Structs.Property> properties2, String key) {

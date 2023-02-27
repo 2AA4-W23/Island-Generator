@@ -1,7 +1,9 @@
 package ca.mcmaster.cas.se2aa4.a2.generator;
 
+import ca.mcmaster.cas.se2aa4.a2.generator.extractors.Extractor;
+import ca.mcmaster.cas.se2aa4.a2.generator.extractors.ListPropertyAverageExtractor;
+import ca.mcmaster.cas.se2aa4.a2.generator.extractors.PropertyAverageExtractor;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.*;
-import jdk.jshell.spi.ExecutionControl;
 
 import java.util.Random;
 
