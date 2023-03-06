@@ -18,6 +18,7 @@ public class Lagoon {
         List<Polygon> newList = new ArrayList<>();
         int index = 0;
         Ellipse2D outer = new Ellipse2D.Double(50,50,400,400);
+        Ellipse2D lake = new Ellipse2D.Double(150,150,200,200);
 
 //        for (Polygon p: pList){
 //            System.out.println(extractColor(p.getPropertiesList()));
@@ -30,6 +31,11 @@ public class Lagoon {
                 Structs.Property tileTag = Structs.Property.newBuilder().setKey("tile_tag").setValue("ocean").build();
                 Structs.Polygon pColoredModify = Structs.Polygon.newBuilder(p).addProperties(color).addProperties(tileTag).build();
                 newList.add(pColoredModify);
+            } else if(lake.contains(v.getX(), v.getY())) {
+                Structs.Property color = Structs.Property.newBuilder().setKey("rgb_color").setValue("70,130,180").build();
+                Structs.Property tileTag = Structs.Property.newBuilder().setKey("tile_tag").setValue("lagoon").build();
+                Structs.Polygon pColoredModify = Structs.Polygon.newBuilder(p).addProperties(color).addProperties(tileTag).build();
+                newList.add(pColoredModify);
             } else {
                 Structs.Property color = Structs.Property.newBuilder().setKey("rgb_color").setValue("144,238,144").build();
                 Structs.Property tileTag = Structs.Property.newBuilder().setKey("tile_tag").setValue("land").build();
@@ -37,6 +43,8 @@ public class Lagoon {
                 newList.add(pColoredModify);
             }
         }
+
+
         System.out.println("After Modification");
         for (Polygon p: newList){
             System.out.println(extractColor(p.getPropertiesList()));
@@ -61,4 +69,5 @@ public class Lagoon {
 
        return color;
     }
+
 }
