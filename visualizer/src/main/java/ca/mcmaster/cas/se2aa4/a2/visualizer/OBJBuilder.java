@@ -65,7 +65,7 @@ public class OBJBuilder {
             for(Integer i : p.getSegmentIdxsList()){
                 Integer v1 = SegmentList.get(i).getV1Idx();
                 Integer v2 = SegmentList.get(i).getV2Idx();
-                System.out.println("Segment " + i);
+//                System.out.println("Segment " + i);
                 try{
                     if(!added.contains(v1)){
                         double x = VertexList.get(SegmentList.get(i).getV1Idx()).getX() / 100.0;

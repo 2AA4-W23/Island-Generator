@@ -38,15 +38,16 @@ public class GraphicRenderer {
         List<Polygon> PolygonList = aMesh.getPolygonsList();
 
         int lowCentroidIdx = VertexList.size();
+        int count1 = 0;
         for (Polygon p : PolygonList) {
-            System.out.println(p.getSegmentIdxsCount() + " segments in polygon");
+//            System.out.println(p.getSegmentIdxsCount() + " segments in polygon");
             Coordinate points[] = new Coordinate[p.getSegmentIdxsCount()];
             Set<Integer> added = new HashSet<>();
             int j = 0;
             for(int i : p.getSegmentIdxsList()){
                 Integer v1 = SegmentList.get(i).getV1Idx();
                 Integer v2 = SegmentList.get(i).getV2Idx();
-                System.out.println("Segment " + i);
+//                System.out.println("Segment " + i);
                 try{
                     if(!added.contains(v1)){
                         float x = (float) VertexList.get(SegmentList.get(i).getV1Idx()).getX();
@@ -68,7 +69,28 @@ public class GraphicRenderer {
             }
             lowCentroidIdx = Math.min(p.getCentroidIdx(), lowCentroidIdx);
             Color old = canvas.getColor();
-            canvas.setColor(extractColor(p.getPropertiesList(), alphaSet, alpha));
+            Color new1 = new Color(0,0,0);
+            int[] intVals = extractColor(p.getPropertiesList());
+
+            new1 = new Color(intVals[0], intVals[1], intVals[2]);
+            System.out.println(new1.getAlpha());
+////            new1.
+//            if(count1 %3==0){
+//                new1 = new Color(100,56,232);
+//                new1 = old;
+//            }
+            for (int i = 0; i < 5; i++) {
+                new1 = new1.brighter();
+            }
+            canvas.setColor(new1);
+
+//            else if(count1%2 ==0) {
+//                new1 = new Color(255,193,110);
+//            } else {
+//                new1 = new Color(173,216,250);
+//            }
+            count1 ++;
+
             if(debug){
                 if(alphaSet) canvas.setColor(new Color(0,0,0,alpha));
                 else canvas.setColor(new Color(0,0,0));
@@ -217,7 +239,25 @@ public class GraphicRenderer {
         average = new Color(r, g, b, a);
         return average;
     }
-
+    private int[] extractColor(List<Property> properties) {
+        String color = null;
+        for(Property p: properties) {
+            if (p.getKey().equals("rgb_color")) {
+                color = p.getValue();
+            }
+        }
+        if (color == null)
+            color="0,0,0";
+        System.out.println(color);
+        String[] raw = color.split(",");
+        int red = Integer.parseInt(raw[0]);
+        int green = Integer.parseInt(raw[1]);
+        int blue = Integer.parseInt(raw[2]);
+        System.out.println(red);
+        System.out.println(blue);
+        System.out.println(green);
+        return new int[]{red, green, blue};
+    }
     private Color extractColor(List<Property> properties, boolean alphaSet, int alphaVal) {
         String color = null;
         String alpha = null;
