@@ -1,0 +1,11 @@
+#!/bin/bash
+
+cd generator
+java -jar generator.jar sample.mesh -mt irregular
+
+cd ../island
+java -jar island.jar -i ../generator/sample.mesh -o island.mesh --mode lagoon
+
+cd ../visualizer
+java -jar visualizer.jar ../island/island.mesh sample.svg
+cd ..

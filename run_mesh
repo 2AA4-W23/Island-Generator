@@ -1,0 +1,8 @@
+#!/bin/bash
+
+cd generator
+java -jar generator.jar sample.mesh -mt irregular -np 500 -lr 15
+
+cd ../visualizer
+java -jar visualizer.jar ../generator/sample.mesh sample.svg -T 5 -A 250 -X
+cd ..
