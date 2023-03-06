@@ -44,7 +44,18 @@ public class Lagoon {
             }
         }
 
-
+        for(Polygon p: newList){
+            for (int i = 0; i < p.getNeighborIdxsCount(); i++) {
+                Polygon x = newList.get(p.getNeighborIdxs(i));
+                if((extractTag(x.getPropertiesList()).equals("ocean") || extractTag(x.getPropertiesList()).equals("lagoon")) && extractTag(p.getPropertiesList()).equals("land")){
+                    Structs.Property color = Structs.Property.newBuilder().setKey("rgb_color").setValue("194,178,128").build();
+                    Structs.Property tileTag = Structs.Property.newBuilder().setKey("tile_tag").setValue("beach").build();
+                    Structs.Polygon pColoredModify = Structs.Polygon.newBuilder(p).addProperties(color).addProperties(tileTag).build();
+                    newList.set(index, pColoredModify);
+                }
+            }
+            index++;
+        }
         System.out.println("After Modification");
         for (Polygon p: newList){
             System.out.println(extractColor(p.getPropertiesList()));
@@ -69,5 +80,20 @@ public class Lagoon {
 
        return color;
     }
+    private String extractTag(List<Property> properties) {
+        String tag = null;
+        for(Property p: properties) {
+            if (p.getKey().equals("tile_tag")) {
+                tag = p.getValue();
+            }
+        }
+        if (tag == null)
+            return "null";
+//        String[] raw = color.split(",");
+////        int red = Integer.parseInt(raw[0]);
+////        int green = Integer.parseInt(raw[1]);
+////        int blue = Integer.parseInt(raw[2]);
 
+        return tag;
+    }
 }
