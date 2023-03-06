@@ -10,13 +10,14 @@
     <artifactId>2aa4.mesh</artifactId>
     <version>1.0</version>
     <name>McMaster :: CAS :: 2AA4 :: A2</name>
-    <description>Mesh generator and visualizer</description>
+    <description>Mesh generator, island generator and visualizer</description>
 
     <modules>
         <module>generator</module>
         <module>io</module>
+		<module>island</module>
         <module>visualizer</module>
-    </modules>
+	</modules>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

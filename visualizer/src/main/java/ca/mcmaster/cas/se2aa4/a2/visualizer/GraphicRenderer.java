@@ -68,7 +68,7 @@ public class GraphicRenderer {
             }
             lowCentroidIdx = Math.min(p.getCentroidIdx(), lowCentroidIdx);
             Color old = canvas.getColor();
-            canvas.setColor(averageSegmentColor(p.getSegmentIdxsList(), SegmentList));
+            canvas.setColor(extractColor(p.getPropertiesList(), alphaSet, alpha));
             if(debug){
                 if(alphaSet) canvas.setColor(new Color(0,0,0,alpha));
                 else canvas.setColor(new Color(0,0,0));
@@ -115,74 +115,75 @@ public class GraphicRenderer {
             }
         }
 
-        
-        for (Segment s : SegmentList) {
-            double x1 = VertexList.get(s.getV1Idx()).getX();
-            double x2 = VertexList.get(s.getV2Idx()).getX();
-            double y1 = VertexList.get(s.getV1Idx()).getY();
-            double y2 = VertexList.get(s.getV2Idx()).getY();
+        if(debug){
+            for (Segment s : SegmentList) {
+                double x1 = VertexList.get(s.getV1Idx()).getX();
+                double x2 = VertexList.get(s.getV2Idx()).getX();
+                double y1 = VertexList.get(s.getV1Idx()).getY();
+                double y2 = VertexList.get(s.getV2Idx()).getY();
 
-            
-            Color old1 = canvas.getColor();
-            Stroke oldStroke = canvas.getStroke();
-            canvas.setColor(extractColor(s.getPropertiesList(), alphaSet, alpha));
-            canvas.setStroke(extractStroke(s.getPropertiesList()));
-            
-            if (debug){
-                canvas.setColor(new Color(90,90,90));
-                canvas.setStroke(new BasicStroke(1));
-                if(alphaSet){
-                    canvas.setColor(new Color(90,90,90,alpha));
+
+                Color old1 = canvas.getColor();
+                Stroke oldStroke = canvas.getStroke();
+                canvas.setColor(extractColor(s.getPropertiesList(), alphaSet, alpha));
+                canvas.setStroke(extractStroke(s.getPropertiesList()));
+
+                if (debug){
+                    canvas.setColor(new Color(90,90,90));
+                    canvas.setStroke(new BasicStroke(1));
+                    if(alphaSet){
+                        canvas.setColor(new Color(90,90,90,alpha));
+                    }
+                } else if(!thickSet) {
+                    int v1Thickness = extractThickness(VertexList.get(s.getV1Idx()).getPropertiesList());
+                    int v2Thickness = extractThickness(VertexList.get(s.getV2Idx()).getPropertiesList());
+                    if(Math.abs(y1 - y2) < 0.01) {
+                        x1 += v1Thickness/2.0d;
+                        x2 -= v2Thickness/2.0d;
+                    }
+                    else if(Math.abs(x1 - x2) < 0.01) {
+                        y1 += v1Thickness/2.0d;
+                        y2 -= v2Thickness/2.0d;
+                    }
                 }
-            } else if(!thickSet) {
-                int v1Thickness = extractThickness(VertexList.get(s.getV1Idx()).getPropertiesList());
-                int v2Thickness = extractThickness(VertexList.get(s.getV2Idx()).getPropertiesList());
-                if(Math.abs(y1 - y2) < 0.01) {
-                    x1 += v1Thickness/2.0d;
-                    x2 -= v2Thickness/2.0d;
+                if(thickSet){
+                    canvas.setStroke(new BasicStroke(Math.max(1, thick - 1)));
                 }
-                else if(Math.abs(x1 - x2) < 0.01) {
-                    y1 += v1Thickness/2.0d;
-                    y2 -= v2Thickness/2.0d;
-                }
+                Line2D line = new Line2D.Double(x1, y1, x2, y2);
+                canvas.draw(line);
+                canvas.setStroke(oldStroke);
+                canvas.setColor(old1);
             }
-            if(thickSet){
-                canvas.setStroke(new BasicStroke(Math.max(1, thick - 1)));
+            int count = 0;
+            for (Vertex v: VertexList) {
+                int thickness = extractThickness(v.getPropertiesList());
+                Color old = canvas.getColor();
+                canvas.setColor(extractColor(v.getPropertiesList(), alphaSet, alpha));
+                if(count >= lowCentroidIdx){
+                    canvas.setColor(new Color(0,0,0,0));
+                }
+                if(debug){
+                    thickness = 3;
+                    if(count < lowCentroidIdx){
+                        if(alphaSet) canvas.setColor(new Color(90,90,90, alpha));
+                        else canvas.setColor(new Color(90,90,90));
+                    } else{
+                        if(alphaSet) canvas.setColor(new Color(255,0,0, alpha));
+                        else canvas.setColor(new Color(255,0,0));
+                    }
+                }
+                if(thickSet){
+                    thickness = thick + 1;
+                }
+                double centre_x = v.getX() - (thickness/2.0d);
+                double centre_y = v.getY() - (thickness/2.0d);
+                Ellipse2D point = new Ellipse2D.Double(centre_x, centre_y, thickness, thickness);
+                canvas.fill(point);
+                canvas.setColor(old);
+                count++;
             }
-            Line2D line = new Line2D.Double(x1, y1, x2, y2);
-            canvas.draw(line);
-            canvas.setStroke(oldStroke);
-            canvas.setColor(old1);
         }
-        int count = 0;
-        for (Vertex v: VertexList) {
-            int thickness = extractThickness(v.getPropertiesList());
-            Color old = canvas.getColor();
-            canvas.setColor(extractColor(v.getPropertiesList(), alphaSet, alpha));
-            if(count >= lowCentroidIdx){
-                canvas.setColor(new Color(0,0,0,0));
-            }
-            if(debug){
-                thickness = 3;
-                if(count < lowCentroidIdx){
-                    if(alphaSet) canvas.setColor(new Color(90,90,90, alpha));
-                    else canvas.setColor(new Color(90,90,90));
-                } else{
-                    if(alphaSet) canvas.setColor(new Color(255,0,0, alpha));
-                    else canvas.setColor(new Color(255,0,0));
-                }
-            }
-            if(thickSet){
-                thickness = thick + 1;
-            }
-            double centre_x = v.getX() - (thickness/2.0d);
-            double centre_y = v.getY() - (thickness/2.0d);
-            Ellipse2D point = new Ellipse2D.Double(centre_x, centre_y, thickness, thickness);
-            canvas.fill(point);
-            canvas.setColor(old);
-            count++;
-        }
-        
+
     }
 
     private Color averageSegmentColor(List<Integer> edges, List<Segment> allSegments) {
