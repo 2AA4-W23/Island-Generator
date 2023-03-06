@@ -12,6 +12,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -44,6 +45,8 @@ public class GraphicRenderer {
             Coordinate points[] = new Coordinate[p.getSegmentIdxsCount()];
             Set<Integer> added = new HashSet<>();
             int j = 0;
+            System.out.println("Polygon " + count1);
+            System.out.println("Num vertices: " + p.getSegmentIdxsCount());
             for(int i : p.getSegmentIdxsList()){
                 Integer v1 = SegmentList.get(i).getV1Idx();
                 Integer v2 = SegmentList.get(i).getV2Idx();
@@ -53,6 +56,7 @@ public class GraphicRenderer {
                         float x = (float) VertexList.get(SegmentList.get(i).getV1Idx()).getX();
                         float y = (float) VertexList.get(SegmentList.get(i).getV1Idx()).getY();
                         points[j] = new Coordinate(x, y);
+                        System.out.println(points[j]);
                         added.add(v1);
                         j++;
                     }
@@ -60,6 +64,7 @@ public class GraphicRenderer {
                         float x = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getX();
                         float y = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getY();
                         points[j] = new Coordinate(x, y);
+                        System.out.println(points[j]);
                         added.add(v2);
                         j++;
                     }
@@ -73,7 +78,7 @@ public class GraphicRenderer {
             int[] intVals = extractColor(p.getPropertiesList());
 
             new1 = new Color(intVals[0], intVals[1], intVals[2]);
-            System.out.println(new1.getAlpha());
+//            System.out.println(new1.getAlpha());
 ////            new1.
 //            if(count1 %3==0){
 //                new1 = new Color(100,56,232);
@@ -95,10 +100,22 @@ public class GraphicRenderer {
                 if(alphaSet) canvas.setColor(new Color(0,0,0,alpha));
                 else canvas.setColor(new Color(0,0,0));
             }
-            if(j != 0) {
+            List<Coordinate> valPoints = new ArrayList<>();
+            for(Coordinate data: points) {
+                if (data != null) {
+                    valPoints.add(data);
+                }
+            }
+            Coordinate[] newPoints = valPoints.toArray(new Coordinate[valPoints.size()]);
+
+                if(j != 0 && points != null) {
                 float[] x = new float[p.getSegmentIdxsCount()];
                 float[] y = new float[p.getSegmentIdxsCount()];
-                ConvexHull cv = new ConvexHull(points, new GeometryFactory());
+                System.out.println("New Polygon:");
+                for(Coordinate point: points){
+                    System.out.println(point);
+                }
+                ConvexHull cv = new ConvexHull(newPoints, new GeometryFactory());
                 Coordinate[] orderedPoints = cv.getConvexHull().getCoordinates();    
                 for(int i = 0; i < p.getSegmentIdxsCount(); i++) {
                     x[i] = (float) orderedPoints[i].getX();
@@ -248,14 +265,14 @@ public class GraphicRenderer {
         }
         if (color == null)
             color="0,0,0";
-        System.out.println(color);
+//        System.out.println(color);
         String[] raw = color.split(",");
         int red = Integer.parseInt(raw[0]);
         int green = Integer.parseInt(raw[1]);
         int blue = Integer.parseInt(raw[2]);
-        System.out.println(red);
-        System.out.println(blue);
-        System.out.println(green);
+//        System.out.println(red);
+//        System.out.println(blue);
+//        System.out.println(green);
         return new int[]{red, green, blue};
     }
     private Color extractColor(List<Property> properties, boolean alphaSet, int alphaVal) {
