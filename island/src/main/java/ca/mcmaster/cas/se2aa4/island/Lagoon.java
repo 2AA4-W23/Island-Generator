@@ -3,29 +3,45 @@ package ca.mcmaster.cas.se2aa4.island;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.*;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
+import org.locationtech.jts.awt.PointShapeFactory;
 
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Lagoon {
     public Mesh LagoonTerrain(Mesh mesh){
         List<Polygon> pList = mesh.getPolygonsList();
+        List<Vertex> vList = mesh.getVerticesList();
+
         List<Polygon> newList = new ArrayList<>();
         int index = 0;
-        for (Polygon p: pList){
-            System.out.println(extractColor(p.getPropertiesList()));
-        }
+        Ellipse2D outer = new Ellipse2D.Double(50,50,400,400);
+
+//        for (Polygon p: pList){
+//            System.out.println(extractColor(p.getPropertiesList()));
+//        }
         for (Polygon p: pList) {
-            Structs.Property color = Structs.Property.newBuilder().setKey("rgb_color").setValue("0,0,0").build();
-            Structs.Polygon pColoredModify = Structs.Polygon.newBuilder(p).addProperties(color).build();
-            newList.add(pColoredModify);
-            index ++;
+            int indexc = p.getCentroidIdx();
+            Vertex v = vList.get(indexc);
+            if(!outer.contains(v.getX(), v.getY())){
+                Structs.Property color = Structs.Property.newBuilder().setKey("rgb_color").setValue("43,101,236").build();
+                Structs.Property tileTag = Structs.Property.newBuilder().setKey("tile_tag").setValue("ocean").build();
+                Structs.Polygon pColoredModify = Structs.Polygon.newBuilder(p).addProperties(color).addProperties(tileTag).build();
+                newList.add(pColoredModify);
+            } else {
+                Structs.Property color = Structs.Property.newBuilder().setKey("rgb_color").setValue("144,238,144").build();
+                Structs.Property tileTag = Structs.Property.newBuilder().setKey("tile_tag").setValue("land").build();
+                Structs.Polygon pColoredModify = Structs.Polygon.newBuilder(p).addProperties(color).addProperties(tileTag).build();
+                newList.add(pColoredModify);
+            }
         }
         System.out.println("After Modification");
         for (Polygon p: newList){
             System.out.println(extractColor(p.getPropertiesList()));
         }
+        System.out.println(pList.size()== newList.size());
         return Structs.Mesh.newBuilder().addAllPolygons(newList).addAllSegments(mesh.getSegmentsList()).addAllVertices(mesh.getVerticesList()).build();
     }
     private String extractColor(List<Property> properties) {
@@ -39,9 +55,9 @@ public class Lagoon {
             return "null";
 
         String[] raw = color.split(",");
-        int red = Integer.parseInt(raw[0]);
-        int green = Integer.parseInt(raw[1]);
-        int blue = Integer.parseInt(raw[2]);
+//        int red = Integer.parseInt(raw[0]);
+//        int green = Integer.parseInt(raw[1]);
+//        int blue = Integer.parseInt(raw[2]);
 
        return color;
     }

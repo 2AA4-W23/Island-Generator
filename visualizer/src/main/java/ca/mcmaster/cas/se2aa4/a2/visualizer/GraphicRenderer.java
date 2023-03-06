@@ -79,9 +79,9 @@ public class GraphicRenderer {
 //                new1 = new Color(100,56,232);
 //                new1 = old;
 //            }
-            for (int i = 0; i < 5; i++) {
-                new1 = new1.brighter();
-            }
+//            for (int i = 0; i < 5; i++) {
+//                new1 = new1.brighter();
+//            }
             canvas.setColor(new1);
 
 //            else if(count1%2 ==0) {
