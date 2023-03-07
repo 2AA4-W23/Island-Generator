@@ -30,7 +30,7 @@ public class Main {
         String meshType = cmd.getOptionValue("mt");
         int num_iterations = 10;
         Random bag = new Random();
-        int numPolygons = bag.nextInt(300, 800);
+        int numPolygons = bag.nextInt(1500, 3000);
         try {
             num_iterations = Integer.parseInt(cmd.getOptionValue("lr"));
             if(num_iterations <= 0){
