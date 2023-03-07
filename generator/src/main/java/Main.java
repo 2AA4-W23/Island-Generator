@@ -31,6 +31,7 @@ public class Main {
         int num_iterations = 10;
         Random bag = new Random();
         int numPolygons = bag.nextInt(1500, 3000);
+        System.out.println(numPolygons);
         try {
             num_iterations = Integer.parseInt(cmd.getOptionValue("lr"));
             if(num_iterations <= 0){

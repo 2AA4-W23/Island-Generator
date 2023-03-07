@@ -180,8 +180,8 @@ public class IrregularMeshGenerator implements MeshGenerator{
                     centroidCoordinates.add(new Coordinate(coord[0], coord[1]));
                     prev = initialCoordinates;
                 }
-                System.out.println(centroids.size());
-                System.out.println(centroidCoordinates.size());
+//                System.out.println(centroids.size());
+//                System.out.println(centroidCoordinates.size());
             }
 
 
@@ -192,7 +192,7 @@ public class IrregularMeshGenerator implements MeshGenerator{
         for(int i = 0; i < polygons.size(); i++){
             Structs.Polygon pCentroid = Structs.Polygon.newBuilder(polygons.get(i)).setCentroidIdx(vertices.size() + i).build();
             polygons.set(i, pCentroid);
-            System.out.println(centroids.get(i).getPropertiesList());
+//            System.out.println(centroids.get(i).getPropertiesList());
         }
 
 //        DelaunayTriangulationBuilder dt = new DelaunayTriangulationBuilder();
