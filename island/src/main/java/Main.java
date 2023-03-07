@@ -20,7 +20,6 @@ public class Main {
 
         String mode = cmd.getOptionValue("mode");
         if(mode == null || !(mode.equals("lagoon"))){
-            System.out.println("Not lagoon mode");
             Structs.Mesh aMesh = new MeshFactory().read(cmd.getOptionValue("i"));
             String shape = cmd.getOptionValue("shape");
             Structs.Mesh myMesh = IslandGenerator.Generate(aMesh, shape);

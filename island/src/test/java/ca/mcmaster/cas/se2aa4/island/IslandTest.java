@@ -14,10 +14,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class IslandTest {
     @Test
+    public void checkRectangularIslandCreation(){
+        Structs.Mesh testMesh = MeshCreator();
+        Structs.Mesh islandMesh = IslandGenerator.Generate(testMesh, "rectangle");
+        assertNotNull(islandMesh);
+    }
+    @Test
+    public void checkCircularIslandCreation(){
+        Structs.Mesh testMesh = MeshCreator();
+        Structs.Mesh islandMesh = IslandGenerator.Generate(testMesh, "circle");
+        assertNotNull(islandMesh);
+    }
+    @Test
     public void checkTileTags(){
-        //Create Mesh
-        MeshGenerator generator = new IrregularMeshGenerator();
-        Structs.Mesh testMesh = generator.generate(2000, 5);
+        Structs.Mesh testMesh = MeshCreator();
 
         Lagoon lagoonMap = new Lagoon();
         Structs.Mesh newMesh = lagoonMap.LagoonTerrain(testMesh);
@@ -35,9 +45,7 @@ public class IslandTest {
     }
     @Test
     public void checkRGB(){
-        //Create Mesh
-        MeshGenerator generator = new IrregularMeshGenerator();
-        Structs.Mesh testMesh = generator.generate(2000, 5);
+        Structs.Mesh testMesh = MeshCreator();
 
         Lagoon lagoonMap = new Lagoon();
         Structs.Mesh newMesh = lagoonMap.LagoonTerrain(testMesh);
@@ -74,5 +82,12 @@ public class IslandTest {
             }
         }
         assertEquals(checkRgbColors, true);
+    }
+
+    private Structs.Mesh MeshCreator(){
+        //Create Mesh
+        MeshGenerator generator = new IrregularMeshGenerator();
+        Structs.Mesh testMesh = generator.generate(2000, 5);
+        return testMesh;
     }
 }
