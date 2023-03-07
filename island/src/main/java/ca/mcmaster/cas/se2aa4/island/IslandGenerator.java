@@ -11,6 +11,11 @@ public class IslandGenerator {
         List<Structs.Vertex> vList = mesh.getVerticesList();
 
         List<Structs.Polygon> newList = new ArrayList<>();
+        if(shape.equals("circle")){
+
+        } else {
+
+        }
         return mesh;
     }
 
