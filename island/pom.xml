@@ -53,6 +53,12 @@
             <version>1.0</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>io.github.ace-design</groupId>
+            <artifactId>2aa4.mesh.generator</artifactId>
+            <version>1.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <properties>

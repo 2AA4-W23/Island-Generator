@@ -63,7 +63,7 @@ public class Lagoon {
         System.out.println(pList.size()== newList.size());
         return Structs.Mesh.newBuilder().addAllPolygons(newList).addAllSegments(mesh.getSegmentsList()).addAllVertices(mesh.getVerticesList()).build();
     }
-    private String extractColor(List<Property> properties) {
+    public String extractColor(List<Property> properties) {
         String color = null;
         for(Property p: properties) {
             if (p.getKey().equals("rgb_color")) {
@@ -80,7 +80,7 @@ public class Lagoon {
 
        return color;
     }
-    private String extractTag(List<Property> properties) {
+    public String extractTag(List<Property> properties) {
         String tag = null;
         for(Property p: properties) {
             if (p.getKey().equals("tile_tag")) {
