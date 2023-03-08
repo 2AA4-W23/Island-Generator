@@ -4,6 +4,7 @@ import org.apache.batik.ext.awt.geom.Polygon2D;
 import org.locationtech.jts.algorithm.ConvexHull;
 import org.locationtech.jts.geom.*;
 import org.locationtech.jts.algorithm.hull.*;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 import java.util.Random;
 
@@ -21,18 +22,24 @@ public class Irregular implements Shape{
     @Override
     public void create() {
 
-        int numPoints = bag.nextInt(50,100);
+        int numPoints = bag.nextInt(25,50);
         Coordinate[] pts =  new Coordinate[numPoints];
 
 
         for (int i = 0; i < numPoints; i++) {
-            int x = bag.nextInt(100,400);
-            int y = bag.nextInt(100,400);
+            int x = bag.nextInt(25,475);
+            int y = bag.nextInt(25,475);
             pts[i] = new Coordinate(x,y);
         }
+        for(Coordinate c: pts){
+            System.out.println(c);
+        }
 //        ConcaveHull cv = new ConcaveHull();
-        ConvexHull c = new ConvexHull(pts, new GeometryFactory());
-        this.shape = c.getConvexHull();
+//        ConvexHull c = new ConvexHull(pts, new GeometryFactory());
+
+        Geometry g1 = new GeometryFactory().createLineString(pts);
+        this.shape = ConcaveHull.concaveHullByLengthRatio(g1, 0.4, false);
+//        this.shape = c.getConvexHull();
 
     }
 }
