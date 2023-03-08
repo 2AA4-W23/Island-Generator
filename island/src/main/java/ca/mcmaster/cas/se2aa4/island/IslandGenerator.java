@@ -5,6 +5,7 @@ import ca.mcmaster.cas.se2aa4.island.Extractors.Extractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.RGBExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.TileTagExtractor;
 import ca.mcmaster.cas.se2aa4.island.Shape.Circle;
+import ca.mcmaster.cas.se2aa4.island.Shape.Irregular;
 import ca.mcmaster.cas.se2aa4.island.Shape.Rectangle;
 import ca.mcmaster.cas.se2aa4.island.Shape.Shape;
 
@@ -27,7 +28,7 @@ public class IslandGenerator {
             islandShape = new Circle();
             islandShape.create();
         } else {
-            islandShape = new Circle();
+            islandShape = new Irregular();
             islandShape.create();
         }
 

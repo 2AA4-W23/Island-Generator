@@ -62,7 +62,7 @@
     </dependencies>
 
     <properties>
-        <jts.version>1.16.1</jts.version>
+        <jts.version>1.19.0</jts.version>
         <maven.compiler.source>18</maven.compiler.source>
         <maven.compiler.target>18</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

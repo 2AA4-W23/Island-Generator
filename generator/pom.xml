@@ -17,7 +17,7 @@
   <name>McMaster :: CAS :: 2AA4 :: A2 :: Generator</name>
 
   <properties>
-    <jts.version>1.16.1</jts.version>
+    <jts.version>1.19.0</jts.version>
   </properties>
 
   <dependencies>
