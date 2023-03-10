@@ -171,7 +171,8 @@ For a feature to be considered done it must be work without throwing any excepti
 | F20 | Select relaxation levels                                          | Virochaan | 02/21/2023 | 02/21/2023 | D      |
 | F21 | Command line help argument                                        | Omar      | 02/22/2023 | 02/22/2023 | D      |
 | F22 | Generate obj files from mesh                                      | Ibrahim   | 02/26/2023 | 02/27/2023 | D      |
-| MVP1| Generate Single Circular Island                                   | Virochaan | 03/06/2023 | 03/7/2023  | D|
-| MVP2| Generate Lagoon within Island                                     | Virochaan | 03/06/2023 | 03/7/2023  | D|
-| MVP2| Tag tiles near water as beaches                                   | Virochaan |  03/06/2023 | 03/7/2023  | D|
-|F23|Accept command line to choose shape Mechanism|Virochaan|03/7/2023|03/7/2023|D|
+| MVP1| Generate Single Circular Island                                   | Virochaan | 03/06/2023 | 03/7/2023  | D      |
+| MVP2| Generate Lagoon within Island                                     | Virochaan | 03/06/2023 | 03/7/2023  | D      | 
+| MVP2| Tag tiles near water as beaches                                   | Virochaan | 03/06/2023 | 03/7/2023  | D      |
+| F23 | Accept command line to choose shape Mechanism                     | Virochaan | 03/7/2023  | 03/7/2023  | D      |
+| F32 | Accept command line to choose max number of lakes                 | Ibrahim   | 03/10/2023 |            | S      |
