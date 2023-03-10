@@ -4,6 +4,8 @@ import ca.mcmaster.cas.se2aa4.a2.generator.IrregularMeshGenerator;
 import ca.mcmaster.cas.se2aa4.a2.generator.MeshGenerator;
 import ca.mcmaster.cas.se2aa4.a2.io.MeshFactory;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
+import ca.mcmaster.cas.se2aa4.island.Shape.Irregular;
+import ca.mcmaster.cas.se2aa4.island.Shape.*;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -13,6 +15,34 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 public class IslandTest {
+    @Test
+    public void PolygonCreation(){
+        Shape Irregular = new Irregular();
+        Shape Circle = new Circle();
+        Shape Rectangle = new Rectangle();
+        Irregular.create();
+        Circle.create();
+        Rectangle.create();
+        assertEquals(true, Circle.contains(250,250));
+        assertEquals(false, Circle.contains(50,50));
+        assertEquals(false, Circle.contains(0,0));
+        assertEquals(false, Circle.contains(-100,-100));
+
+        assertEquals(true, Rectangle.contains(250,250));
+        assertEquals(true, Rectangle.contains(50,50));
+        assertEquals(false, Rectangle.contains(0,0));
+        assertEquals(false, Rectangle.contains(-100,-100));
+
+        assertEquals(true, Irregular.contains(250,250));
+        assertEquals(false, Irregular.contains(0,0));
+        assertEquals(false, Irregular.contains(-100,-100));
+    }
+    @Test
+    public void checkIrregularIslandCreation(){
+        Structs.Mesh testMesh = MeshCreator();
+        Structs.Mesh islandMesh = IslandGenerator.Generate(testMesh, "irregular");
+        assertNotNull(islandMesh);
+    }
     @Test
     public void checkRectangularIslandCreation(){
         Structs.Mesh testMesh = MeshCreator();

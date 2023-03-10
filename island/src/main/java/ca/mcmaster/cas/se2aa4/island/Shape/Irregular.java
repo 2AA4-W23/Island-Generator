@@ -38,7 +38,7 @@ public class Irregular implements Shape{
 //        ConvexHull c = new ConvexHull(pts, new GeometryFactory());
 
         Geometry g1 = new GeometryFactory().createLineString(pts);
-        this.shape = ConcaveHull.concaveHullByLengthRatio(g1, 0.4, false);
+        this.shape = ConcaveHull.concaveHullByLengthRatio(g1, 0.5, false);
 //        this.shape = c.getConvexHull();
 
     }
