@@ -14,24 +14,24 @@ public class Main {
         options.addOption("i", true, "Input Mesh");
         options.addOption("o", true, "Output Mesh");
         options.addOption("s", "shape", true, "Decide Shape of the mesh");
+        options.addOption("l", "lakes", true, "Number of lakes to be generated");
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
 
         String mode = cmd.getOptionValue("mode");
+        Structs.Mesh inputMesh = new MeshFactory().read(cmd.getOptionValue("i"));
+        Structs.Mesh outputMesh;
+        int lakes = Integer.parseInt(cmd.getOptionValue("lakes"));
         if(mode == null || !(mode.equals("lagoon"))){
-            Structs.Mesh aMesh = new MeshFactory().read(cmd.getOptionValue("i"));
             String shape = cmd.getOptionValue("shape");
-            Structs.Mesh myMesh = IslandGenerator.Generate(aMesh, shape);
-            MeshFactory factory = new MeshFactory();
-            factory.write(myMesh, cmd.getOptionValue("o"));
+            outputMesh = IslandGenerator.Generate(inputMesh, shape);
         } else {
-            Structs.Mesh aMesh = new MeshFactory().read(cmd.getOptionValue("i"));
             Lagoon lagoon = new Lagoon();
-            Structs.Mesh myMesh =  lagoon.LagoonTerrain(aMesh);
-            MeshFactory factory = new MeshFactory();
-            factory.write(myMesh, cmd.getOptionValue("o"));
+            outputMesh =  lagoon.LagoonTerrain(inputMesh);
         }
+        MeshFactory factory = new MeshFactory();
+        factory.write(outputMesh, cmd.getOptionValue("o"));
     }
 
 }
