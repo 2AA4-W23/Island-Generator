@@ -1,5 +1,6 @@
 import ca.mcmaster.cas.se2aa4.a2.io.MeshFactory;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
+import ca.mcmaster.cas.se2aa4.island.Configuration.Configuration;
 import ca.mcmaster.cas.se2aa4.island.IslandGenerator;
 import ca.mcmaster.cas.se2aa4.island.Lagoon;
 import org.apache.commons.cli.*;
@@ -8,7 +9,7 @@ import java.io.IOException;
 import java.util.Random;
 
 public class Main {
-    public static void main(String[] args) throws ParseException, IOException {
+    public static void main(String[] args) throws ParseException, IOException, ClassNotFoundException {
         System.out.println("Hello world!");
         Options options = new Options();
         options.addOption("m", "mode", true, "Decide whether it is lagoon or normal generation");
@@ -31,15 +32,19 @@ public class Main {
         if(lakeArg != null) numLakes = Integer.parseInt(lakeArg);
         else numLakes = rng.nextInt(10);
 
+        Configuration config = new Configuration();
+        config.generateConfig(args, options);
+
         if(mode == null || !(mode.equals("lagoon"))){
             String shape = cmd.getOptionValue("shape");
-            outputMesh = IslandGenerator.Generate(inputMesh, shape);
+            outputMesh = IslandGenerator.Generate(config);
         } else {
             Lagoon lagoon = new Lagoon();
             outputMesh =  lagoon.LagoonTerrain(inputMesh);
         }
         MeshFactory factory = new MeshFactory();
         factory.write(outputMesh, cmd.getOptionValue("o"));
+
     }
 
 }

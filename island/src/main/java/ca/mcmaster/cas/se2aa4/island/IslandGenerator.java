@@ -1,12 +1,10 @@
 package ca.mcmaster.cas.se2aa4.island;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
+import ca.mcmaster.cas.se2aa4.island.Configuration.Configuration;
 import ca.mcmaster.cas.se2aa4.island.Extractors.Extractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.RGBExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.TileTagExtractor;
-import ca.mcmaster.cas.se2aa4.island.Shape.Circle;
-import ca.mcmaster.cas.se2aa4.island.Shape.Irregular;
-import ca.mcmaster.cas.se2aa4.island.Shape.Rectangle;
 import ca.mcmaster.cas.se2aa4.island.Shape.Shape;
 
 import java.util.ArrayList;
@@ -15,23 +13,14 @@ import java.util.List;
 public class IslandGenerator {
     private static final Extractor rgbEx = new RGBExtractor();
     private static final Extractor tileTagsEx = new TileTagExtractor();
-    public static Structs.Mesh Generate(Structs.Mesh mesh, String shape){
+    public static Structs.Mesh Generate(Configuration config){
+        Structs.Mesh mesh = config.inputMesh;
+        Shape islandShape = config.shapeObj;
+        islandShape.create();
         List<Structs.Polygon> pList = mesh.getPolygonsList();
         List<Structs.Vertex> vList = mesh.getVerticesList();
 
         List<Structs.Polygon> newList = new ArrayList<>();
-        Shape islandShape;
-        if(shape.equals("rectangle")){
-            islandShape = new Rectangle();
-            islandShape.create();
-        } else if (shape.equals("circle")){
-            islandShape = new Circle();
-            islandShape.create();
-        } else {
-            islandShape = new Irregular();
-            islandShape.create();
-        }
-
 
         for (Structs.Polygon p: pList) {
 

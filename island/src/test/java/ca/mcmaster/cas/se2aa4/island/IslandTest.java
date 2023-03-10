@@ -4,6 +4,7 @@ import ca.mcmaster.cas.se2aa4.a2.generator.IrregularMeshGenerator;
 import ca.mcmaster.cas.se2aa4.a2.generator.MeshGenerator;
 import ca.mcmaster.cas.se2aa4.a2.io.MeshFactory;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
+import ca.mcmaster.cas.se2aa4.island.Configuration.Configuration;
 import ca.mcmaster.cas.se2aa4.island.Shape.Irregular;
 import ca.mcmaster.cas.se2aa4.island.Shape.*;
 import org.junit.jupiter.api.Test;
@@ -40,19 +41,28 @@ public class IslandTest {
     @Test
     public void checkIrregularIslandCreation(){
         Structs.Mesh testMesh = MeshCreator();
-        Structs.Mesh islandMesh = IslandGenerator.Generate(testMesh, "irregular");
+        Configuration config = new Configuration();
+        config.shapeObj = new Irregular();
+        config.inputMesh = testMesh;
+        Structs.Mesh islandMesh = IslandGenerator.Generate(config);
         assertNotNull(islandMesh);
     }
     @Test
     public void checkRectangularIslandCreation(){
         Structs.Mesh testMesh = MeshCreator();
-        Structs.Mesh islandMesh = IslandGenerator.Generate(testMesh, "rectangle");
+        Configuration config = new Configuration();
+        config.shapeObj = new Irregular();
+        config.inputMesh = testMesh;
+        Structs.Mesh islandMesh = IslandGenerator.Generate(config);
         assertNotNull(islandMesh);
     }
     @Test
     public void checkCircularIslandCreation(){
         Structs.Mesh testMesh = MeshCreator();
-        Structs.Mesh islandMesh = IslandGenerator.Generate(testMesh, "circle");
+        Configuration config = new Configuration();
+        config.shapeObj = new Irregular();
+        config.inputMesh = testMesh;
+        Structs.Mesh islandMesh = IslandGenerator.Generate(config);
         assertNotNull(islandMesh);
     }
     @Test
