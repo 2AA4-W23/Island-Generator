@@ -5,6 +5,7 @@ import ca.mcmaster.cas.se2aa4.island.Lagoon;
 import org.apache.commons.cli.*;
 
 import java.io.IOException;
+import java.util.Random;
 
 public class Main {
     public static void main(String[] args) throws ParseException, IOException {
@@ -19,10 +20,17 @@ public class Main {
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
 
+
         String mode = cmd.getOptionValue("mode");
         Structs.Mesh inputMesh = new MeshFactory().read(cmd.getOptionValue("i"));
         Structs.Mesh outputMesh;
-        int lakes = Integer.parseInt(cmd.getOptionValue("lakes"));
+        Random rng = new Random();
+
+        String lakeArg = cmd.getOptionValue("lakes");
+        int numLakes;
+        if(lakeArg != null) numLakes = Integer.parseInt(lakeArg);
+        else numLakes = rng.nextInt(10);
+
         if(mode == null || !(mode.equals("lagoon"))){
             String shape = cmd.getOptionValue("shape");
             outputMesh = IslandGenerator.Generate(inputMesh, shape);
