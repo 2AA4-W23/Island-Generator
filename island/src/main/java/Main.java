@@ -18,11 +18,16 @@ public class Main {
         options.addOption("s", "shape", true, "Decide Shape of the mesh");
         options.addOption("l", "lakes", true, "Number of lakes to be generated");
         options.addOption("a", "altitude", true, "Decide altitude type (flat, volcanic, canyon, randomized");
-
+        options.addOption("h", "help", false, "Show instructions for control variables");
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
 
+        if (cmd.hasOption("h")) {
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("Generator", options);
+            System.exit(0);
+        }
 
         String mode = cmd.getOptionValue("mode");
         Structs.Mesh inputMesh = new MeshFactory().read(cmd.getOptionValue("i"));
