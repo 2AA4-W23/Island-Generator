@@ -22,11 +22,12 @@ public class Irregular implements Shape{
     @Override
     public void create() {
 
-        int numPoints = bag.nextInt(25,50);
-        Coordinate[] pts =  new Coordinate[numPoints];
+        int numPoints = bag.nextInt(50,75);
+        Coordinate[] pts =  new Coordinate[numPoints+1];
+        pts[0] = new Coordinate(250,250);
 
 
-        for (int i = 0; i < numPoints; i++) {
+        for (int i = 1; i < numPoints+1; i++) {
             int x = bag.nextInt(25,475);
             int y = bag.nextInt(25,475);
             pts[i] = new Coordinate(x,y);
