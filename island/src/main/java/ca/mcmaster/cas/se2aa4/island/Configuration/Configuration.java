@@ -10,10 +10,14 @@ import org.apache.commons.cli.*;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Configuration {
     public Shape shapeObj;
     public Structs.Mesh inputMesh;
+    public int numLakes;
+    private Random rng = new Random();
+
     public void generateConfig(String args[], Options options) throws ParseException, FileNotFoundException {
         ArrayList classObj = new ArrayList<>();
 
@@ -22,6 +26,7 @@ public class Configuration {
         CommandLine cmd = parser.parse(options, args);
         String inputM = cmd.getOptionValue("i");
         String shape = cmd.getOptionValue("shape");
+        String lakes = cmd.getOptionValue("lakes");
 
 //        String inputMeshPath = "../";
 //        inputM = inputMeshPath + inputM;
@@ -43,6 +48,13 @@ public class Configuration {
         } catch (Exception e) {
             throw new FileNotFoundException();
         }
+        try{
+            this.numLakes = Math.min(Integer.parseInt(lakes), 10);
+            System.out.println("lakes set");
+        } catch (Exception e) {
+            this.numLakes = rng.nextInt(5);
+
+        } 
 
     }
 }
