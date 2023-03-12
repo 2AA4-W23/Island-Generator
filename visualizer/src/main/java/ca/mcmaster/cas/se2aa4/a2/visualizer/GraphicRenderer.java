@@ -45,8 +45,8 @@ public class GraphicRenderer {
             Coordinate points[] = new Coordinate[p.getSegmentIdxsCount()];
             Set<Integer> added = new HashSet<>();
             int j = 0;
-            System.out.println("Polygon " + count1);
-            System.out.println("Num vertices: " + p.getSegmentIdxsCount());
+            //System.out.println("Polygon " + count1);
+            //System.out.println("Num vertices: " + p.getSegmentIdxsCount());
             for(int i : p.getSegmentIdxsList()){
                 Integer v1 = SegmentList.get(i).getV1Idx();
                 Integer v2 = SegmentList.get(i).getV2Idx();
@@ -56,7 +56,7 @@ public class GraphicRenderer {
                         float x = (float) VertexList.get(SegmentList.get(i).getV1Idx()).getX();
                         float y = (float) VertexList.get(SegmentList.get(i).getV1Idx()).getY();
                         points[j] = new Coordinate(x, y);
-                        System.out.println(points[j]);
+                        //System.out.println(points[j]);
                         added.add(v1);
                         j++;
                     }
@@ -64,7 +64,7 @@ public class GraphicRenderer {
                         float x = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getX();
                         float y = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getY();
                         points[j] = new Coordinate(x, y);
-                        System.out.println(points[j]);
+                        //System.out.println(points[j]);
                         added.add(v2);
                         j++;
                     }
@@ -111,10 +111,10 @@ public class GraphicRenderer {
                 if(j != 0 && points != null) {
                 float[] x = new float[p.getSegmentIdxsCount()];
                 float[] y = new float[p.getSegmentIdxsCount()];
-                System.out.println("New Polygon:");
-                for(Coordinate point: points){
-                    System.out.println(point);
-                }
+                //System.out.println("New Polygon:");
+                // for(Coordinate point: points){
+                //     System.out.println(point);
+                // }
                 ConvexHull cv = new ConvexHull(newPoints, new GeometryFactory());
                 Coordinate[] orderedPoints = cv.getConvexHull().getCoordinates();    
                 for(int i = 0; i < p.getSegmentIdxsCount(); i++) {
@@ -225,37 +225,6 @@ public class GraphicRenderer {
 
     }
 
-    private Color averageSegmentColor(List<Integer> edges, List<Segment> allSegments) {
-        Color average;
-        int r = 0;
-        int g = 0;
-        int b = 0;
-        int a = 0;
-        int edgesCounted = 0;
-        for(int s : edges) {
-            try {
-                Segment edge = allSegments.get(s);
-                Color c = extractColor(edge.getPropertiesList(), alphaSet, alpha);
-                r += c.getRed();
-                g += c.getGreen();
-                b += c.getBlue();
-                a += c.getAlpha();
-                edgesCounted++;
-            } catch (IndexOutOfBoundsException e) {
-                System.out.println(s);
-            }
-        }
-        if(edgesCounted != 0) {   
-            r /= edgesCounted;
-            g /= edgesCounted;
-            b /= edgesCounted;
-            a /= edgesCounted;
-        }
-        if(alphaSet)
-            a = alpha;
-        average = new Color(r, g, b, a);
-        return average;
-    }
     private int[] extractColor(List<Property> properties) {
         String color = null;
         for(Property p: properties) {
