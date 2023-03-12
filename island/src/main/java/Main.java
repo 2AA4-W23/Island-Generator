@@ -23,6 +23,8 @@ public class Main {
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
 
+
+
         if (cmd.hasOption("h")) {
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("Generator", options);
@@ -48,6 +50,8 @@ public class Main {
         }
 
         Configuration config = new Configuration();
+        config.num_lakes = 7;
+        System.out.println(config.num_lakes);
         config.generateConfig(args, options);
 
         if(mode == null || !(mode.equals("lagoon"))){

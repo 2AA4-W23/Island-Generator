@@ -2,20 +2,18 @@ package ca.mcmaster.cas.se2aa4.island.Configuration;
 
 import ca.mcmaster.cas.se2aa4.a2.io.MeshFactory;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
-import ca.mcmaster.cas.se2aa4.island.Shape.Circle;
 import ca.mcmaster.cas.se2aa4.island.Shape.Irregular;
 import ca.mcmaster.cas.se2aa4.island.Shape.Shape;
 import org.apache.commons.cli.*;
 
 import java.io.FileNotFoundException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Configuration {
     public Shape shapeObj;
     public Structs.Mesh inputMesh;
-    public int numLakes;
+    public int num_lakes;
     private Random rng = new Random();
 
     public void generateConfig(String args[], Options options) throws ParseException, FileNotFoundException {
@@ -49,10 +47,10 @@ public class Configuration {
             throw new FileNotFoundException();
         }
         try{
-            this.numLakes = Math.min(Integer.parseInt(lakes), 10);
+            this.num_lakes = Math.min(Integer.parseInt(lakes), 10);
             System.out.println("lakes set");
         } catch (Exception e) {
-            this.numLakes = rng.nextInt(5);
+            this.num_lakes = rng.nextInt(5);
 
         } 
 
