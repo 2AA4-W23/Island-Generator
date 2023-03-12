@@ -12,10 +12,9 @@ public class AddLakes {
     static Random rng = new Random();
     private static final Extractor tileTagsEx = new TileTagExtractor();
 
-    public static List<Structs.Polygon> addLakes(List<Structs.Polygon> landTiles, int numLakes, List <Structs.Polygon> newList){
+    public static List<Structs.Polygon> addLakes(List<Structs.Polygon> landTiles, int numLakes, List<Structs.Polygon> newList){
         List<Structs.Polygon> l2 = new ArrayList<>();
 
-        int index = 0;
         System.out.println(landTiles.size());
         for(Structs.Polygon p: landTiles){
             for (int i = 0; i < p.getNeighborIdxsCount(); i++) {
@@ -24,34 +23,39 @@ public class AddLakes {
                     l2.add(p);
                 }
             }
-            index ++;
         }
         landTiles.removeAll(l2);
         System.out.println(landTiles.size());
+        for(Structs.Polygon p : l2) {
+            Structs.Property color = Structs.Property.newBuilder().setKey("rgb_color").setValue("194,178,128").build();
+            Structs.Property tileTag = Structs.Property.newBuilder().setKey("tile_tag").setValue("beach").build();
+            Structs.Polygon beachTile = Structs.Polygon.newBuilder(p).addProperties(color).addProperties(tileTag).build();
+            int index = newList.indexOf(p);
+            if(index != -1) newList.set(index, beachTile);
+        }
 
         for(int i = 0; i < numLakes; i++){
+            Structs.Polygon initialTile;
+            do initialTile = landTiles.get(rng.nextInt(landTiles.size()));
+            while(!checkEligible(initialTile, newList));
             List<Structs.Polygon> tilesInLake = new ArrayList<>();
-            tilesInLake.add(landTiles.get(rng.nextInt(landTiles.size())));
-            landTiles.remove(tilesInLake.get(0));
-            int lakeSize = rng.nextInt(10,15);
+            tilesInLake.add(initialTile);
+            landTiles.remove(initialTile);
+            int lakeSize = rng.nextInt(5,15);
             int checks = 0;
-            while(tilesInLake.size() < lakeSize && checks < 50){
-                checks++;
+            while(tilesInLake.size() < lakeSize && checks < 100){
                 Structs.Polygon nextTile = tilesInLake.get(rng.nextInt(tilesInLake.size()));
-                boolean flag = false;
-                for(int idx : nextTile.getNeighborIdxsList()){
-                    String tag = tileTagsEx.extractValues(newList.get(idx).getPropertiesList());
-                    if(!tag.equals("land")){
-                        flag = true;
-                        break;
-                    }
-                }
-                if(flag) continue;
                 Structs.Polygon tileToAdd = newList.get(nextTile.getNeighborIdxs(rng.nextInt(nextTile.getNeighborIdxsList().size())));
+                checks++;
+                if(!checkEligible(tileToAdd, newList)) continue;
                 tilesInLake.add(tileToAdd);
                 landTiles.remove(tileToAdd);
             }
+            System.out.println("Size = " + tilesInLake.size());
 
+            int r = rng.nextInt(255);
+            int g = rng.nextInt(255);
+            int b = rng.nextInt(255);
             for(Structs.Polygon p : tilesInLake){
                 Structs.Property color = Structs.Property.newBuilder().setKey("rgb_color").setValue("10,100,255").build();
                 Structs.Property tileTag = Structs.Property.newBuilder().setKey("tile_tag").setValue("lake").build();
@@ -61,5 +65,14 @@ public class AddLakes {
             }
         }
         return newList;
+    }
+
+    private static boolean checkEligible(Structs.Polygon tile, List<Structs.Polygon> newList) {
+        if(tile == null) return false;
+        for(int idx : tile.getNeighborIdxsList()){
+            String tag = tileTagsEx.extractValues(newList.get(idx).getPropertiesList());
+            if(!tag.equals("land")) return false;
+        }
+        return true;
     }
 }
