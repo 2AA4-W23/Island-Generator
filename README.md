@@ -177,4 +177,5 @@ For a feature to be considered done it must be work without throwing any excepti
 | F23 | Accept command line to choose shape Mechanism                     | Virochaan | 03/7/2023  | 03/7/2023  | D      |
 | F24 | Generate Rectangular Shaped Island                  | Virochaan | 03/7/2023  | 03/7/2023  | D      |
 | F25 | Generate Irregular (Concave) Polygon for island generation                     | Virochaan | 03/7/2023  | 03/10/2023  | D      |
+| F30 | Island can have random number of lakes                   | Ibrahim   | 03/10/2023 |            | S      |
 | F32 | Accept command line to choose max number of lakes                 | Ibrahim   | 03/10/2023 |            | S      |
