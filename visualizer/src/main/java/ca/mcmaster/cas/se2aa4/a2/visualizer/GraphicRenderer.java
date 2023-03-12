@@ -56,7 +56,7 @@ public class GraphicRenderer {
                         float x = (float) VertexList.get(SegmentList.get(i).getV1Idx()).getX();
                         float y = (float) VertexList.get(SegmentList.get(i).getV1Idx()).getY();
                         points[j] = new Coordinate(x, y);
-                        System.out.println(points[j]);
+                        //System.out.println(points[j]);
                         added.add(v1);
                         j++;
                     }
@@ -64,7 +64,7 @@ public class GraphicRenderer {
                         float x = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getX();
                         float y = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getY();
                         points[j] = new Coordinate(x, y);
-                        System.out.println(points[j]);
+                        //System.out.println(points[j]);
                         added.add(v2);
                         j++;
                     }
@@ -112,9 +112,9 @@ public class GraphicRenderer {
                 float[] x = new float[p.getSegmentIdxsCount()];
                 float[] y = new float[p.getSegmentIdxsCount()];
                 //System.out.println("New Polygon:");
-                for(Coordinate point: points){
-                    System.out.println(point);
-                }
+                // for(Coordinate point: points){
+                //     System.out.println(point);
+                // }
                 ConvexHull cv = new ConvexHull(newPoints, new GeometryFactory());
                 Coordinate[] orderedPoints = cv.getConvexHull().getCoordinates();    
                 for(int i = 0; i < p.getSegmentIdxsCount(); i++) {
