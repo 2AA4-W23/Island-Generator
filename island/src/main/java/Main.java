@@ -28,7 +28,6 @@ public class Main {
             formatter.printHelp("Generator", options);
             System.exit(0);
         }
-
         String mode = cmd.getOptionValue("mode");
         Structs.Mesh inputMesh = new MeshFactory().read(cmd.getOptionValue("i"));
         Structs.Mesh outputMesh;
