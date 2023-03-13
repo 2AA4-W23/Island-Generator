@@ -145,9 +145,11 @@ public class GraphicRenderer {
             for (Polygon p: PolygonList){
                 if(!extractValues(p.getPropertiesList(), "tile_tag").equals("ocean")){
                     landCount ++;
-                    sum += Integer.parseInt(extractValues(p.getPropertiesList(),"humidity"));
-                    max =  Math.max(max,Integer.parseInt(extractValues(p.getPropertiesList(),"humidity")));
-                    min =  Math.min(min,Integer.parseInt(extractValues(p.getPropertiesList(),"humidity")));
+                    try{
+                        sum += Integer.parseInt(extractValues(p.getPropertiesList(),"humidity"));
+                        max =  Math.max(max,Integer.parseInt(extractValues(p.getPropertiesList(),"humidity")));
+                        min =  Math.min(min,Integer.parseInt(extractValues(p.getPropertiesList(),"humidity")));
+                    } catch(NumberFormatException e){}
                 }
             }
             average = sum/landCount;
@@ -184,8 +186,11 @@ public class GraphicRenderer {
                 if(extractValues(p.getPropertiesList(), "tile_tag").equals("ocean")){
                     new1 = new Color(0,0,0);
                 } else {
-                    double humidity =  (double)Integer.parseInt(extractValues(p.getPropertiesList(),"humidity"));
-                    double sat = ((double)humidity- (double)min)/((double)max-(double)min);
+                    double humidity = 50;
+                    try {
+                        humidity =  (double) Integer.parseInt(extractValues(p.getPropertiesList(),"humidity"));
+                    } catch(NumberFormatException e) {}
+                    double sat = ((double) humidity- (double)min)/((double)max-(double)min);
                     new1 = Color.getHSBColor(237F,(float) sat,1f);
 //                    System.out.println(altitude);
 //                    int[] intVals = extractColor(p.getPropertiesList());
