@@ -16,6 +16,7 @@ public class Main {
         Options options = new Options();
         options.addOption("X", false, "Debug Mode Parameter");
         options.addOption("Alt", false, "Debug Mode Parameter to see altitude heatmap");
+        options.addOption("Humid", false, "Enables Humidity mode for heatmap.");
         options.addOption("T", true, "Thickness of Segments. If empty then random.");
         options.addOption("A", true, "Transparencies of parts of the mesh. If empty then random.");
         options.addOption("h","help", false, "print instructions for tool interaction");
@@ -42,10 +43,16 @@ public class Main {
             debug = true;
         }
         boolean alt;
+        boolean humid;
         if(cmd.hasOption("Alt")){
             alt = true;
         } else {
             alt = false;
+        }
+        if(cmd.hasOption("Humid")){
+            humid = true;
+        } else {
+            humid = false;
         }
         try {
             alpha = Integer.parseInt(cmd.getOptionValue("A"));
@@ -80,7 +87,7 @@ public class Main {
         Graphics2D canvas = SVGCanvas.build((int) Math.ceil(max_x), (int) Math.ceil(max_y));
         GraphicRenderer renderer = new GraphicRenderer();
         // Painting the mesh on the canvas
-        renderer.render(aMesh, canvas, debug, thickSet, thick, alphaSet, alpha, alt);
+        renderer.render(aMesh, canvas, debug, thickSet, thick, alphaSet, alpha, alt, humid);
         // Storing the result in an SVG file
         SVGCanvas.write(canvas, output);
         if(cmd.hasOption("O")){

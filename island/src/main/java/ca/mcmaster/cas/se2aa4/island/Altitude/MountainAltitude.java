@@ -2,14 +2,16 @@ package ca.mcmaster.cas.se2aa4.island.Altitude;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 
+import java.awt.geom.CubicCurve2D;
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class VolcanoAltitude implements AltitudeProfile{
+public class MountainAltitude implements AltitudeProfile {
     @Override
-    public List addAltitudeValues(List<Structs.Polygon> plist, List<Structs.Segment> sList, List<Structs.Vertex> vlist) {
+    public List addAltitudeValues(List<Structs.Polygon> plist, List<Structs.Segment> slist, List<Structs.Vertex> vlist) {
         List<Structs.Polygon> pModList = new ArrayList<>();
         List <Structs.Vertex> vList = new ArrayList<>(vlist);
 
@@ -31,9 +33,37 @@ public class VolcanoAltitude implements AltitudeProfile{
         }
 
 
+        CubicCurve2D c = new CubicCurve2D.Double();
+        c.setCurve(100,300, 200,150,250,400, 300,100);
+        List<Line2D> lines = new ArrayList<>();
+
+        int numLines = rng.nextInt(1,5);
+
+        for (int i = 0; i < numLines; i++) {
+            int x1 = rng.nextInt(0,500);
+            int y1 = rng.nextInt(0,500);
+            int x2 = rng.nextInt(0,500);
+            int y2 = rng.nextInt(0,500);
+
+            Line2D d = new Line2D.Double();
+            d.setLine(x1,y1,x2, y2);
+            System.out.print(x1);
+            System.out.print(y1);
+            System.out.print(x2);
+            System.out.print(y2);
+            System.out.println("");
+            lines.add(d);
+        }
+
+
+        System.out.println(maxx + " " + minx);
+        System.out.println(maxy + " " + miny);
 
         double centerX = (maxx+minx)/2;
         double centerY = (maxy+miny)/2;
+
+        System.out.println(centerX + " " + centerY);
+
         for(Structs.Polygon p:plist){
             int sum = 0;
             if(tagEx.extractValues(p.getPropertiesList()).equals("ocean")){
@@ -44,13 +74,17 @@ public class VolcanoAltitude implements AltitudeProfile{
             } else {
                 Set<Integer> vInts = new HashSet<>();
                 for(int i = 0; i < p.getSegmentIdxsCount(); i++){
-                    Structs.Segment seg = sList.get(p.getSegmentIdxs(i));
+                    Structs.Segment seg = slist.get(p.getSegmentIdxs(i));
                     vInts.add(seg.getV1Idx());
                     vInts.add(seg.getV2Idx());
                 }
                 int centroidIdx = p.getCentroidIdx();
                 Structs.Vertex centroid = vList.get(centroidIdx);
-                double distance = distance(centroid.getX(), centroid.getY(), centerX, centerY);
+                double distance = 1000000;
+                for(Line2D d: lines){
+                    distance = Math.min(distance, d.ptLineDist(centroid.getX(),centroid.getY()));
+                }
+
 
                 int altVal;
                 for(Integer i: vInts){
@@ -83,9 +117,10 @@ public class VolcanoAltitude implements AltitudeProfile{
         }
         List ansList = new ArrayList<>();
         ansList.add(pModList);
-        ansList.add(sList);
+        ansList.add(slist);
         ansList.add(vlist);
         return ansList;
+
     }
     private double distance(double x1, double y1, double x2, double y2) {
         return Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
