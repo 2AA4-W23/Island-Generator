@@ -3,7 +3,7 @@
 #cd generator
 #java -jar generator.jar sample.mesh -mt irregular -np 2000 -lr 10
 
-cd island
+#cd island
 java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular -a canyon --lakes 7
 
 cd ../visualizer

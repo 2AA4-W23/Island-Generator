@@ -36,18 +36,6 @@ public class Main {
         Random rng = new Random();
 
         String lakeArg = cmd.getOptionValue("lakes");
-        int numLakes;
-        if(lakeArg != null) numLakes = Integer.parseInt(lakeArg);
-        else numLakes = rng.nextInt(10);
-
-        String altitudeType = cmd.getOptionValue("altitude");
-        if (altitudeType == null) {
-            altitudeType = "flat";
-        }
-        else if (altitudeType.equals("randomized")) {
-            String[] altitudeProfiles = {"canyon", "volcanic", "flat"};
-            altitudeType = altitudeProfiles[rng.nextInt(3)];
-        }
 
         Configuration config = new Configuration();
         config.num_lakes = 7;
