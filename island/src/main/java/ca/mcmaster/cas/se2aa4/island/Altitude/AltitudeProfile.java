@@ -12,5 +12,5 @@ public interface AltitudeProfile {
     Extractor altEx = new AltitudeExtractor();
     Extractor tagEx = new TileTagExtractor();
     Random rng = new Random();
-    public List addAltitudeValues(List<Structs.Polygon> plist, List<Structs.Segment> sList, List<Structs.Vertex> vList);
+    public List addAltitudeValues(List<Structs.Polygon> plist, List<Structs.Segment> slist, List<Structs.Vertex> vlist);
 }
