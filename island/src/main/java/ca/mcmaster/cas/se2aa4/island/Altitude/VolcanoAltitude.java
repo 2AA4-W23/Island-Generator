@@ -13,6 +13,25 @@ public class VolcanoAltitude implements AltitudeProfile{
         List<Structs.Polygon> pModList = new ArrayList<>();
         List <Structs.Vertex> vList = new ArrayList<>(vlist);
 
+        double minx = 500;
+        double miny = 500;
+        double maxx = 0;
+        double maxy = 0;
+
+
+        for(Structs.Polygon p :plist){
+            if(!tagEx.extractValues(p.getPropertiesList()).equals("ocean")){
+                int centroidIdx = p.getCentroidIdx();
+                Structs.Vertex centroid = vList.get(centroidIdx);
+                minx = Math.min(centroid.getX(), minx);
+                maxx = Math.max(centroid.getX(), maxx);
+                maxy = Math.max(centroid.getY(), maxy);
+                miny = Math.min(centroid.getY(), miny);
+            }
+        }
+
+        double centerX = (maxx+minx)/2;
+        double centerY = (maxy+miny)/2;
         for(Structs.Polygon p:plist){
             int sum = 0;
             if(tagEx.extractValues(p.getPropertiesList()).equals("ocean")){
@@ -29,7 +48,7 @@ public class VolcanoAltitude implements AltitudeProfile{
                 }
                 int centroidIdx = p.getCentroidIdx();
                 Structs.Vertex centroid = vList.get(centroidIdx);
-                double distance = distance(centroid.getX(), centroid.getY(), 250, 250);
+                double distance = distance(centroid.getX(), centroid.getY(), centerX, centerY);
 
                 int altVal;
                 for(Integer i: vInts){
@@ -57,18 +76,18 @@ public class VolcanoAltitude implements AltitudeProfile{
                 int average = sum/vInts.size();
                 Structs.Property altTag = Structs.Property.newBuilder().setKey("altitude").setValue(Integer.toString(average)).build();
                 Structs.Property color;
-                if(average < 1000){
-                    color = Structs.Property.newBuilder().setKey("rgb_color").setValue("242,250,137").build();
-                } else if (average < 2000) {
-                    color = Structs.Property.newBuilder().setKey("rgb_color").setValue("97,227,77").build();
-                } else if (average < 3000) {
-                    color = Structs.Property.newBuilder().setKey("rgb_color").setValue("232,108,6").build();
-                } else if (average < 4000) {
-                    color = Structs.Property.newBuilder().setKey("rgb_color").setValue("232,60,26").build();
-                } else {
-                    color = Structs.Property.newBuilder().setKey("rgb_color").setValue("232,26,26").build();
-                }
-                Structs.Polygon pColoredModify = Structs.Polygon.newBuilder(p).addProperties(color).addProperties(altTag).build();
+//                if(average < 1000){
+//                    color = Structs.Property.newBuilder().setKey("rgb_color").setValue("242,250,137").build();
+//                } else if (average < 2000) {
+//                    color = Structs.Property.newBuilder().setKey("rgb_color").setValue("97,227,77").build();
+//                } else if (average < 3000) {
+//                    color = Structs.Property.newBuilder().setKey("rgb_color").setValue("232,108,6").build();
+//                } else if (average < 4000) {
+//                    color = Structs.Property.newBuilder().setKey("rgb_color").setValue("232,60,26").build();
+//                } else {
+//                    color = Structs.Property.newBuilder().setKey("rgb_color").setValue("232,26,26").build();
+//                }
+                Structs.Polygon pColoredModify = Structs.Polygon.newBuilder(p).addProperties(altTag).build();
                 pModList.add(pColoredModify);
             }
         }

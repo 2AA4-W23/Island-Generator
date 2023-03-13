@@ -44,18 +44,18 @@ public class RandomAltitude implements AltitudeProfile{
                 int average = sum/vInts.size();
                 Structs.Property altTag = Structs.Property.newBuilder().setKey("altitude").setValue(Integer.toString(average)).build();
                 Structs.Property color;
-                if(average < 1000){
-                    color = Structs.Property.newBuilder().setKey("rgb_color").setValue("242,250,137").build();
-                } else if (average < 2000) {
-                    color = Structs.Property.newBuilder().setKey("rgb_color").setValue("97,227,77").build();
-                } else if (average < 3000) {
-                    color = Structs.Property.newBuilder().setKey("rgb_color").setValue("232,108,6").build();
-                } else if (average < 4000) {
-                    color = Structs.Property.newBuilder().setKey("rgb_color").setValue("232,60,26").build();
-                } else {
-                    color = Structs.Property.newBuilder().setKey("rgb_color").setValue("232,26,26").build();
-                }
-                Structs.Polygon pColoredModify = Structs.Polygon.newBuilder(p).addProperties(color).addProperties(altTag).build();
+//                if(average < 1000){
+//                    color = Structs.Property.newBuilder().setKey("rgb_color").setValue("242,250,137").build();
+//                } else if (average < 2000) {
+//                    color = Structs.Property.newBuilder().setKey("rgb_color").setValue("97,227,77").build();
+//                } else if (average < 3000) {
+//                    color = Structs.Property.newBuilder().setKey("rgb_color").setValue("232,108,6").build();
+//                } else if (average < 4000) {
+//                    color = Structs.Property.newBuilder().setKey("rgb_color").setValue("232,60,26").build();
+//                } else {
+//                    color = Structs.Property.newBuilder().setKey("rgb_color").setValue("232,26,26").build();
+//                }
+                Structs.Polygon pColoredModify = Structs.Polygon.newBuilder(p).addProperties(altTag).build();
                 pModList.add(pColoredModify);
             }
         }
