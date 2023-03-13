@@ -15,6 +15,7 @@ public class Main {
         // Extracting command line parameters
         Options options = new Options();
         options.addOption("X", false, "Debug Mode Parameter");
+        options.addOption("Alt", false, "Debug Mode Parameter to see altitude heatmap");
         options.addOption("T", true, "Thickness of Segments. If empty then random.");
         options.addOption("A", true, "Transparencies of parts of the mesh. If empty then random.");
         options.addOption("h","help", false, "print instructions for tool interaction");
@@ -39,6 +40,12 @@ public class Main {
 
         if(cmd.hasOption("X")){
             debug = true;
+        }
+        boolean alt;
+        if(cmd.hasOption("Alt")){
+            alt = true;
+        } else {
+            alt = false;
         }
         try {
             alpha = Integer.parseInt(cmd.getOptionValue("A"));
@@ -73,7 +80,7 @@ public class Main {
         Graphics2D canvas = SVGCanvas.build((int) Math.ceil(max_x), (int) Math.ceil(max_y));
         GraphicRenderer renderer = new GraphicRenderer();
         // Painting the mesh on the canvas
-        renderer.render(aMesh, canvas, debug, thickSet, thick, alphaSet, alpha);
+        renderer.render(aMesh, canvas, debug, thickSet, thick, alphaSet, alpha, alt);
         // Storing the result in an SVG file
         SVGCanvas.write(canvas, output);
         if(cmd.hasOption("O")){
