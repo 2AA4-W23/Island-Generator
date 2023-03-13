@@ -1,7 +1,16 @@
 package ca.mcmaster.cas.se2aa4.island.Altitude;
 
+import ca.mcmaster.cas.se2aa4.a2.io.Structs;
+import ca.mcmaster.cas.se2aa4.island.Extractors.AltitudeExtractor;
+import ca.mcmaster.cas.se2aa4.island.Extractors.Extractor;
+import ca.mcmaster.cas.se2aa4.island.Extractors.TileTagExtractor;
+
 import java.util.List;
+import java.util.Random;
 
 public interface AltitudeProfile {
-    public List addAltitudeValues(List plist, List landTiles);
+    Extractor altEx = new AltitudeExtractor();
+    Extractor tagEx = new TileTagExtractor();
+    Random rng = new Random();
+    public List addAltitudeValues(List<Structs.Polygon> plist, List<Structs.Segment> sList, List<Structs.Vertex> vList);
 }

@@ -1,6 +1,7 @@
 package ca.mcmaster.cas.se2aa4.island;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
+import ca.mcmaster.cas.se2aa4.island.Altitude.AltitudeProfile;
 import ca.mcmaster.cas.se2aa4.island.Configuration.Configuration;
 import ca.mcmaster.cas.se2aa4.island.Extractors.Extractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.RGBExtractor;
@@ -18,6 +19,7 @@ public class IslandGenerator {
     public static Structs.Mesh Generate(Configuration config){
         Structs.Mesh mesh = config.inputMesh;
         Shape islandShape = config.shapeObj;
+        AltitudeProfile altProfile = config.altProfile;
         int numLakes;
         numLakes = config.num_lakes;
         islandShape.create();
@@ -43,7 +45,12 @@ public class IslandGenerator {
                 landTiles.add(pColoredModify);
             }
         }
+        List altLists = new ArrayList<>();
+        altLists = altProfile.addAltitudeValues(newList,mesh.getSegmentsList(),vList);
+        newList = (List<Structs.Polygon>) altLists.get(0);
         newList = AddLakes.addLakes(landTiles, numLakes, newList);
-        return Structs.Mesh.newBuilder().addAllPolygons(newList).addAllSegments(mesh.getSegmentsList()).addAllVertices(mesh.getVerticesList()).build();
+        List<Structs.Segment> sList = (List<Structs.Segment>) altLists.get(1);
+        vList = (List<Structs.Vertex>) altLists.get(2);
+        return Structs.Mesh.newBuilder().addAllPolygons(newList).addAllSegments(sList).addAllVertices(vList).build();
     }
 }

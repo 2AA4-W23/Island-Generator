@@ -2,6 +2,7 @@ package ca.mcmaster.cas.se2aa4.island;
 import ca.mcmaster.cas.se2aa4.a2.generator.IrregularMeshGenerator;
 import ca.mcmaster.cas.se2aa4.a2.generator.MeshGenerator;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
+import ca.mcmaster.cas.se2aa4.island.Altitude.RandomAltitude;
 import ca.mcmaster.cas.se2aa4.island.Configuration.Configuration;
 import ca.mcmaster.cas.se2aa4.island.Extractors.Extractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.LakeExtractor;
@@ -28,6 +29,7 @@ public class IslandTest {
         config.shapeObj = new Irregular();
         config.inputMesh = this.testMesh;
         config.num_lakes = 7;
+        config.altProfile = new RandomAltitude();
         Structs.Mesh FinalMesh = IslandGenerator.Generate(config);
         List<Structs.Polygon> plist = FinalMesh.getPolygonsList();
 
@@ -75,6 +77,7 @@ public class IslandTest {
         Configuration config = new Configuration();
         config.shapeObj = new Irregular();
         config.inputMesh = this.testMesh;
+        config.altProfile = new RandomAltitude();
         Structs.Mesh islandMesh = IslandGenerator.Generate(config);
         assertNotNull(islandMesh);
     }
@@ -83,6 +86,7 @@ public class IslandTest {
         Configuration config = new Configuration();
         config.shapeObj = new Rectangle();
         config.inputMesh = testMesh;
+        config.altProfile = new RandomAltitude();
         Structs.Mesh islandMesh = IslandGenerator.Generate(config);
         assertNotNull(islandMesh);
     }
@@ -91,6 +95,7 @@ public class IslandTest {
         Configuration config = new Configuration();
         config.shapeObj = new Circle();
         config.inputMesh = testMesh;
+        config.altProfile = new RandomAltitude();
         Structs.Mesh islandMesh = IslandGenerator.Generate(config);
         assertNotNull(islandMesh);
     }
