@@ -38,7 +38,7 @@ public class GraphicRenderer {
             return "null";
         return tag;
     }
-    public void render(Mesh aMesh, Graphics2D canvas, Boolean debug, Boolean thickSet, int thick, Boolean alphaSet, int alpha, Boolean alt) {
+    public void render(Mesh aMesh, Graphics2D canvas, Boolean debug, Boolean thickSet, int thick, Boolean alphaSet, int alpha, Boolean alt, Boolean humid) {
         this.alphaSet = alphaSet;
         this.alpha = alpha;
         canvas.setColor(Color.BLACK);
@@ -108,6 +108,91 @@ public class GraphicRenderer {
 
                 }
                     canvas.setColor(new1);
+                if(debug){
+                    if(alphaSet) canvas.setColor(new Color(0,0,0,alpha));
+                    else canvas.setColor(new Color(0,0,0));
+                }
+                List<Coordinate> valPoints = new ArrayList<>();
+                for(Coordinate data: points) {
+                    if (data != null) {
+                        valPoints.add(data);
+                    }
+                }
+                Coordinate[] newPoints = valPoints.toArray(new Coordinate[valPoints.size()]);
+
+                if(j != 0 && points != null) {
+                    float[] x = new float[p.getSegmentIdxsCount()];
+                    float[] y = new float[p.getSegmentIdxsCount()];
+                    ConvexHull cv = new ConvexHull(newPoints, new GeometryFactory());
+                    Coordinate[] orderedPoints = cv.getConvexHull().getCoordinates();
+                    for(int i = 0; i < p.getSegmentIdxsCount(); i++) {
+                        x[i] = (float) orderedPoints[i].getX();
+                        y[i] = (float) orderedPoints[i].getY();
+                    }
+                    Polygon2D polygon = new Polygon2D(x,y,x.length);
+                    canvas.fill(polygon);
+                }
+                canvas.setColor(old);
+            }
+            System.out.println(min);
+            System.out.println(max);
+        } else if (humid) {
+            int landCount = 0;
+            int sum = 0;
+            int max = 0;
+            int min = 100000;
+            int average =0;
+            for (Polygon p: PolygonList){
+                if(!extractValues(p.getPropertiesList(), "tile_tag").equals("ocean")){
+                    landCount ++;
+                    sum += Integer.parseInt(extractValues(p.getPropertiesList(),"humidity"));
+                    max =  Math.max(max,Integer.parseInt(extractValues(p.getPropertiesList(),"humidity")));
+                    min =  Math.min(min,Integer.parseInt(extractValues(p.getPropertiesList(),"humidity")));
+                }
+            }
+            average = sum/landCount;
+            for (Polygon p : PolygonList) {
+                Coordinate points[] = new Coordinate[p.getSegmentIdxsCount()];
+                Set<Integer> added = new HashSet<>();
+                int j = 0;
+                for(int i : p.getSegmentIdxsList()){
+                    Integer v1 = SegmentList.get(i).getV1Idx();
+                    Integer v2 = SegmentList.get(i).getV2Idx();
+                    try{
+                        if(!added.contains(v1)){
+                            float x = (float) VertexList.get(SegmentList.get(i).getV1Idx()).getX();
+                            float y = (float) VertexList.get(SegmentList.get(i).getV1Idx()).getY();
+                            points[j] = new Coordinate(x, y);
+                            added.add(v1);
+                            j++;
+                        }
+                        if(!added.contains(v2)){
+                            float x = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getX();
+                            float y = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getY();
+                            points[j] = new Coordinate(x, y);
+                            //System.out.println(points[j]);
+                            added.add(v2);
+                            j++;
+                        }
+                    } catch(Exception e){
+                        break;
+                    }
+                }
+                lowCentroidIdx = Math.min(p.getCentroidIdx(), lowCentroidIdx);
+                Color old = canvas.getColor();
+                Color new1;
+                if(extractValues(p.getPropertiesList(), "tile_tag").equals("ocean")){
+                    new1 = new Color(0,0,0);
+                } else {
+                    double humidity =  (double)Integer.parseInt(extractValues(p.getPropertiesList(),"humidity"));
+                    double sat = ((double)humidity- (double)min)/((double)max-(double)min);
+                    new1 = Color.getHSBColor(237F,(float) sat,1f);
+//                    System.out.println(altitude);
+//                    int[] intVals = extractColor(p.getPropertiesList());
+//                    new1 = new Color(intVals[0], intVals[1], intVals[2]);
+
+                }
+                canvas.setColor(new1);
                 if(debug){
                     if(alphaSet) canvas.setColor(new Color(0,0,0,alpha));
                     else canvas.setColor(new Color(0,0,0));
