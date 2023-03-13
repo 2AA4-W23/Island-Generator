@@ -2,15 +2,20 @@ package ca.mcmaster.cas.se2aa4.island.LakeGen;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.island.Extractors.Extractor;
+import ca.mcmaster.cas.se2aa4.island.Extractors.HumidityExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.TileTagExtractor;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Random;
 
 public class AddLakes {
     static Random rng = new Random();
     private static final Extractor tileTagsEx = new TileTagExtractor();
+    private static final Extractor humidEx = new HumidityExtractor();
+
 
     public static List<Structs.Polygon> addLakes(List<Structs.Polygon> landTiles, int numLakes, List<Structs.Polygon> newList){
         List<Structs.Polygon> l2 = new ArrayList<>();
@@ -61,7 +66,9 @@ public class AddLakes {
                 Structs.Property lakeNum = Structs.Property.newBuilder().setKey("lake_num").setValue(Integer.toString(i+1)).build();
                 Structs.Polygon pLake = Structs.Polygon.newBuilder(p).addProperties(color).addProperties(tileTag).addProperties(lakeNum).build();
                 int idx = newList.indexOf(p);
-                if(idx != -1) newList.set(idx, pLake);
+                if(idx != -1) {
+                    newList.set(idx, pLake);
+                }
             }
         }
         return newList;

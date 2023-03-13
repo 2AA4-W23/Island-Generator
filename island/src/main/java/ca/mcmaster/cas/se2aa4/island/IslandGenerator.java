@@ -1,5 +1,6 @@
 package ca.mcmaster.cas.se2aa4.island;
 
+import ca.mcmaster.Humidity.TileHumidifier;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.island.Altitude.AltitudeProfile;
 import ca.mcmaster.cas.se2aa4.island.Configuration.Configuration;
@@ -47,8 +48,11 @@ public class IslandGenerator {
         }
         List altLists = new ArrayList<>();
         altLists = altProfile.addAltitudeValues(newList,mesh.getSegmentsList(),vList);
+
         newList = (List<Structs.Polygon>) altLists.get(0);
         newList = AddLakes.addLakes(landTiles, numLakes, newList);
+        newList = TileHumidifier.setHumidities(newList);
+
         List<Structs.Segment> sList = (List<Structs.Segment>) altLists.get(1);
         vList = (List<Structs.Vertex>) altLists.get(2);
         return Structs.Mesh.newBuilder().addAllPolygons(newList).addAllSegments(sList).addAllVertices(vList).build();
