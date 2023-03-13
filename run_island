@@ -7,5 +7,5 @@
 java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude mountain --lakes 7
 
 cd ../visualizer
-java -jar visualizer.jar ../island/island.mesh sample.svg -T 2 -A 255 -Alt
+java -jar visualizer.jar ../island/island.mesh sample.svg -T 2 -A 255 -Humid
 cd ..

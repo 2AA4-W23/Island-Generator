@@ -54,7 +54,7 @@ public class GraphicRenderer {
             int landCount = 0;
             int sum = 0;
             int max = 0;
-            int min = 100000;
+            int min = 100;
             int average =0;
             for (Polygon p: PolygonList){
                 if(!extractValues(p.getPropertiesList(), "tile_tag").equals("ocean")){
