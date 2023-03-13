@@ -102,7 +102,7 @@ public class GraphicRenderer {
                     double sat = ((double)altitude- (double)min)/((double)max-(double)min);
                     int rgb = Color.HSBtoRGB(360, 0.4f, 1f);
                     new1 = Color.getHSBColor(360F,(float) sat,1f);
-                    System.out.println(altitude);
+//                    System.out.println(altitude);
 //                    int[] intVals = extractColor(p.getPropertiesList());
 //                    new1 = new Color(intVals[0], intVals[1], intVals[2]);
 
