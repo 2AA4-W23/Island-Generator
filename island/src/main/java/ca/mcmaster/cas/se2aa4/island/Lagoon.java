@@ -56,11 +56,11 @@ public class Lagoon {
             }
             index++;
         }
-        System.out.println("After Modification");
-        for (Polygon p: newList){
-            System.out.println(extractColor(p.getPropertiesList()));
-        }
-        System.out.println(pList.size()== newList.size());
+//        System.out.println("After Modification");
+//        for (Polygon p: newList){
+//            System.out.println(extractColor(p.getPropertiesList()));
+//        }
+//        System.out.println(pList.size()== newList.size());
         return Structs.Mesh.newBuilder().addAllPolygons(newList).addAllSegments(mesh.getSegmentsList()).addAllVertices(mesh.getVerticesList()).build();
     }
     public String extractColor(List<Property> properties) {

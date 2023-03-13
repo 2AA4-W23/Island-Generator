@@ -33,7 +33,7 @@ public class Irregular implements Shape{
             pts[i] = new Coordinate(x,y);
         }
         for(Coordinate c: pts){
-            System.out.println(c);
+//            System.out.println(c);
         }
 //        ConcaveHull cv = new ConcaveHull();
 //        ConvexHull c = new ConvexHull(pts, new GeometryFactory());

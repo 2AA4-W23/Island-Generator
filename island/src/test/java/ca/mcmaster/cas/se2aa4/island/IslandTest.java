@@ -1,23 +1,114 @@
 package ca.mcmaster.cas.se2aa4.island;
-
 import ca.mcmaster.cas.se2aa4.a2.generator.IrregularMeshGenerator;
 import ca.mcmaster.cas.se2aa4.a2.generator.MeshGenerator;
-import ca.mcmaster.cas.se2aa4.a2.io.MeshFactory;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
+import ca.mcmaster.cas.se2aa4.island.Altitude.RandomAltitude;
+import ca.mcmaster.cas.se2aa4.island.Altitude.VolcanoAltitude;
 import ca.mcmaster.cas.se2aa4.island.Configuration.Configuration;
+import ca.mcmaster.cas.se2aa4.island.Extractors.AltitudeExtractor;
+import ca.mcmaster.cas.se2aa4.island.Extractors.Extractor;
+import ca.mcmaster.cas.se2aa4.island.Extractors.LakeExtractor;
+import ca.mcmaster.cas.se2aa4.island.Extractors.TileTagExtractor;
 import ca.mcmaster.cas.se2aa4.island.Shape.Irregular;
 import ca.mcmaster.cas.se2aa4.island.Shape.*;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
 public class IslandTest {
+    Extractor tileTagEx = new TileTagExtractor();
+    Extractor lakeTagEx = new LakeExtractor();
+    Extractor altTagEx = new AltitudeExtractor();
+    Structs.Mesh testMesh = MeshCreator();
+    @Test
+    public void checkAltTagsVolcano(){
+        Configuration config = new Configuration();
+        config.shapeObj = new Irregular();
+        config.inputMesh = this.testMesh;
+        config.num_lakes = 7;
+        config.altProfile = new VolcanoAltitude();
+        Structs.Mesh FinalMesh = IslandGenerator.Generate(config);
+        List<Structs.Polygon> plist = FinalMesh.getPolygonsList();
+        boolean checkTiles = true;
+        String alt;
+        String tiles;
+        for(Structs.Polygon p: plist){
+            alt = altTagEx.extractValues(p.getPropertiesList());
+            tiles = tileTagEx.extractValues(p.getPropertiesList());
+            if(alt.equals("null")){
+                checkTiles = false;
+                break;
+            } else if (tiles.equals("ocean")) {
+                if(!alt.equals("0")){
+                    checkTiles = false;
+                    break;
+                }
+            }
+        }
+        assertEquals(checkTiles, true);
+    }
+    @Test
+    public void checkAltTags(){
+        Configuration config = new Configuration();
+        config.shapeObj = new Irregular();
+        config.inputMesh = this.testMesh;
+        config.num_lakes = 7;
+        config.altProfile = new RandomAltitude();
+        Structs.Mesh FinalMesh = IslandGenerator.Generate(config);
+        List<Structs.Polygon> plist = FinalMesh.getPolygonsList();
+        boolean checkTiles = true;
+        String alt;
+        String tiles;
+        for(Structs.Polygon p: plist){
+            alt = altTagEx.extractValues(p.getPropertiesList());
+            tiles = tileTagEx.extractValues(p.getPropertiesList());
+            if(alt.equals("null")){
+                checkTiles = false;
+                break;
+            } else if (tiles.equals("ocean")) {
+                if(!alt.equals("0")){
+                    checkTiles = false;
+                    break;
+                }
+            }
+        }
+        assertEquals(checkTiles, true);
+    }
+
+    @Test
+    public void LakeGenerationTest(){
+        Configuration config = new Configuration();
+        config.shapeObj = new Irregular();
+        config.inputMesh = this.testMesh;
+        config.num_lakes = 7;
+        config.altProfile = new RandomAltitude();
+        Structs.Mesh FinalMesh = IslandGenerator.Generate(config);
+        List<Structs.Polygon> plist = FinalMesh.getPolygonsList();
+
+        List<Structs.Polygon> lakeTiles = new ArrayList<>();
+        List lakeList = new ArrayList<>();
+        for(Structs.Polygon p: plist){
+            String tileTag = tileTagEx.extractValues(p.getPropertiesList());
+            if(tileTag.equals("lake")){
+                lakeTiles.add(p);
+            }
+        }
+        for(Structs.Polygon lake: lakeTiles){
+            String numLakes = lakeTagEx.extractValues(lake.getPropertiesList());
+            if(!lakeList.contains(numLakes)){
+                lakeList.add(numLakes);
+            }
+        }
+        assertEquals(7, lakeList.size());
+    }
     @Test
     public void PolygonCreation(){
+
         Shape Irregular = new Irregular();
         Shape Circle = new Circle();
         Shape Rectangle = new Rectangle();
@@ -40,34 +131,33 @@ public class IslandTest {
     }
     @Test
     public void checkIrregularIslandCreation(){
-        Structs.Mesh testMesh = MeshCreator();
         Configuration config = new Configuration();
         config.shapeObj = new Irregular();
-        config.inputMesh = testMesh;
+        config.inputMesh = this.testMesh;
+        config.altProfile = new RandomAltitude();
         Structs.Mesh islandMesh = IslandGenerator.Generate(config);
         assertNotNull(islandMesh);
     }
     @Test
     public void checkRectangularIslandCreation(){
-        Structs.Mesh testMesh = MeshCreator();
         Configuration config = new Configuration();
-        config.shapeObj = new Irregular();
+        config.shapeObj = new Rectangle();
         config.inputMesh = testMesh;
+        config.altProfile = new RandomAltitude();
         Structs.Mesh islandMesh = IslandGenerator.Generate(config);
         assertNotNull(islandMesh);
     }
     @Test
     public void checkCircularIslandCreation(){
-        Structs.Mesh testMesh = MeshCreator();
         Configuration config = new Configuration();
-        config.shapeObj = new Irregular();
+        config.shapeObj = new Circle();
         config.inputMesh = testMesh;
+        config.altProfile = new RandomAltitude();
         Structs.Mesh islandMesh = IslandGenerator.Generate(config);
         assertNotNull(islandMesh);
     }
     @Test
     public void checkTileTags(){
-        Structs.Mesh testMesh = MeshCreator();
 
         Lagoon lagoonMap = new Lagoon();
         Structs.Mesh newMesh = lagoonMap.LagoonTerrain(testMesh);
@@ -85,7 +175,6 @@ public class IslandTest {
     }
     @Test
     public void checkRGB(){
-        Structs.Mesh testMesh = MeshCreator();
 
         Lagoon lagoonMap = new Lagoon();
         Structs.Mesh newMesh = lagoonMap.LagoonTerrain(testMesh);
@@ -127,7 +216,10 @@ public class IslandTest {
     private Structs.Mesh MeshCreator(){
         //Create Mesh
         MeshGenerator generator = new IrregularMeshGenerator();
-        Structs.Mesh testMesh = generator.generate(2000, 5);
+        Structs.Mesh testMesh = generator.generate(3, 1000);
         return testMesh;
     }
+
+
+
 }

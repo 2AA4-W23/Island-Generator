@@ -1,7 +1,7 @@
 package ca.mcmaster.cas.se2aa4.island;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
-import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
+import ca.mcmaster.cas.se2aa4.island.Altitude.AltitudeProfile;
 import ca.mcmaster.cas.se2aa4.island.Configuration.Configuration;
 import ca.mcmaster.cas.se2aa4.island.Extractors.Extractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.RGBExtractor;
@@ -11,7 +11,6 @@ import ca.mcmaster.cas.se2aa4.island.Shape.Shape;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class IslandGenerator {
     private static final Extractor rgbEx = new RGBExtractor();
@@ -20,15 +19,15 @@ public class IslandGenerator {
     public static Structs.Mesh Generate(Configuration config){
         Structs.Mesh mesh = config.inputMesh;
         Shape islandShape = config.shapeObj;
-        int numLakes = config.numLakes;
+        AltitudeProfile altProfile = config.altProfile;
+        int numLakes;
+        numLakes = config.num_lakes;
         islandShape.create();
-
         List<Structs.Polygon> pList = mesh.getPolygonsList();
         List<Structs.Vertex> vList = mesh.getVerticesList();
         List<Structs.Polygon> landTiles = new ArrayList<>();
         List<Structs.Polygon> newList = new ArrayList<>();
 
-        Random rng = new Random();
 
         for (Structs.Polygon p: pList) {
             int indexc = p.getCentroidIdx();
@@ -46,11 +45,12 @@ public class IslandGenerator {
                 landTiles.add(pColoredModify);
             }
         }
-
+        List altLists = new ArrayList<>();
+        altLists = altProfile.addAltitudeValues(newList,mesh.getSegmentsList(),vList);
+        newList = (List<Structs.Polygon>) altLists.get(0);
         newList = AddLakes.addLakes(landTiles, numLakes, newList);
-
-
-        System.out.println(pList.size() == newList.size());
-        return Structs.Mesh.newBuilder().addAllPolygons(newList).addAllSegments(mesh.getSegmentsList()).addAllVertices(mesh.getVerticesList()).build();
+        List<Structs.Segment> sList = (List<Structs.Segment>) altLists.get(1);
+        vList = (List<Structs.Vertex>) altLists.get(2);
+        return Structs.Mesh.newBuilder().addAllPolygons(newList).addAllSegments(sList).addAllVertices(vList).build();
     }
 }

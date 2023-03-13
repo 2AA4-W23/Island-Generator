@@ -3,9 +3,9 @@
 #cd generator
 #java -jar generator.jar sample.mesh -mt irregular -np 2000 -lr 10
 
-cd island
-java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular -a canyon --lakes 10
+#cd island
+java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude random --lakes 7
 
 cd ../visualizer
-java -jar visualizer.jar ../island/island.mesh sample.svg -T 2 -A 255
+java -jar visualizer.jar ../island/island.mesh sample.svg -T 2 -A 255 -Alt
 cd ..

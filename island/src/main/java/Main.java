@@ -23,32 +23,23 @@ public class Main {
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
 
+
+
         if (cmd.hasOption("h")) {
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("Generator", options);
             System.exit(0);
         }
-
         String mode = cmd.getOptionValue("mode");
         Structs.Mesh inputMesh = new MeshFactory().read(cmd.getOptionValue("i"));
         Structs.Mesh outputMesh;
         Random rng = new Random();
 
         String lakeArg = cmd.getOptionValue("lakes");
-        int numLakes;
-        if(lakeArg != null) numLakes = Integer.parseInt(lakeArg);
-        else numLakes = rng.nextInt(10);
-
-        String altitudeType = cmd.getOptionValue("altitude");
-        if (altitudeType == null) {
-            altitudeType = "flat";
-        }
-        else if (altitudeType.equals("randomized")) {
-            String[] altitudeProfiles = {"canyon", "volcanic", "flat"};
-            altitudeType = altitudeProfiles[rng.nextInt(3)];
-        }
 
         Configuration config = new Configuration();
+        config.num_lakes = 7;
+        System.out.println(config.num_lakes);
         config.generateConfig(args, options);
 
         if(mode == null || !(mode.equals("lagoon"))){

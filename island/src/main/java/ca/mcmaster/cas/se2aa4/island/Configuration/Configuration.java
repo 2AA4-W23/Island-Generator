@@ -2,20 +2,21 @@ package ca.mcmaster.cas.se2aa4.island.Configuration;
 
 import ca.mcmaster.cas.se2aa4.a2.io.MeshFactory;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
-import ca.mcmaster.cas.se2aa4.island.Shape.Circle;
+import ca.mcmaster.cas.se2aa4.island.Altitude.AltitudeProfile;
+import ca.mcmaster.cas.se2aa4.island.Altitude.RandomAltitude;
 import ca.mcmaster.cas.se2aa4.island.Shape.Irregular;
 import ca.mcmaster.cas.se2aa4.island.Shape.Shape;
 import org.apache.commons.cli.*;
 
 import java.io.FileNotFoundException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Configuration {
     public Shape shapeObj;
     public Structs.Mesh inputMesh;
-    public int numLakes;
+    public int num_lakes;
+    public AltitudeProfile altProfile;
     private Random rng = new Random();
 
     public void generateConfig(String args[], Options options) throws ParseException, FileNotFoundException {
@@ -42,19 +43,31 @@ public class Configuration {
         } catch (Exception e) {
             this.shapeObj = new Irregular();
         }
+
         try {
             this.inputMesh = new MeshFactory().read(inputM);
             System.out.println(inputMesh.getClass());
         } catch (Exception e) {
             throw new FileNotFoundException();
         }
+
         try{
-            this.numLakes = Math.min(Integer.parseInt(lakes), 10);
+            this.num_lakes = Math.min(Integer.parseInt(lakes), 10);
             System.out.println("lakes set");
         } catch (Exception e) {
-            this.numLakes = rng.nextInt(5);
-
-        } 
+            this.num_lakes = rng.nextInt(5);
+        }
+        String altPath = "ca.mcmaster.cas.se2aa4.island.Altitude.";
+        String alt = cmd.getOptionValue("a");
+        alt = alt.toLowerCase();
+        alt = altPath + alt.substring(0, 1).toUpperCase() + alt.substring(1)+"Altitude";
+        try {
+            this.altProfile = (AltitudeProfile) Class.forName(alt).getDeclaredConstructor().newInstance();
+            System.out.println("SetAlt");
+        } catch (Exception e){
+            this.altProfile = new RandomAltitude();
+            System.out.println("Catchalt");
+        }
 
     }
 }

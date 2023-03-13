@@ -1,5 +1,6 @@
 package ca.mcmaster.cas.se2aa4.a2.visualizer;
 
+import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Segment;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Mesh;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
@@ -26,8 +27,18 @@ public class GraphicRenderer {
 
     private Boolean alphaSet = false;
     private int alpha = 0;
-
-    public void render(Mesh aMesh, Graphics2D canvas, Boolean debug, Boolean thickSet, int thick, Boolean alphaSet, int alpha) {
+    public String extractValues(List<Structs.Property> properties, String key) {
+        String tag = null;
+        for(Structs.Property p: properties) {
+            if (p.getKey().equals(key)) {
+                tag = p.getValue();
+            }
+        }
+        if (tag == null)
+            return "null";
+        return tag;
+    }
+    public void render(Mesh aMesh, Graphics2D canvas, Boolean debug, Boolean thickSet, int thick, Boolean alphaSet, int alpha, Boolean alt) {
         this.alphaSet = alphaSet;
         this.alpha = alpha;
         canvas.setColor(Color.BLACK);
@@ -37,95 +48,161 @@ public class GraphicRenderer {
         List<Vertex> VertexList = aMesh.getVerticesList();
         List<Segment> SegmentList = aMesh.getSegmentsList();
         List<Polygon> PolygonList = aMesh.getPolygonsList();
-
         int lowCentroidIdx = VertexList.size();
-        int count1 = 0;
-        for (Polygon p : PolygonList) {
-//            System.out.println(p.getSegmentIdxsCount() + " segments in polygon");
-            Coordinate points[] = new Coordinate[p.getSegmentIdxsCount()];
-            Set<Integer> added = new HashSet<>();
-            int j = 0;
-            //System.out.println("Polygon " + count1);
-            //System.out.println("Num vertices: " + p.getSegmentIdxsCount());
-            for(int i : p.getSegmentIdxsList()){
-                Integer v1 = SegmentList.get(i).getV1Idx();
-                Integer v2 = SegmentList.get(i).getV2Idx();
-//                System.out.println("Segment " + i);
-                try{
-                    if(!added.contains(v1)){
-                        float x = (float) VertexList.get(SegmentList.get(i).getV1Idx()).getX();
-                        float y = (float) VertexList.get(SegmentList.get(i).getV1Idx()).getY();
-                        points[j] = new Coordinate(x, y);
-                        //System.out.println(points[j]);
-                        added.add(v1);
-                        j++;
-                    }
-                    if(!added.contains(v2)){
-                        float x = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getX();
-                        float y = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getY();
-                        points[j] = new Coordinate(x, y);
-                        //System.out.println(points[j]);
-                        added.add(v2);
-                        j++;
-                    }
-                } catch(Exception e){
-                    break;
+        System.out.println("Here");
+        if(alt){
+            int landCount = 0;
+            int sum = 0;
+            int max = 0;
+            int min = 100000;
+            int average =0;
+            for (Polygon p: PolygonList){
+                if(!extractValues(p.getPropertiesList(), "tile_tag").equals("ocean")){
+                    landCount ++;
+                    sum += Integer.parseInt(extractValues(p.getPropertiesList(),"altitude"));
+                    max =  Math.max(max,Integer.parseInt(extractValues(p.getPropertiesList(),"altitude")));
+                    min =  Math.min(min,Integer.parseInt(extractValues(p.getPropertiesList(),"altitude")));
                 }
             }
-            lowCentroidIdx = Math.min(p.getCentroidIdx(), lowCentroidIdx);
-            Color old = canvas.getColor();
-            Color new1 = new Color(0,0,0);
-            int[] intVals = extractColor(p.getPropertiesList());
-
-            new1 = new Color(intVals[0], intVals[1], intVals[2]);
-//            System.out.println(new1.getAlpha());
-////            new1.
-//            if(count1 %3==0){
-//                new1 = new Color(100,56,232);
-//                new1 = old;
-//            }
-//            for (int i = 0; i < 5; i++) {
-//                new1 = new1.brighter();
-//            }
-            canvas.setColor(new1);
-
-//            else if(count1%2 ==0) {
-//                new1 = new Color(255,193,110);
-//            } else {
-//                new1 = new Color(173,216,250);
-//            }
-            count1 ++;
-
-            if(debug){
-                if(alphaSet) canvas.setColor(new Color(0,0,0,alpha));
-                else canvas.setColor(new Color(0,0,0));
-            }
-            List<Coordinate> valPoints = new ArrayList<>();
-            for(Coordinate data: points) {
-                if (data != null) {
-                    valPoints.add(data);
+            average = sum/landCount;
+            for (Polygon p : PolygonList) {
+                Coordinate points[] = new Coordinate[p.getSegmentIdxsCount()];
+                Set<Integer> added = new HashSet<>();
+                int j = 0;
+                for(int i : p.getSegmentIdxsList()){
+                    Integer v1 = SegmentList.get(i).getV1Idx();
+                    Integer v2 = SegmentList.get(i).getV2Idx();
+                    try{
+                        if(!added.contains(v1)){
+                            float x = (float) VertexList.get(SegmentList.get(i).getV1Idx()).getX();
+                            float y = (float) VertexList.get(SegmentList.get(i).getV1Idx()).getY();
+                            points[j] = new Coordinate(x, y);
+                            added.add(v1);
+                            j++;
+                        }
+                        if(!added.contains(v2)){
+                            float x = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getX();
+                            float y = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getY();
+                            points[j] = new Coordinate(x, y);
+                            //System.out.println(points[j]);
+                            added.add(v2);
+                            j++;
+                        }
+                    } catch(Exception e){
+                        break;
+                    }
                 }
-            }
-            Coordinate[] newPoints = valPoints.toArray(new Coordinate[valPoints.size()]);
+                lowCentroidIdx = Math.min(p.getCentroidIdx(), lowCentroidIdx);
+                Color old = canvas.getColor();
+                Color new1;
+                if(extractValues(p.getPropertiesList(), "tile_tag").equals("ocean")){
+                    new1 = new Color(0,0,0);
+                } else {
+                    double altitude =  (double)Integer.parseInt(extractValues(p.getPropertiesList(),"altitude"));
+                    double sat = ((double)altitude- (double)min)/((double)max-(double)min);
+                    int rgb = Color.HSBtoRGB(360, 0.4f, 1f);
+                    new1 = Color.getHSBColor(360F,(float) sat,1f);
+                    System.out.println(altitude);
+//                    int[] intVals = extractColor(p.getPropertiesList());
+//                    new1 = new Color(intVals[0], intVals[1], intVals[2]);
+
+                }
+                    canvas.setColor(new1);
+                if(debug){
+                    if(alphaSet) canvas.setColor(new Color(0,0,0,alpha));
+                    else canvas.setColor(new Color(0,0,0));
+                }
+                List<Coordinate> valPoints = new ArrayList<>();
+                for(Coordinate data: points) {
+                    if (data != null) {
+                        valPoints.add(data);
+                    }
+                }
+                Coordinate[] newPoints = valPoints.toArray(new Coordinate[valPoints.size()]);
 
                 if(j != 0 && points != null) {
-                float[] x = new float[p.getSegmentIdxsCount()];
-                float[] y = new float[p.getSegmentIdxsCount()];
-                //System.out.println("New Polygon:");
-                // for(Coordinate point: points){
-                //     System.out.println(point);
-                // }
-                ConvexHull cv = new ConvexHull(newPoints, new GeometryFactory());
-                Coordinate[] orderedPoints = cv.getConvexHull().getCoordinates();    
-                for(int i = 0; i < p.getSegmentIdxsCount(); i++) {
-                    x[i] = (float) orderedPoints[i].getX();
-                    y[i] = (float) orderedPoints[i].getY();
+                    float[] x = new float[p.getSegmentIdxsCount()];
+                    float[] y = new float[p.getSegmentIdxsCount()];
+                    ConvexHull cv = new ConvexHull(newPoints, new GeometryFactory());
+                    Coordinate[] orderedPoints = cv.getConvexHull().getCoordinates();
+                    for(int i = 0; i < p.getSegmentIdxsCount(); i++) {
+                        x[i] = (float) orderedPoints[i].getX();
+                        y[i] = (float) orderedPoints[i].getY();
+                    }
+                    Polygon2D polygon = new Polygon2D(x,y,x.length);
+                    canvas.fill(polygon);
                 }
-                Polygon2D polygon = new Polygon2D(x,y,x.length);
-                canvas.fill(polygon);
+                canvas.setColor(old);
             }
-            canvas.setColor(old);
+            System.out.println(min);
+            System.out.println(max);
+        } else {
+
+            for (Polygon p : PolygonList) {
+                Coordinate points[] = new Coordinate[p.getSegmentIdxsCount()];
+                Set<Integer> added = new HashSet<>();
+                int j = 0;
+                for(int i : p.getSegmentIdxsList()){
+                    Integer v1 = SegmentList.get(i).getV1Idx();
+                    Integer v2 = SegmentList.get(i).getV2Idx();
+                    try{
+                        if(!added.contains(v1)){
+                            float x = (float) VertexList.get(SegmentList.get(i).getV1Idx()).getX();
+                            float y = (float) VertexList.get(SegmentList.get(i).getV1Idx()).getY();
+                            points[j] = new Coordinate(x, y);
+                            added.add(v1);
+                            j++;
+                        }
+                        if(!added.contains(v2)){
+                            float x = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getX();
+                            float y = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getY();
+                            points[j] = new Coordinate(x, y);
+                            //System.out.println(points[j]);
+                            added.add(v2);
+                            j++;
+                        }
+                    } catch(Exception e){
+                        break;
+                    }
+                }
+                lowCentroidIdx = Math.min(p.getCentroidIdx(), lowCentroidIdx);
+                Color old = canvas.getColor();
+                Color new1;
+
+                int[] intVals = extractColor(p.getPropertiesList());
+                new1 = new Color(intVals[0], intVals[1], intVals[2]);
+                canvas.setColor(new1);
+
+                if(debug){
+                    if(alphaSet) canvas.setColor(new Color(0,0,0,alpha));
+                    else canvas.setColor(new Color(0,0,0));
+                }
+                List<Coordinate> valPoints = new ArrayList<>();
+                for(Coordinate data: points) {
+                    if (data != null) {
+                        valPoints.add(data);
+                    }
+                }
+                Coordinate[] newPoints = valPoints.toArray(new Coordinate[valPoints.size()]);
+
+                if(j != 0 && points != null) {
+                    float[] x = new float[p.getSegmentIdxsCount()];
+                    float[] y = new float[p.getSegmentIdxsCount()];
+                    ConvexHull cv = new ConvexHull(newPoints, new GeometryFactory());
+                    Coordinate[] orderedPoints = cv.getConvexHull().getCoordinates();
+                    for(int i = 0; i < p.getSegmentIdxsCount(); i++) {
+                        x[i] = (float) orderedPoints[i].getX();
+                        y[i] = (float) orderedPoints[i].getY();
+                    }
+                    Polygon2D polygon = new Polygon2D(x,y,x.length);
+                    canvas.fill(polygon);
+                }
+                canvas.setColor(old);
+            }
         }
+
+
+
         int centroidIdx;
 
         if (debug) {
