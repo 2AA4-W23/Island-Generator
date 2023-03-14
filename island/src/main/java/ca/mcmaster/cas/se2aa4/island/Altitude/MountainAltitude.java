@@ -118,7 +118,7 @@ public class MountainAltitude implements AltitudeProfile {
         List<Object> ansList = new ArrayList<>();
         ansList.add(pModList);
         ansList.add(slist);
-        ansList.add(vlist);
+        ansList.add(vList);
         return ansList;
 
     }

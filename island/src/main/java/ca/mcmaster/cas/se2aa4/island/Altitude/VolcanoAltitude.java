@@ -83,7 +83,7 @@ public class VolcanoAltitude implements AltitudeProfile{
         List<Object> ansList = new ArrayList<>();
         ansList.add(pModList);
         ansList.add(sList);
-        ansList.add(vlist);
+        ansList.add(vList);
         return ansList;
     }
     private double distance(double x1, double y1, double x2, double y2) {

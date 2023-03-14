@@ -64,7 +64,7 @@ public class IslandGenerator {
 
         List<Structs.Segment> sList = (List<Structs.Segment>) altLists.get(1);
         vList = (List<Structs.Vertex>) altLists.get(2);
-        for(Vertex v : vList) 
+        for(Structs.Polygon v : (List<Structs.Polygon>) altLists.get(0)) 
             System.out.println(altEx.extractValues(v.getPropertiesList()));
         return Structs.Mesh.newBuilder().addAllPolygons(newList).addAllSegments(sList).addAllVertices(vList).build();
     }

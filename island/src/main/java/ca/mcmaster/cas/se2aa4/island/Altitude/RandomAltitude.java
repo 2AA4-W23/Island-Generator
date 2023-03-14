@@ -50,7 +50,7 @@ public class RandomAltitude implements AltitudeProfile{
         List<Object> ansList = new ArrayList<>();
         ansList.add(pModList);
         ansList.add(sList);
-        ansList.add(vlist);
+        ansList.add(vList);
         return ansList;
     }
 
