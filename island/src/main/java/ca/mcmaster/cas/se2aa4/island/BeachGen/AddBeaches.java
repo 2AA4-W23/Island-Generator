@@ -12,7 +12,7 @@ public class AddBeaches {
     
     private static Extractor tileTagsEx = new TileTagExtractor();
 
-    public static List<Structs.Polygon>[] addBeaches(List<Structs.Polygon> landTiles, List<Polygon> newList){
+    public static List<Structs.Polygon> addBeaches(List<Structs.Polygon> landTiles, List<Polygon> newList){
         List<Structs.Polygon> l2 = new ArrayList<>();
 //        System.out.println("Entered");
 //        System.out.println(landTiles.size());
@@ -33,6 +33,6 @@ public class AddBeaches {
             int index = newList.indexOf(p);
             if(index != -1) newList.set(index, beachTile);
         }
-        return new List[]{newList, landTiles};
+        return newList;
     }
 }
