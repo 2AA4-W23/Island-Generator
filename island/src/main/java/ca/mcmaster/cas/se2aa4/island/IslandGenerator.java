@@ -1,12 +1,12 @@
 package ca.mcmaster.cas.se2aa4.island;
 
-import ca.mcmaster.Humidity.TileHumidifier;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.island.Altitude.AltitudeProfile;
 import ca.mcmaster.cas.se2aa4.island.Configuration.Configuration;
 import ca.mcmaster.cas.se2aa4.island.Extractors.Extractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.RGBExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.TileTagExtractor;
+import ca.mcmaster.cas.se2aa4.island.Humidity.TileHumidifier;
 import ca.mcmaster.cas.se2aa4.island.LakeGen.AddLakes;
 import ca.mcmaster.cas.se2aa4.island.Shape.Shape;
 

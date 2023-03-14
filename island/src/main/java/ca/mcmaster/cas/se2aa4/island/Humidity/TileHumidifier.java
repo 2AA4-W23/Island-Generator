@@ -1,4 +1,4 @@
-package ca.mcmaster.Humidity;
+package ca.mcmaster.cas.se2aa4.island.Humidity;
 
 import java.util.LinkedList;
 import java.util.List;
