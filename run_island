@@ -7,7 +7,7 @@ if pwd == "/c/Users/ibrah/OneDrive/Documents/McMaster/SFWRENG 2AA4/A2.2/a2---mes
 then
     cd island
 fi
-java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude mountain --lakes 7
+java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude volcano --lakes 7
 cd ../visualizer
 java -jar visualizer.jar ../island/island.mesh sample.svg -T 2 -A 255
 cd ..

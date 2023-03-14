@@ -90,12 +90,13 @@ public class Main {
         renderer.render(aMesh, canvas, debug, thickSet, thick, alphaSet, alpha, alt, humid);
         // Storing the result in an SVG file
         SVGCanvas.write(canvas, output);
+        
+        // Dump the mesh to stdout
+        MeshDump dumper = new MeshDump();
+        dumper.dump(aMesh);
         if(cmd.hasOption("O")){
             OBJBuilder ob = new OBJBuilder();
             ob.generateOBJ(aMesh);
         }
-        // Dump the mesh to stdout
-        MeshDump dumper = new MeshDump();
-        dumper.dump(aMesh);
     }
 }

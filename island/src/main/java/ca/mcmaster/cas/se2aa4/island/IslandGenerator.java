@@ -1,10 +1,12 @@
 package ca.mcmaster.cas.se2aa4.island;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
+import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
 import ca.mcmaster.cas.se2aa4.island.Altitude.AltitudeProfile;
 import ca.mcmaster.cas.se2aa4.island.AquiferGen.AddAquifers;
 import ca.mcmaster.cas.se2aa4.island.BeachGen.AddBeaches;
 import ca.mcmaster.cas.se2aa4.island.Configuration.Configuration;
+import ca.mcmaster.cas.se2aa4.island.Extractors.AltitudeExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.Extractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.RGBExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.TileTagExtractor;
@@ -18,6 +20,7 @@ import java.util.List;
 public class IslandGenerator {
     private static final Extractor rgbEx = new RGBExtractor();
     private static final Extractor tileTagsEx = new TileTagExtractor();
+    private static final Extractor altEx = new AltitudeExtractor();
 
     public static Structs.Mesh Generate(Configuration config){
         Structs.Mesh mesh = config.inputMesh;
@@ -48,7 +51,7 @@ public class IslandGenerator {
                 landTiles.add(pColoredModify);
             }
         }
-        List altLists = new ArrayList<>();
+        List<Object> altLists = new ArrayList<>();
         altLists = altProfile.addAltitudeValues(newList,mesh.getSegmentsList(),vList);
 
         newList = (List<Structs.Polygon>) altLists.get(0);
@@ -61,6 +64,8 @@ public class IslandGenerator {
 
         List<Structs.Segment> sList = (List<Structs.Segment>) altLists.get(1);
         vList = (List<Structs.Vertex>) altLists.get(2);
+        for(Vertex v : vList) 
+            System.out.println(altEx.extractValues(v.getPropertiesList()));
         return Structs.Mesh.newBuilder().addAllPolygons(newList).addAllSegments(sList).addAllVertices(vList).build();
     }
 
