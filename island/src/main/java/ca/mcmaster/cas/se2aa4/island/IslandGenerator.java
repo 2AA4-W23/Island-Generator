@@ -4,6 +4,8 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.island.Altitude.AltitudeProfile;
 import ca.mcmaster.cas.se2aa4.island.AquiferGen.AddAquifers;
 import ca.mcmaster.cas.se2aa4.island.BeachGen.AddBeaches;
+import ca.mcmaster.cas.se2aa4.island.Biomes.BaseBiomeProfile;
+import ca.mcmaster.cas.se2aa4.island.Biomes.BiomeProfile;
 import ca.mcmaster.cas.se2aa4.island.Configuration.Configuration;
 import ca.mcmaster.cas.se2aa4.island.Extractors.Extractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.RGBExtractor;
@@ -58,6 +60,9 @@ public class IslandGenerator {
         landTiles = updateLandTiles(newList);
         newList = AddAquifers.addAquifers(landTiles, numAquifers, newList);
         newList = TileHumidifier.setHumidities(newList);
+
+        BiomeProfile bP = new BaseBiomeProfile();
+        newList = bP.addBiomes(newList);
 
         List<Structs.Segment> sList = (List<Structs.Segment>) altLists.get(1);
         vList = (List<Structs.Vertex>) altLists.get(2);

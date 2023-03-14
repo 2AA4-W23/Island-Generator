@@ -31,6 +31,7 @@ public class IslandTest {
         config.shapeObj = new Irregular();
         config.inputMesh = this.testMesh;
         config.num_lakes = 7;
+        config.num_aquifers = 2;
         config.altProfile = new VolcanoAltitude();
         Structs.Mesh FinalMesh = IslandGenerator.Generate(config);
         List<Structs.Polygon> plist = FinalMesh.getPolygonsList();
@@ -58,6 +59,7 @@ public class IslandTest {
         config.shapeObj = new Irregular();
         config.inputMesh = this.testMesh;
         config.num_lakes = 7;
+        config.num_aquifers = 2;
         config.altProfile = new RandomAltitude();
         Structs.Mesh FinalMesh = IslandGenerator.Generate(config);
         List<Structs.Polygon> plist = FinalMesh.getPolygonsList();
@@ -86,6 +88,7 @@ public class IslandTest {
         config.shapeObj = new Irregular();
         config.inputMesh = this.testMesh;
         config.num_lakes = 7;
+        config.num_aquifers = 2;
         config.altProfile = new RandomAltitude();
         Structs.Mesh FinalMesh = IslandGenerator.Generate(config);
         List<Structs.Polygon> plist = FinalMesh.getPolygonsList();
@@ -135,6 +138,7 @@ public class IslandTest {
         config.shapeObj = new Irregular();
         config.inputMesh = this.testMesh;
         config.altProfile = new RandomAltitude();
+        config.num_aquifers = 2;
         Structs.Mesh islandMesh = IslandGenerator.Generate(config);
         assertNotNull(islandMesh);
     }
@@ -144,6 +148,7 @@ public class IslandTest {
         config.shapeObj = new Rectangle();
         config.inputMesh = testMesh;
         config.altProfile = new RandomAltitude();
+        config.num_aquifers = 2;
         Structs.Mesh islandMesh = IslandGenerator.Generate(config);
         assertNotNull(islandMesh);
     }
@@ -153,6 +158,7 @@ public class IslandTest {
         config.shapeObj = new Circle();
         config.inputMesh = testMesh;
         config.altProfile = new RandomAltitude();
+        config.num_aquifers = 2;
         Structs.Mesh islandMesh = IslandGenerator.Generate(config);
         assertNotNull(islandMesh);
     }
