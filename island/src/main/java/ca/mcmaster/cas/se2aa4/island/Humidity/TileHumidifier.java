@@ -25,6 +25,11 @@ public class TileHumidifier {
                 Structs.Polygon humidP = Structs.Polygon.newBuilder(p).addProperties(humidity).build();
                 tileQ.add(humidP);
                 tiles.set(index, humidP);
+            } else if(tagEx.extractValues(p.getPropertiesList()).equals("aquifer")){
+                Structs.Property humidity = Structs.Property.newBuilder().setKey("humidity").setValue(Integer.toString(rng.nextInt(80,90))).build();
+                Structs.Polygon humidP = Structs.Polygon.newBuilder(p).addProperties(humidity).build();
+                tileQ.add(humidP);
+                tiles.set(index, humidP);
             }
             index++;
         }
