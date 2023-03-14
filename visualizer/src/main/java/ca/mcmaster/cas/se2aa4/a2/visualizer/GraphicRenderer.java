@@ -101,7 +101,7 @@ public class GraphicRenderer {
                     double altitude =  (double)Integer.parseInt(extractValues(p.getPropertiesList(),"altitude"));
                     double sat = ((double)altitude- (double)min)/((double)max-(double)min);
                     int rgb = Color.HSBtoRGB(360, 0.4f, 1f);
-                    new1 = Color.getHSBColor(360F,(float) sat,1f);
+                    new1 = Color.getHSBColor(0F,(float) sat,1f);
 //                    System.out.println(altitude);
 //                    int[] intVals = extractColor(p.getPropertiesList());
 //                    new1 = new Color(intVals[0], intVals[1], intVals[2]);
@@ -191,16 +191,16 @@ public class GraphicRenderer {
                         humidity =  (double) Integer.parseInt(extractValues(p.getPropertiesList(),"humidity"));
                     } catch(NumberFormatException e) {}
                     double sat = ((double) humidity- (double)min)/((double)max-(double)min);
-                    new1 = Color.getHSBColor(237F,(float) sat,1f);
-//                    System.out.println(altitude);
+                    new1 = Color.getHSBColor(0.67f,(float) sat,1f);   
+                    if(debug){
+                        if(alphaSet) canvas.setColor(new Color(0,0,0,alpha));
+                        else canvas.setColor(new Color(0,0,0));
+                    }
+                    canvas.setColor(new1);
+                    //  System.out.println(altitude);
 //                    int[] intVals = extractColor(p.getPropertiesList());
 //                    new1 = new Color(intVals[0], intVals[1], intVals[2]);
 
-                }
-                canvas.setColor(new1);
-                if(debug){
-                    if(alphaSet) canvas.setColor(new Color(0,0,0,alpha));
-                    else canvas.setColor(new Color(0,0,0));
                 }
                 List<Coordinate> valPoints = new ArrayList<>();
                 for(Coordinate data: points) {
@@ -220,6 +220,7 @@ public class GraphicRenderer {
                         y[i] = (float) orderedPoints[i].getY();
                     }
                     Polygon2D polygon = new Polygon2D(x,y,x.length);
+                    System.out.println(new1);
                     canvas.fill(polygon);
                 }
                 canvas.setColor(old);

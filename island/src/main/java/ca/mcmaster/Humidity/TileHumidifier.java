@@ -37,7 +37,7 @@ public class TileHumidifier {
             for(int i : currentTile.getNeighborIdxsList()){
                 Structs.Polygon neighborTile = tiles.get(i);
                 if(hasHumidity(neighborTile)) continue;
-                int humidityVal = Math.max(Integer.parseInt(humidEx.extractValues(currentTile.getPropertiesList())) - rng.nextInt(2,5), 5);
+                int humidityVal = Math.max(Integer.parseInt(humidEx.extractValues(currentTile.getPropertiesList())) - rng.nextInt(8, 10), 0);
                 Structs.Property humidity = Structs.Property.newBuilder().setKey("humidity").setValue(Integer.toString(humidityVal)).build();
                 Structs.Polygon humidP = Structs.Polygon.newBuilder(neighborTile).addProperties(humidity).build();
                 tileQ.add(humidP);
