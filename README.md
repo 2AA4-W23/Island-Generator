@@ -177,9 +177,11 @@ For a feature to be considered done it must be work without throwing any excepti
 | F23 | Accept command line to choose shape Mechanism                     | Virochaan | 03/7/2023  | 03/7/2023  | D      |
 | F24 | Generate Rectangular Shaped Island                  | Virochaan | 03/7/2023  | 03/7/2023  | D      |
 | F25 | Generate Irregular (Concave) Polygon for island generation                     | Virochaan | 03/7/2023  | 03/10/2023  | D      |
-| F30 | Island can have random number of lakes                   | Ibrahim   | 03/10/2023 |            | S      |
 | F26 | Accept command line to choose altitude profile               |Virochaan   | 03/13/2023 | 03/13/2023            | D      |
 | F27 | Define basic/random altimetric profile               |Virochaan   | 03/13/2023 | 03/13/2023            | D      |
 | F28 | Define Volcano Altimetric profile               |Virochaan   | 03/13/2023 | 03/13/2023            | D      |
 | F29 | Define Mountain Altimetric Profile               |Virochaan   | 03/13/2023 | 03/13/2023            | D      |
-| F32 | Accept command line to choose max number of lakes                 | Ibrahim   | 03/10/2023 |            | S      |
+| F30 | Island can have random number of lakes                   | Ibrahim   | 03/10/2023 |   03/14/2023         | D      |
+| F31 | Define Mountain Altimetric Profile               |Ibrahim   | 03/13/2023 | 03/14/2023            | D     |
+| F32 | Lakes affect surrounding vegetation and humidity.    | Ibrahim   | 03/10/2023 | 03/14/2023  | D      |
+| F54 | Heatmap mode to visualize altitudes and humidity  |Virochaan   | 03/13/2023 |     | S      |
