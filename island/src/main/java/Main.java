@@ -17,6 +17,7 @@ public class Main {
         options.addOption("o", true, "Output Mesh");
         options.addOption("s", "shape", true, "Decide Shape of the mesh");
         options.addOption("l", "lakes", true, "Number of lakes to be generated");
+        options.addOption("aq", "aquifers", true, "Number of aquifers to be generated");
         options.addOption("a", "altitude", true, "Decide altitude type (flat, volcanic, canyon, randomized");
         options.addOption("h", "help", false, "Show instructions for control variables");
 
@@ -33,13 +34,8 @@ public class Main {
         String mode = cmd.getOptionValue("mode");
         Structs.Mesh inputMesh = new MeshFactory().read(cmd.getOptionValue("i"));
         Structs.Mesh outputMesh;
-        Random rng = new Random();
-
-        String lakeArg = cmd.getOptionValue("lakes");
 
         Configuration config = new Configuration();
-        config.num_lakes = 7;
-        System.out.println(config.num_lakes);
         config.generateConfig(args, options);
 
         if(mode == null || !(mode.equals("lagoon"))){

@@ -2,7 +2,7 @@ package ca.mcmaster.cas.se2aa4.island;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.island.Altitude.AltitudeProfile;
-import ca.mcmaster.cas.se2aa4.island.AquifierGen.AddAquifiers;
+import ca.mcmaster.cas.se2aa4.island.AquiferGen.AddAquifers;
 import ca.mcmaster.cas.se2aa4.island.BeachGen.AddBeaches;
 import ca.mcmaster.cas.se2aa4.island.Configuration.Configuration;
 import ca.mcmaster.cas.se2aa4.island.Extractors.Extractor;
@@ -24,7 +24,7 @@ public class IslandGenerator {
         Shape islandShape = config.shapeObj;
         AltitudeProfile altProfile = config.altProfile;
         int numLakes = config.num_lakes;
-        int numAquifiers = config.num_aquifiers;
+        int numAquifers = config.num_aquifers;
         islandShape.create();
         List<Structs.Polygon> pList = mesh.getPolygonsList();
         List<Structs.Vertex> vList = mesh.getVerticesList();
@@ -52,15 +52,23 @@ public class IslandGenerator {
         altLists = altProfile.addAltitudeValues(newList,mesh.getSegmentsList(),vList);
 
         newList = (List<Structs.Polygon>) altLists.get(0);
-        List<Structs.Polygon>[] beachLists = AddBeaches.addBeaches(landTiles, newList);
-        newList = beachLists[0];
-        landTiles = beachLists[1];
+        newList = AddBeaches.addBeaches(landTiles, newList);
+        landTiles = updateLandTiles(newList);
         newList = AddLakes.addLakes(landTiles, numLakes, newList);
-        //newList = AddAquifiers.addAquifiers(landTiles, numAquifiers, newList);
+        landTiles = updateLandTiles(newList);
+        newList = AddAquifers.addAquifers(landTiles, numAquifers, newList);
         newList = TileHumidifier.setHumidities(newList);
 
         List<Structs.Segment> sList = (List<Structs.Segment>) altLists.get(1);
         vList = (List<Structs.Vertex>) altLists.get(2);
         return Structs.Mesh.newBuilder().addAllPolygons(newList).addAllSegments(sList).addAllVertices(vList).build();
+    }
+
+    private static List<Structs.Polygon> updateLandTiles(List<Structs.Polygon> tiles){
+        List<Structs.Polygon> landTiles = new ArrayList<>();
+        for(Structs.Polygon p : tiles){
+            if(tileTagsEx.extractValues(p.getPropertiesList()).equals("land")) landTiles.add(p);
+        }
+        return landTiles;
     }
 }
