@@ -9,5 +9,5 @@ then
 fi
 java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude volcano --lakes 5 --aquifers 4
 cd ../visualizer
-java -jar visualizer.jar ../island/island.mesh sample.svg -T 2 -A 255
+java -jar visualizer.jar ../island/island.mesh sample.svg -A 255
 cd ..

@@ -289,6 +289,45 @@ public class GraphicRenderer {
                 }
                 canvas.setColor(old);
             }
+            for (Segment s : SegmentList) {
+                if(!extractTag(s.getPropertiesList()).equals("river")) continue;
+                double x1 = VertexList.get(s.getV1Idx()).getX();
+                double x2 = VertexList.get(s.getV2Idx()).getX();
+                double y1 = VertexList.get(s.getV1Idx()).getY();
+                double y2 = VertexList.get(s.getV2Idx()).getY();
+
+
+                Color old1 = canvas.getColor();
+                Stroke oldStroke = canvas.getStroke();
+                canvas.setColor(extractColor(s.getPropertiesList(), alphaSet, alpha));
+                canvas.setStroke(extractStroke(s.getPropertiesList()));
+
+                if (debug){
+                    canvas.setColor(new Color(90,90,90));
+                    canvas.setStroke(new BasicStroke(1));
+                    if(alphaSet){
+                        canvas.setColor(new Color(90,90,90,alpha));
+                    }
+                } else if(!thickSet) {
+                    int v1Thickness = extractThickness(VertexList.get(s.getV1Idx()).getPropertiesList());
+                    int v2Thickness = extractThickness(VertexList.get(s.getV2Idx()).getPropertiesList());
+                    if(Math.abs(y1 - y2) < 0.01) {
+                        x1 += v1Thickness/2.0d;
+                        x2 -= v2Thickness/2.0d;
+                    }
+                    else if(Math.abs(x1 - x2) < 0.01) {
+                        y1 += v1Thickness/2.0d;
+                        y2 -= v2Thickness/2.0d;
+                    }
+                }
+                if(thickSet){
+                    canvas.setStroke(new BasicStroke(Math.max(1, thick - 1)));
+                }
+                Line2D line = new Line2D.Double(x1, y1, x2, y2);
+                canvas.draw(line);
+                canvas.setStroke(oldStroke);
+                canvas.setColor(old1);
+            }
         }
 
 
@@ -390,6 +429,18 @@ public class GraphicRenderer {
             }
         }
 
+    }
+
+    private String extractTag(List<Property> properties) {
+        String tag = null;
+        for(Structs.Property p: properties) {
+            if (p.getKey().equals("seg_tag")) {
+                tag = p.getValue();
+            }
+        }
+        if (tag == null)
+            return "null";
+        return tag;
     }
 
     private int[] extractColor(List<Property> properties) {

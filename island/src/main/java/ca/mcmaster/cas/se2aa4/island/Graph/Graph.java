@@ -11,14 +11,14 @@ public abstract class Graph {
     public boolean isConnected(int i1, int i2) {
         try {
             return adjacencyList[i1].contains(i2);
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (Exception e) {
             return false;
         }
     }
     public Set<Integer> getConnections(int i) {
         try {
             return adjacencyList[i];
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (Exception e) {
             return new HashSet<>();
         }
     }
