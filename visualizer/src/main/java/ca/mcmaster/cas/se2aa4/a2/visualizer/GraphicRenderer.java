@@ -220,7 +220,6 @@ public class GraphicRenderer {
                         y[i] = (float) orderedPoints[i].getY();
                     }
                     Polygon2D polygon = new Polygon2D(x,y,x.length);
-                    System.out.println(new1);
                     canvas.fill(polygon);
                 }
                 canvas.setColor(old);
