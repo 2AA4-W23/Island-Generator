@@ -2,6 +2,8 @@ package ca.mcmaster.cas.se2aa4.island;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.island.Altitude.AltitudeProfile;
+import ca.mcmaster.cas.se2aa4.island.AquifierGen.AddAquifiers;
+import ca.mcmaster.cas.se2aa4.island.BeachGen.AddBeaches;
 import ca.mcmaster.cas.se2aa4.island.Configuration.Configuration;
 import ca.mcmaster.cas.se2aa4.island.Extractors.Extractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.RGBExtractor;
@@ -21,8 +23,8 @@ public class IslandGenerator {
         Structs.Mesh mesh = config.inputMesh;
         Shape islandShape = config.shapeObj;
         AltitudeProfile altProfile = config.altProfile;
-        int numLakes;
-        numLakes = config.num_lakes;
+        int numLakes = config.num_lakes;
+        int numAquifiers = config.num_aquifiers;
         islandShape.create();
         List<Structs.Polygon> pList = mesh.getPolygonsList();
         List<Structs.Vertex> vList = mesh.getVerticesList();
@@ -50,7 +52,11 @@ public class IslandGenerator {
         altLists = altProfile.addAltitudeValues(newList,mesh.getSegmentsList(),vList);
 
         newList = (List<Structs.Polygon>) altLists.get(0);
+        List<Structs.Polygon>[] beachLists = AddBeaches.addBeaches(landTiles, newList);
+        newList = beachLists[0];
+        landTiles = beachLists[1];
         newList = AddLakes.addLakes(landTiles, numLakes, newList);
+        //newList = AddAquifiers.addAquifiers(landTiles, numAquifiers, newList);
         newList = TileHumidifier.setHumidities(newList);
 
         List<Structs.Segment> sList = (List<Structs.Segment>) altLists.get(1);
