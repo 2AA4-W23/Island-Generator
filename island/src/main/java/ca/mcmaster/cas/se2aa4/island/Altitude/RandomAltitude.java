@@ -10,7 +10,7 @@ import java.util.Set;
 public class RandomAltitude implements AltitudeProfile{
 
     @Override
-    public List addAltitudeValues(List<Structs.Polygon> plist, List<Structs.Segment> sList, List<Structs.Vertex> vlist) {
+    public List<Object> addAltitudeValues(List<Structs.Polygon> plist, List<Structs.Segment> sList, List<Structs.Vertex> vlist) {
         List<Structs.Polygon> pModList = new ArrayList<>();
         List <Structs.Vertex> vList = new ArrayList<>(vlist);
         int altConst = 500;
@@ -47,10 +47,10 @@ public class RandomAltitude implements AltitudeProfile{
                 pModList.add(pColoredModify);
             }
         }
-        List ansList = new ArrayList<>();
+        List<Object> ansList = new ArrayList<>();
         ansList.add(pModList);
         ansList.add(sList);
-        ansList.add(vlist);
+        ansList.add(vList);
         return ansList;
     }
 

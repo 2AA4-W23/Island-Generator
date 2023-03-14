@@ -19,7 +19,9 @@ public class TileHumidifier {
     public static List<Structs.Polygon> setHumidities (List<Structs.Polygon> tiles) {
         Queue<Structs.Polygon> tileQ = new LinkedList<>();
         int index = 0;
-        for(Structs.Polygon p : tiles){
+        for(Structs.Polygon p : tiles){ 
+            //set humidity values to high for lakes and aquifers
+            //add lake and aquifer tiles to queue as starting points
             if(tagEx.extractValues(p.getPropertiesList()).equals("lake")){
                 Structs.Property humidity = Structs.Property.newBuilder().setKey("humidity").setValue(Integer.toString(rng.nextInt(90,100))).build();
                 Structs.Polygon humidP = Structs.Polygon.newBuilder(p).addProperties(humidity).build();
@@ -33,12 +35,9 @@ public class TileHumidifier {
             }
             index++;
         }
-        while(!tileQ.isEmpty()){
+        //breadth first search of neighboring tiles of lakes/aquifers
+        while(!tileQ.isEmpty()){ 
             Structs.Polygon currentTile = tileQ.remove();
-            if(!hasHumidity(currentTile)) {
-                System.out.println("skipped");
-                continue;
-            }
             for(int i : currentTile.getNeighborIdxsList()){
                 Structs.Polygon neighborTile = tiles.get(i);
                 if(hasHumidity(neighborTile)) continue;

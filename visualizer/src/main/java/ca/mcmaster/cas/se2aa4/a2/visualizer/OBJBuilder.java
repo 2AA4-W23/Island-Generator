@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
 
@@ -49,10 +50,18 @@ public class OBJBuilder {
             // fwo.write("usemtl " + mtlName + "\n");
             double x = v.getX() / 100.0;
             double y = v.getY() / 100.0;
+            double z = 0.0;
             x = Math.round(x * 1000.0) / 1000.0;
             y = Math.round(y * 1000.0) / 1000.0;
+            for(Property p : v.getPropertiesList()) {
+                if(p.getKey().equals("altitude")) {
+                    z = Double.parseDouble(p.getValue());
+                    System.out.println("Found alt");
+                }
+            }
+            z = Math.round(z * 1000.0) / 1000.0;
             if(x > 6.0 || y > 6.0 || x < -1.0 || y < -1.0) continue;
-            fwo.write("v " + x + " 0.00 " + y + extractPropString(v.getPropertiesList(), "rbg_color") + "\n");
+            fwo.write("v " + x + " " + z + " " + y + extractPropString(v.getPropertiesList(), "rbg_color") + "\n");
             vertexSet.add(x + " " + y);
         }
 
