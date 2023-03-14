@@ -45,6 +45,14 @@ public class VertexGraph {
         }
     }
 
+    public Set<Integer> getConnections(int i){
+        try {
+            return adjacencyList[i];
+        } catch (NumberFormatException e) {
+            return new HashSet<>();
+        }
+    }
+
     public int size(){
         return this.size;
     }
