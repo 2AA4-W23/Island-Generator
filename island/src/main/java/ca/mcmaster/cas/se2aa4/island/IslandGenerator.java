@@ -1,6 +1,7 @@
 package ca.mcmaster.cas.se2aa4.island;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
+import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
 import ca.mcmaster.cas.se2aa4.island.Altitude.AltitudeProfile;
 import ca.mcmaster.cas.se2aa4.island.AquiferGen.AddAquifers;
@@ -72,6 +73,9 @@ public class IslandGenerator {
         List<Structs.Segment> sList = (List<Structs.Segment>) altLists.get(1);
         vList = (List<Structs.Vertex>) altLists.get(2);
         sList = AddRivers.addRivers(newList, sList, vList, numRivers);
+        List<Object> lakeList = AddLakes.fixLakeAltitudes(numLakes, newList, sList, vList);
+        newList = (List<Polygon>) lakeList.get(0);
+        vList = (List<Vertex>) lakeList.get(1);
         return Structs.Mesh.newBuilder().addAllPolygons(newList).addAllSegments(sList).addAllVertices(vList).build();
     }
 
