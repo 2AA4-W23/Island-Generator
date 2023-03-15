@@ -23,6 +23,10 @@ public interface AltitudeProfile {
             int averageAlt = 0;
             for(Integer i : connections) {
                 String alt = altEx.extractValues(plist.get(i).getPropertiesList());
+                if(alt.equals("0")){
+                    averageAlt = 0;
+                    break;
+                }
                 try {
                     averageAlt += Integer.parseInt(alt) / connections.size();
                 } catch(Exception e) {
