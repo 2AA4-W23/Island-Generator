@@ -54,26 +54,29 @@ public class AddRivers {
                 }
             }
             if (riverVertex != null) {
+                List<Structs.Segment> frwdSegs = new ArrayList<>();
+                List<Structs.Segment> bcwdSegs = new ArrayList<>();
                 Structs.Vertex currentVertex = riverVertex;
                 while (parent.containsKey(currentVertex)) {
                     Structs.Vertex parentVertex = parent.get(currentVertex);
                     Structs.Segment riverSegment = vvGraph.getSegment(currentVertex, parentVertex, vertices);
                     if (riverSegment != null) {
-                        river.add(riverSegment);
-                        riverSize++;
+                        frwdSegs.add(riverSegment);
                     }
                     currentVertex = parentVertex;
                 }
-                if (riverSize > 0) {
-                    Structs.Segment lastSegment = river.get(river.size() - 1);
-                    Structs.Vertex lastVertex = vertices.get(lastSegment.getV2Idx());
-                    Structs.Vertex nextVertex = getNextVertex(lastVertex, vertices, vvGraph);
-                    Structs.Segment nextSegment = vvGraph.getSegment(lastVertex, nextVertex, vertices);
-                    if (nextSegment != null) {
-                        river.add(nextSegment);
-                        riverSize++;
+                currentVertex = riverVertex;
+                while (parent.containsKey(currentVertex)) {
+                    Structs.Vertex parentVertex = parent.get(currentVertex);
+                    Structs.Segment riverSegment = vvGraph.getSegment(parentVertex, currentVertex, vertices);
+                    if (riverSegment != null) {
+                        bcwdSegs.add(riverSegment);
                     }
+                    currentVertex = parentVertex;
                 }
+                river.addAll(frwdSegs);
+                river.addAll(bcwdSegs);
+                riverSize = river.size();
             }
 
 //            Structs.Vertex nextVertex;
@@ -95,7 +98,6 @@ public class AddRivers {
                 i--;
                 continue;
             }
-            System.out.println("ended river " + i + " with size " + riverSize);
 
             for (Structs.Segment s : river) {
                 Structs.Property color = Structs.Property.newBuilder().setKey("rgb_color").setValue("10,100,255").build();
@@ -108,6 +110,7 @@ public class AddRivers {
                     newSegments.set(idx, riverSeg);
                 }
             }
+            System.out.println("ended river " + i + " with size " + riverSize);
         }
         return newSegments;
     }
