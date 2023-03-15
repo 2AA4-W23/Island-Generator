@@ -102,10 +102,8 @@ public class AddRivers {
                 Structs.Property thick = Structs.Property.newBuilder().setKey("thickness").setValue("5").build();
                 Structs.Property riverNum = Structs.Property.newBuilder().setKey("river_num").setValue(Integer.toString(i + 1)).build();
                 Structs.Segment riverSeg = Structs.Segment.newBuilder(s).addProperties(color).addProperties(segTag).addProperties(riverNum).build();
-                int idx = segments.indexOf(s);
-                if (idx != -1) {
-                    newSegments.set(idx, riverSeg);
-                }
+                segments.indexOf(s);
+                newSegments.set(segments.indexOf(s), riverSeg);
             }
             System.out.println("ended river " + (i+1) + " with size " + riverSize);
         }

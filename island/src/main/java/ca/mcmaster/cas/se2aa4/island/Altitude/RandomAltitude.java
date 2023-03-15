@@ -1,6 +1,9 @@
 package ca.mcmaster.cas.se2aa4.island.Altitude;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
+import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
+import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
+import ca.mcmaster.cas.se2aa4.island.Graph.VertexPolygonConnections;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -48,11 +51,10 @@ public class RandomAltitude implements AltitudeProfile{
             }
         }
         List<Object> ansList = new ArrayList<>();
+        VertexPolygonConnections vpc = new VertexPolygonConnections(pModList, sList, vList);
         ansList.add(pModList);
         ansList.add(sList);
-        ansList.add(vList);
+        ansList.add(smoothenVertices(pModList, vList, vpc));
         return ansList;
     }
-
-
 }
