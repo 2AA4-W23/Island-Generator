@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
+import java.util.random.RandomGenerator;
 
 import org.locationtech.jts.algorithm.ConvexHull;
 import org.locationtech.jts.geom.Coordinate;
@@ -50,7 +51,8 @@ public class OBJBuilder {
             // fwo.write("usemtl " + mtlName + "\n");
             double x = v.getX() / 100.0;
             double y = v.getY() / 100.0;
-            double z = 0.0;
+            Random rng = new Random();
+            double z = rng.nextDouble(0.0,0.1);
             x = Math.round(x * 1000.0) / 1000.0;
             y = Math.round(y * 1000.0) / 1000.0;
             for(Property p : v.getPropertiesList()) {
