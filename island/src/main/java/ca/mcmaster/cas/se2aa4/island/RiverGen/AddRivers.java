@@ -36,22 +36,19 @@ public class AddRivers {
             visitedVertices.add(initialPoint);
             Structs.Vertex riverVertex = null;
 
-            while (!queue.isEmpty()) {
+            int tries = 0;
+            while (!queue.isEmpty() && tries < 100) {
+                tries++;
                 Structs.Vertex currentVertex = queue.remove();
                 if (isWaterVertex(currentVertex, vertices, vpc, tiles)) {
                     riverVertex = currentVertex;
                     break;
                 }
-                Set<Integer> connections = vvGraph.getConnections(currentVertex, vertices);
-                if (connections == null) continue;
-                for (Integer c : connections) {
-                    Structs.Vertex neighbor = vertices.get(c);
-                    if (!visitedVertices.contains(neighbor)) {
-                        visitedVertices.add(neighbor);
-                        parent.put(neighbor, currentVertex);
-                        queue.add(neighbor);
-                    }
-                }
+                Structs.Vertex nextVertex = getNextVertex(currentVertex, vertices, vvGraph);
+                if (nextVertex == null) continue;
+                visitedVertices.add(nextVertex);
+                parent.put(nextVertex, currentVertex);
+                queue.add(nextVertex);
             }
             if (riverVertex != null) {
                 List<Structs.Segment> frwdSegs = new ArrayList<>();
@@ -100,7 +97,7 @@ public class AddRivers {
             }
 
             for (Structs.Segment s : river) {
-                Structs.Property color = Structs.Property.newBuilder().setKey("rgb_color").setValue("10,100,255").build();
+                Structs.Property color = Structs.Property.newBuilder().setKey("rgb_color").setValue("255,0,255").build();
                 Structs.Property segTag = Structs.Property.newBuilder().setKey("seg_tag").setValue("river").build();
                 Structs.Property thick = Structs.Property.newBuilder().setKey("thickness").setValue("5").build();
                 Structs.Property riverNum = Structs.Property.newBuilder().setKey("river_num").setValue(Integer.toString(i + 1)).build();
@@ -110,7 +107,7 @@ public class AddRivers {
                     newSegments.set(idx, riverSeg);
                 }
             }
-            System.out.println("ended river " + i + " with size " + riverSize);
+            System.out.println("ended river " + (i+1) + " with size " + riverSize);
         }
         return newSegments;
     }
@@ -121,7 +118,7 @@ public class AddRivers {
         for(Integer i : connections) {
             Structs.Polygon connectedTile = tiles.get(i);
             String tag = tileTagEx.extractValues(connectedTile.getPropertiesList());
-            System.out.println(tag);
+            //System.out.println(tag);
             if(tag.equals("lake") || tag.equals("ocean")){
                 return true;
             }
@@ -133,7 +130,7 @@ public class AddRivers {
         Set<Integer> connections = G.getConnections(v, vertices);
         Structs.Vertex minAltVertex = v;
         int minAlt = getAltitude(v);
-        System.out.println("current: " + getAltitude(v));
+        //System.out.println("current: " + getAltitude(v));
         if(connections == null) {
             //System.out.println("no connections");
             return v;
@@ -142,12 +139,12 @@ public class AddRivers {
         for(Integer i : connections) {
             Structs.Vertex connectedVertex = vertices.get(i);
             int alt = getAltitude(connectedVertex);
-            System.out.println(alt);
+            //System.out.println(alt);
             if(alt < minAlt && alt < getAltitude(minAltVertex)) {
                 minAltVertex = connectedVertex;
                 minAlt = alt;
             }
-        }System.out.println("min: " + getAltitude(minAltVertex));
+        }//System.out.println("min: " + getAltitude(minAltVertex));
         return minAltVertex;
     }
 
