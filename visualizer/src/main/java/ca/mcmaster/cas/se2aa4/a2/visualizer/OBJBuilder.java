@@ -55,11 +55,10 @@ public class OBJBuilder {
             y = Math.round(y * 1000.0) / 1000.0;
             for(Property p : v.getPropertiesList()) {
                 if(p.getKey().equals("altitude")) {
-                    z = Double.parseDouble(p.getValue());
-                    System.out.println("Found alt");
+                    z = Double.parseDouble(p.getValue()) / 1500.0;
                 }
             }
-            z = Math.round(z * 1000.0) / 1000.0;
+            z = Math.round(z * 100000.0) / 100000.0;
             if(x > 6.0 || y > 6.0 || x < -1.0 || y < -1.0) continue;
             fwo.write("v " + x + " " + z + " " + y + extractPropString(v.getPropertiesList(), "rbg_color") + "\n");
             vertexSet.add(x + " " + y);
