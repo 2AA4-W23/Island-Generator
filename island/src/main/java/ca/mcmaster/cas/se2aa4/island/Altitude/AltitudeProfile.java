@@ -26,6 +26,7 @@ public interface AltitudeProfile {
                 try {
                     averageAlt += Integer.parseInt(alt) / connections.size();
                 } catch(Exception e) {
+                    averageAlt = 0;
                     break;
                 }
             }
