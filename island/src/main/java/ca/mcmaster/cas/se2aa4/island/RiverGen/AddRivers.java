@@ -1,9 +1,6 @@
 package ca.mcmaster.cas.se2aa4.island.RiverGen;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.island.Extractors.AltitudeExtractor;
@@ -29,21 +26,62 @@ public class AddRivers {
             int riverSize = 0;
             List<Structs.Segment> river = new ArrayList<>();
             do initialPoint = vertices.get(rng.nextInt(vertices.size()));
-            while(isWaterVertex(initialPoint, vertices, vpc, tiles));  
-            Structs.Vertex nextVertex;
-            int tries = 0;
-            while(tries < 100) {
-                if(isWaterVertex(initialPoint, vertices, vpc, tiles)) break;
-                tries++;
-                nextVertex = getNextVertex(initialPoint, vertices, vvGraph);
-                Structs.Segment riverSegment = vvGraph.getSegment(initialPoint, nextVertex, vertices);
-                if(initialPoint == nextVertex) break;
-                if(riverSegment != null) river.add(riverSegment);
-                riverSize++;
-                initialPoint = nextVertex;
-                System.out.println("found next, river size: " + riverSize);
+            while(isWaterVertex(initialPoint, vertices, vpc, tiles));
+
+            Queue<Structs.Vertex> queue = new LinkedList<>();
+            Set<Structs.Vertex> visitedVertices = new HashSet<>();
+            Map<Structs.Vertex, Structs.Vertex> parent = new HashMap<>();
+
+            queue.add(initialPoint);
+            visitedVertices.add(initialPoint);
+            Structs.Vertex riverVertex = null;
+
+            while (!queue.isEmpty()) {
+                Structs.Vertex currentVertex = queue.remove();
+                if (isWaterVertex(currentVertex, vertices, vpc, tiles)) {
+                    riverVertex = currentVertex;
+                    break;
+                }
+                Set<Integer> connections = vvGraph.getConnections(currentVertex, vertices);
+                if (connections == null) continue;
+                for (Integer c : connections) {
+                    Structs.Vertex neighbor = vertices.get(c);
+                    if (!visitedVertices.contains(neighbor)) {
+                        visitedVertices.add(neighbor);
+                        parent.put(neighbor, currentVertex);
+                        queue.add(neighbor);
+                    }
+                }
             }
-            if(riverSize == 0 && tries < 100) {
+            if (riverVertex != null) {
+                Structs.Vertex currentVertex = riverVertex;
+                while (parent.containsKey(currentVertex)) {
+                    Structs.Vertex parentVertex = parent.get(currentVertex);
+                    Structs.Segment riverSegment = vvGraph.getSegment(currentVertex, parentVertex, vertices);
+                    if (riverSegment != null) {
+                        river.add(riverSegment);
+                        riverSize++;
+                    }
+                    currentVertex = parentVertex;
+                }
+            }
+
+//            Structs.Vertex nextVertex;
+//            int tries = 0;
+//            while(tries < 100) {
+//                if (isWaterVertex(initialPoint, vertices, vpc, tiles)) break;
+//                tries++;
+//                nextVertex = getNextVertex(initialPoint, vertices, vvGraph);
+//                Structs.Segment riverSegment = vvGraph.getSegment(initialPoint, nextVertex, vertices);
+//                if (initialPoint == nextVertex) break;
+//                if (riverSegment != null) river.add(riverSegment);
+//                riverSize++;
+//                initialPoint = nextVertex;
+//                System.out.println("found next, river size: " + riverSize);
+//            }
+//
+
+            if(riverSize == 0) {
                 i--;
                 continue;
             }
@@ -80,6 +118,7 @@ public class AddRivers {
     private static Structs.Vertex getNextVertex(Structs.Vertex v, List<Structs.Vertex> vertices, VertexGraph G) {
         Set<Integer> connections = G.getConnections(v, vertices);
         Structs.Vertex minAltVertex = v;
+        int minAlt = getAltitude(v);
         System.out.println("current: " + getAltitude(v));
         if(connections == null) {
             //System.out.println("no connections");
@@ -90,8 +129,9 @@ public class AddRivers {
             Structs.Vertex connectedVertex = vertices.get(i);
             int alt = getAltitude(connectedVertex);
             System.out.println(alt);
-            if(alt < getAltitude(minAltVertex)) {
+            if(alt < minAlt && alt < getAltitude(minAltVertex)) {
                 minAltVertex = connectedVertex;
+                minAlt = alt;
             }
         }System.out.println("min: " + getAltitude(minAltVertex));
         return minAltVertex;
