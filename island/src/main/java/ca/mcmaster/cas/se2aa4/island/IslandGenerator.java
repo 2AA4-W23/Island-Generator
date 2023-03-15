@@ -10,6 +10,7 @@ import ca.mcmaster.cas.se2aa4.island.Biomes.BaseBiomeProfile;
 import ca.mcmaster.cas.se2aa4.island.Biomes.BiomeProfile;
 import ca.mcmaster.cas.se2aa4.island.Configuration.Configuration;
 import ca.mcmaster.cas.se2aa4.island.Extractors.AltitudeExtractor;
+import ca.mcmaster.cas.se2aa4.island.Extractors.EdgeTagExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.Extractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.RGBExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.TileTagExtractor;
@@ -25,6 +26,7 @@ public class IslandGenerator {
     private static final Extractor rgbEx = new RGBExtractor();
     private static final Extractor tileTagsEx = new TileTagExtractor();
     private static final Extractor altEx = new AltitudeExtractor();
+    private static final Extractor edgeEx = new EdgeTagExtractor();
 
     public static Structs.Mesh Generate(Configuration config){
         Structs.Mesh mesh = config.inputMesh;
@@ -65,14 +67,13 @@ public class IslandGenerator {
         newList = AddLakes.addLakes(landTiles, numLakes, newList);
         landTiles = updateLandTiles(newList);
         newList = AddAquifers.addAquifers(landTiles, numAquifers, newList);
-        newList = TileHumidifier.setHumidities(newList);
-
+        vList = (List<Structs.Vertex>) altLists.get(2);
+        List<Structs.Segment> sList = (List<Structs.Segment>) altLists.get(1);
+        sList = AddRivers.addRivers(newList, sList, vList, numRivers);
+        //for(Structs.Segment s : sList) System.out.println(edgeEx.extractValues(s.getPropertiesList()));
+        newList = TileHumidifier.setHumidities(newList, sList);
         BiomeProfile bP = new BaseBiomeProfile();
         newList = bP.addBiomes(newList);
-
-        List<Structs.Segment> sList = (List<Structs.Segment>) altLists.get(1);
-        vList = (List<Structs.Vertex>) altLists.get(2);
-        sList = AddRivers.addRivers(newList, sList, vList, numRivers);
         List<Object> lakeList = AddLakes.fixLakeAltitudes(numLakes, newList, sList, vList);
         newList = (List<Polygon>) lakeList.get(0);
         vList = (List<Vertex>) lakeList.get(1);
