@@ -20,6 +20,7 @@ public class Main {
         options.addOption("aq", "aquifers", true, "Number of aquifers to be generated");
         options.addOption("a", "altitude", true, "Decide altitude type (flat, volcanic, canyon, randomized");
         options.addOption("h", "help", false, "Show instructions for control variables");
+        options.addOption("r", "rivers", true, "Number of rivers to be generated");
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);

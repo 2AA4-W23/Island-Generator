@@ -19,6 +19,7 @@ public class Configuration {
     public AltitudeProfile altProfile;
     private Random rng = new Random();
     public int num_aquifers;
+    public int num_rivers;
 
     public void generateConfig(String args[], Options options) throws ParseException, FileNotFoundException {
         ArrayList classObj = new ArrayList<>();
@@ -30,6 +31,7 @@ public class Configuration {
         String shape = cmd.getOptionValue("shape");
         String lakes = cmd.getOptionValue("lakes");
         String aquifers = cmd.getOptionValue("aquifers");
+        String rivers = cmd.getOptionValue("rivers");
 
 //        String inputMeshPath = "../";
 //        inputM = inputMeshPath + inputM;
@@ -65,6 +67,13 @@ public class Configuration {
             System.out.println("aquifers set");
         } catch (Exception e) {
             this.num_aquifers = rng.nextInt(2,10);
+        }
+
+        try{
+            this.num_rivers = Math.min(Integer.parseInt(rivers), 10);
+            System.out.println("rivers set");
+        } catch (Exception e) {
+            this.num_rivers = rng.nextInt(2,10);
         }
 
         String altPath = "ca.mcmaster.cas.se2aa4.island.Altitude.";

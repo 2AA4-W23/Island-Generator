@@ -31,6 +31,7 @@ public class IslandGenerator {
         AltitudeProfile altProfile = config.altProfile;
         int numLakes = config.num_lakes;
         int numAquifers = config.num_aquifers;
+        int numRivers = config.num_rivers;
         islandShape.create();
         List<Structs.Polygon> pList = mesh.getPolygonsList();
         List<Structs.Vertex> vList = mesh.getVerticesList();
@@ -70,7 +71,7 @@ public class IslandGenerator {
 
         List<Structs.Segment> sList = (List<Structs.Segment>) altLists.get(1);
         vList = (List<Structs.Vertex>) altLists.get(2);
-        sList = AddRivers.addRivers(newList, sList, vList, 5);
+        sList = AddRivers.addRivers(newList, sList, vList, numRivers);
         return Structs.Mesh.newBuilder().addAllPolygons(newList).addAllSegments(sList).addAllVertices(vList).build();
     }
 
