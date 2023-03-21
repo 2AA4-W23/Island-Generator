@@ -80,8 +80,10 @@ public class AddLakes {
                     Structs.Vertex v2 = vList.get(s.getV2Idx());
                     Structs.Vertex newV1 = Structs.Vertex.newBuilder(v1).addProperties(alt).build();
                     Structs.Vertex newV2 = Structs.Vertex.newBuilder(v2).addProperties(alt).build();
-                    vList.set(vList.indexOf(v1), newV1);
-                    vList.set(vList.indexOf(v2), newV2);
+                    try{
+                        vList.set(vList.indexOf(v1), newV1);
+                        vList.set(vList.indexOf(v2), newV2);
+                    } catch(Exception e) {}
                 }
             }
             idx++;
