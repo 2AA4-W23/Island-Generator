@@ -4,12 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum TemperateBiome {
-    SAVANNA("savanna", "151,168,62"),
-    PRAIRIES("prairies", "75,219,59"),
-    DESERT("desert", "224,213,85"),
-    FOREST("forest", "25,112,17"),
-    TUNDRA("tundra", "195,210,235"),
-    RAINFOREST("rainforest", "23,250,2");
+    PRAIRIES("prairies", "156,240,101"),
+    TEMPDESERT("desert", "252,134,23"),
+    FOREST("forest", "45,196,65"),
+    TEMPRAINFOREST("rainforest", "1,130,18"),
+    WETLANDS("wetlands", "68,110,41");
     private static final Map<String, TemperateBiome> BIOME_NAME = new HashMap<>();
     private static final Map<String, TemperateBiome> BIOME_COLOR = new HashMap<>();
     static {
