@@ -110,12 +110,10 @@ public class IrregularMeshGenerator implements MeshGenerator{
                             if (!segSet.contains(v1.getX() + "," + v1.getY() + "," + v2.getX() + "," + v2.getY())) {
                                 Structs.Segment s = Structs.Segment.newBuilder().setV1Idx(lastVertexIdx).setV2Idx(idx).build();
                                 String color1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "rgb_color");
-                                String thickness1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "thickness");
                                 String alpha1 = extractPropertyAverage(v1.getPropertiesList(), v2.getPropertiesList(), "alpha");
                                 Structs.Property colorS = Structs.Property.newBuilder().setKey("rgb_color").setValue(color1).build();
-                                Structs.Property thicknessS = Structs.Property.newBuilder().setKey("thickness").setValue(thickness1).build();
                                 Structs.Property alphaS = Structs.Property.newBuilder().setKey("alpha").setValue(alpha1).build();
-                                Structs.Segment coloredSegment = Structs.Segment.newBuilder(s).addProperties(colorS).addProperties(thicknessS).addProperties(alphaS).build();
+                                Structs.Segment coloredSegment = Structs.Segment.newBuilder(s).addProperties(colorS).addProperties(alphaS).build();
                                 segments.add(coloredSegment);
                                 String sEntry1 = v1.getX() + "," + v1.getY() + "," + v2.getX() + "," + v2.getY();
                                 String sEntry2 = v2.getX() + "," + v2.getY() + "," + v1.getX() + "," + v1.getY();
