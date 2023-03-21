@@ -5,7 +5,7 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseBiomeProfile implements BiomeProfile{
+public class ArcticBiomeProfile implements BiomeProfile{
     private final double hmax = 400;
     private final double hmin = 0;
     private final double amax = 30;

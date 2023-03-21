@@ -32,6 +32,7 @@ public class IslandGenerator {
         Structs.Mesh mesh = config.inputMesh;
         Shape islandShape = config.shapeObj;
         AltitudeProfile altProfile = config.altProfile;
+        BiomeProfile biomeProfile = config.biomeProfile;
         int numLakes = config.num_lakes;
         int numAquifers = config.num_aquifers;
         int numRivers = config.num_rivers;
@@ -72,8 +73,7 @@ public class IslandGenerator {
         sList = AddRivers.addRivers(newList, sList, vList, numRivers);
         //for(Structs.Segment s : sList) System.out.println(edgeEx.extractValues(s.getPropertiesList()));
         newList = TileHumidifier.setHumidities(newList, sList);
-        BiomeProfile bP = new BaseBiomeProfile();
-        newList = bP.addBiomes(newList);
+        newList = biomeProfile.addBiomes(newList);
         List<Object> lakeList = AddLakes.fixLakeAltitudes(numLakes, newList, sList, vList);
         newList = (List<Polygon>) lakeList.get(0);
         vList = (List<Vertex>) lakeList.get(1);
