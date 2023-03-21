@@ -46,6 +46,16 @@ public class OBJBuilder {
 
         List<String> vertexSet = new ArrayList<>();
 
+        double minZ = 9999999;
+        for(Vertex v : VertexList) {
+            for(Property p : v.getPropertiesList()) {
+                if(p.getKey().equals("altitude")) {
+                    double z = Double.parseDouble(p.getValue()) / 1500.0;
+                    if(z != 0.0) minZ = Math.min(minZ, z);
+                }
+            }
+        }
+        System.out.println(minZ);
         for(Vertex v : VertexList) {
             // String mtlName = getMtlName();
             // fwo.write("usemtl " + mtlName + "\n");
@@ -58,6 +68,7 @@ public class OBJBuilder {
             for(Property p : v.getPropertiesList()) {
                 if(p.getKey().equals("altitude")) {
                     z = Double.parseDouble(p.getValue()) / 1500.0;
+                    if(z > 0.0) z-= minZ;
                 }
             }
             z = Math.round(z * 100000.0) / 100000.0;
