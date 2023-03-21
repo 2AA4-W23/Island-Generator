@@ -5,9 +5,10 @@ import java.util.Map;
 
 public enum ArcticBiome {
     TUNDRA("tundra", "195,210,235"),
-    TAIGA("taiga", "84,95,78"),
+    TAIGA("taiga", "2,48,32"),
     BOREAL("boreal_forest", "0,100,0"),
-    FOREST("deciduous_forest", "34,139,34"),;
+    FOREST("deciduous_forest", "34,139,34"),
+    STEPPES("steppes", "228,192,122");
     private static final Map<String, ArcticBiome> BIOME_NAME = new HashMap<>();
     private static final Map<String, ArcticBiome> BIOME_COLOR = new HashMap<>();
     static {
