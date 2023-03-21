@@ -13,7 +13,8 @@ elif pwd == "*/generator"
 then
     cd ../island
 fi
-java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude mountain --lakes 10 --aquifers 0 --rivers 10
+
+java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude volcano --lakes 10 --aquifers 0 --rivers 10 --biomes Tropical
 cd ../visualizer
 java -jar visualizer.jar ../island/island.mesh sample.svg -A 255 -O
 cd ..

@@ -21,17 +21,17 @@ public class Main {
         options.addOption("a", "altitude", true, "Decide altitude type (flat, volcanic, canyon, randomized");
         options.addOption("h", "help", false, "Show instructions for control variables");
         options.addOption("r", "rivers", true, "Number of rivers to be generated");
+        options.addOption("b", "biomes", true, "Decide Biomes type selected (Whittaker Diagram)");
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
-
-
 
         if (cmd.hasOption("h")) {
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("Generator", options);
             System.exit(0);
         }
+
         String mode = cmd.getOptionValue("mode");
         Structs.Mesh inputMesh = new MeshFactory().read(cmd.getOptionValue("i"));
         Structs.Mesh outputMesh;

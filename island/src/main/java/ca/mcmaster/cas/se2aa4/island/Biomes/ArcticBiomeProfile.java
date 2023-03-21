@@ -5,10 +5,10 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseBiomeProfile implements BiomeProfile{
-    private final double hmax = 400;
+public class ArcticBiomeProfile implements BiomeProfile{
+    private final double hmax = 250;
     private final double hmin = 0;
-    private final double amax = 30;
+    private final double amax = 10;
     private final double amin = -10;
     @Override
     public List addBiomes(List<Structs.Polygon> pList) {
@@ -32,19 +32,17 @@ public class BaseBiomeProfile implements BiomeProfile{
                 double altMod = amin + (((alt - minAlt) * (amax - amin)) / (maxAlt - minAlt));
                 double humidMod = hmin + (((humid - minHumid) * (hmax - hmin)) / (maxHumid - minHumid));
 //                System.out.println("A: " + altMod + " H: " + humidMod);
-                BaseBiome b;
-                if (humidMod > 280 && altMod > 15) {
-                    b = BaseBiome.RAINFOREST;
-                } else if (humidMod > 100 && altMod > 15) {
-                    b = BaseBiome.SAVANNA;
-                } else if (humidMod < 100 && altMod > 15) {
-                    b = BaseBiome.DESERT;
-                } else if (humidMod > 150 && altMod < 15 && altMod > 0) {
-                    b = BaseBiome.FOREST;
-                } else if (humidMod < 150 && altMod < 15 && altMod > -5) {
-                    b = BaseBiome.PRAIRIES;
+                ArcticBiome b;
+                if (altMod < -5){
+                    b = ArcticBiome.TUNDRA;
+                } else if (humidMod < 100) {
+                    b = ArcticBiome.STEPPES;
+                } else if (altMod > 5) {
+                    b = ArcticBiome.FOREST;
+                } else if (altMod > 0) {
+                    b = ArcticBiome.BOREAL;
                 } else {
-                    b = BaseBiome.TUNDRA;
+                    b = ArcticBiome.TAIGA;
                 }
                 Structs.Property biomeTag = Structs.Property.newBuilder().setKey("biome").setValue(b.biome_name).build();
                 Structs.Property rgbTag = Structs.Property.newBuilder().setKey("rgb_color").setValue(b.rgb_color).build();
