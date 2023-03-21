@@ -19,7 +19,6 @@ public class AddRivers {
         VertexGraph vvGraph = new VertexGraph(segments, vertices);
         VertexPolygonConnections vpc = new VertexPolygonConnections(tiles, segments, vertices);
         Structs.Vertex initialPoint;
-       //for(Structs.Vertex v : vertices) System.out.println(altEx.extractValues(v.getPropertiesList()));
        
        List<Structs.Segment> newSegments = new ArrayList<>();
        newSegments.addAll(segments);
@@ -76,39 +75,27 @@ public class AddRivers {
                 river.addAll(bcwdSegs);
                 riverSize = river.size();
             }
-
-//            Structs.Vertex nextVertex;
-//            int tries = 0;
-//            while(tries < 100) {
-//                if (isWaterVertex(initialPoint, vertices, vpc, tiles)) break;
-//                tries++;
-//                nextVertex = getNextVertex(initialPoint, vertices, vvGraph);
-//                Structs.Segment riverSegment = vvGraph.getSegment(initialPoint, nextVertex, vertices);
-//                if (initialPoint == nextVertex) break;
-//                if (riverSegment != null) river.add(riverSegment);
-//                riverSize++;
-//                initialPoint = nextVertex;
-//                System.out.println("found next, river size: " + riverSize);
-//            }
-//
-
             if (riverSize == 0) {
                 i--;
                 continue;
             }
-
-            for (Structs.Segment s : river) {
-                System.out.println("seg added");
-                Structs.Property color = Structs.Property.newBuilder().setKey("rgb_color").setValue("255,0,255").build();
-                Structs.Property segTag = Structs.Property.newBuilder().setKey("seg_tag").setValue("river").build();
-                Structs.Property riverNum = Structs.Property.newBuilder().setKey("river_num").setValue(Integer.toString(i + 1)).build();
-                Structs.Segment riverSeg = Structs.Segment.newBuilder(s).addProperties(color).addProperties(segTag).addProperties(riverNum).build();
-                newSegments.set(segments.indexOf(s), riverSeg);
-            }
+            river = addRiverProps(river, newSegments, i + 1);
             System.out.println("ended river " + (i+1) + " with size " + riverSize);
         }
         return newSegments;
     }
+
+    private static List<Structs.Segment> addRiverProps(List<Structs.Segment> river, List<Structs.Segment> allSegments, int riverNumber) {
+        for (Structs.Segment s : river) {
+            System.out.println("seg added");
+            Structs.Property color = Structs.Property.newBuilder().setKey("rgb_color").setValue("10,100,255").build();
+            Structs.Property segTag = Structs.Property.newBuilder().setKey("seg_tag").setValue("river").build();
+            Structs.Property riverNum = Structs.Property.newBuilder().setKey("river_num").setValue(riverNumber + "").build();
+            Structs.Segment riverSeg = Structs.Segment.newBuilder(s).addProperties(color).addProperties(segTag).addProperties(riverNum).build();
+            allSegments.set(allSegments.indexOf(s), riverSeg);
+        }
+        return river;
+    }    
 
     private static boolean isWaterVertex(Structs.Vertex v, List<Structs.Vertex> vertices, VertexPolygonConnections G, List<Structs.Polygon> tiles) {
         Set<Integer> connections = G.getConnections(v, vertices);
@@ -128,21 +115,17 @@ public class AddRivers {
         Set<Integer> connections = G.getConnections(v, vertices);
         Structs.Vertex minAltVertex = v;
         int minAlt = getAltitude(v);
-        //System.out.println("current: " + getAltitude(v));
         if(connections == null) {
-            //System.out.println("no connections");
             return v;
         }
-        //System.out.println("found next v");
         for(Integer i : connections) {
             Structs.Vertex connectedVertex = vertices.get(i);
             int alt = getAltitude(connectedVertex);
-            //System.out.println(alt);
             if(alt < minAlt && alt < getAltitude(minAltVertex)) {
                 minAltVertex = connectedVertex;
                 minAlt = alt;
             }
-        }//System.out.println("min: " + getAltitude(minAltVertex));
+        }
         return minAltVertex;
     }
 
