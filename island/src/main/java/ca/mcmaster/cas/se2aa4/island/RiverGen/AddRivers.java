@@ -88,7 +88,7 @@ public class AddRivers {
     private static List<Structs.Segment> addRiverProps(List<Structs.Segment> river, List<Structs.Segment> allSegments, int riverNumber) {
         for (Structs.Segment s : river) {
             System.out.println("seg added");
-            Structs.Property color = Structs.Property.newBuilder().setKey("rgb_color").setValue("255,0,255").build();
+            Structs.Property color = Structs.Property.newBuilder().setKey("rgb_color").setValue("10,100,255").build();
             Structs.Property segTag = Structs.Property.newBuilder().setKey("seg_tag").setValue("river").build();
             Structs.Property riverNum = Structs.Property.newBuilder().setKey("river_num").setValue(riverNumber + "").build();
             Structs.Segment riverSeg = Structs.Segment.newBuilder(s).addProperties(color).addProperties(segTag).addProperties(riverNum).build();
