@@ -24,14 +24,15 @@ public class AddRivers {
     public static List<Structs.Segment> addRivers(List<Structs.Polygon> tiles, List<Structs.Segment> segments, List<Structs.Vertex> vertices, int numRivers){
        List<Structs.Segment> newSegments = new ArrayList<>();
        newSegments.addAll(segments);
+       Set<Integer> riverVertices = new HashSet<>();
         for(int i = 0; i < numRivers; i++) {
             VertexGraph vvGraph = new VertexGraph(newSegments, vertices);
             VertexPolygonConnections vpc = new VertexPolygonConnections(tiles, segments, vertices);
             Structs.Vertex initialPoint;
-            int thickness = rng.nextInt(1,4);
+            int thickness = rng.nextInt(2,5);
             List<Structs.Segment> river = new ArrayList<>();
             do initialPoint = vertices.get(rng.nextInt(vertices.size()));
-            while (isWaterVertex(initialPoint, vertices, vpc, tiles));
+            while (isWaterVertex(initialPoint, vertices, vpc, tiles) || riverVertices.contains(vertices.indexOf(initialPoint)));
 
             Queue<Structs.Vertex> queue = new LinkedList<>();
             Set<Structs.Vertex> visitedVertices = new HashSet<>();
@@ -39,6 +40,7 @@ public class AddRivers {
 
             queue.add(initialPoint);
             visitedVertices.add(initialPoint);
+            riverVertices.add(vertices.indexOf(initialPoint));
             Structs.Vertex riverVertex = null;
 
             int tries = 0;
@@ -52,6 +54,7 @@ public class AddRivers {
                 Structs.Vertex nextVertex = getNextVertex(currentVertex, vertices, vvGraph);
                 if (nextVertex == null) continue;
                 visitedVertices.add(nextVertex);
+                riverVertices.add(vertices.indexOf(nextVertex));
                 parent.put(nextVertex, currentVertex);
                 queue.add(nextVertex);
             }
@@ -84,11 +87,7 @@ public class AddRivers {
                 continue;
             }   
             newSegments = addRiverProps(river, newSegments, i + 1, thickness);
-            //System.out.println("ended river " + (i+1) + " with size " + riverSize);
-            
-           // System.out.println(river.size());
         }
-        //for(Structs.Segment s : newSegments) System.out.print(!edgeTagEx.extractValues(s.getPropertiesList()).equals("river") ? "" : edgeTagEx.extractValues(s.getPropertiesList()) + "\n");     
         return newSegments;
     }
 
@@ -101,7 +100,9 @@ public class AddRivers {
             Structs.Segment riverSeg = Structs.Segment.newBuilder(s).addProperties(color).addProperties(segTag).addProperties(riverNum).addProperties(thick).build();
             int index = allSegments.indexOf(s);
             if(index != -1) allSegments.set(index, riverSeg); //prevents occasional OutOfBoundsErrors
+            else System.out.println("Did not add river "  + riverNumber + " due to error");
         }
+        System.out.println("River " + riverNumber + " has size " + river.size());
         return allSegments;
     }  
     
@@ -114,6 +115,7 @@ public class AddRivers {
                 System.out.println("merged!");
             } catch (NumberFormatException e )  {}
         }
+        System.out.println(thick);
         return thick;
     }  
 
