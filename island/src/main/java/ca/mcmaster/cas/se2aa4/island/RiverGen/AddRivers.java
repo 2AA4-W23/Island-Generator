@@ -88,7 +88,7 @@ public class AddRivers {
                 continue;
             }   
             newSegments = addRiverProps(river, newSegments, i + 1, thickness);
-            vvGraph.refreshSegments(river);
+            vvGraph.refreshSegments(newSegments);
         }
         return newSegments;
     }

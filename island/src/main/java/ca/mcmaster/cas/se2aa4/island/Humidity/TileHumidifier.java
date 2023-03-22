@@ -8,6 +8,7 @@ import java.util.Random;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.island.Extractors.EdgeTagExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.HumidityExtractor;
+import ca.mcmaster.cas.se2aa4.island.Extractors.RiverThicknessExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.TileTagExtractor;
 
 public class TileHumidifier {
@@ -17,6 +18,7 @@ public class TileHumidifier {
     private static TileTagExtractor tagEx = new TileTagExtractor();
     private static Random rng = new Random();
     private static EdgeTagExtractor edgeEx = new EdgeTagExtractor();
+    private static RiverThicknessExtractor thickEx = new RiverThicknessExtractor();
 
     public static List<Structs.Polygon> setHumidities (List<Structs.Polygon> tiles, List<Structs.Segment> segments) {
         Queue<Structs.Polygon> tileQ = new LinkedList<>();
@@ -36,18 +38,25 @@ public class TileHumidifier {
                 tiles.set(index, humidP);
             } else {
                 int numRivers = 0;
+                int totalThickness = 0;
                 for(Integer i : p.getSegmentIdxsList()){
                     Structs.Segment s = segments.get(i);
                     String tag = edgeEx.extractValues(s.getPropertiesList());
+                    String thick = thickEx.extractValues(s.getPropertiesList());
                     //System.out.println(tag);
-                    if(tag.equals("river")) numRivers++;
+                    if(tag.equals("river")) {
+                        numRivers++;
+                        totalThickness += Integer.parseInt(thick);
+                    }
+
                 }
                 if(numRivers == 0) {
                     index++;
                     continue;
                 }
                 int percentRivers = numRivers / p.getSegmentIdxsCount();
-                int humidVal = rng.nextInt(Math.max(percentRivers - 20, 20), Math.max(percentRivers - 10, 30));
+                double multiplier = (double) totalThickness / 2.5 / (double) numRivers;
+                int humidVal = (int) (rng.nextInt(Math.max(percentRivers - 20, 15), Math.max(percentRivers - 10, 25)) * multiplier);
                 Structs.Property humidity = Structs.Property.newBuilder().setKey("humidity").setValue(humidVal + "").build();
                 Structs.Polygon humidP = Structs.Polygon.newBuilder(p).addProperties(humidity).build();
                 tileQ.add(humidP);
