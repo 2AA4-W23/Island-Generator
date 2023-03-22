@@ -57,14 +57,14 @@ public class Configuration {
         }
 
         try{
-            this.num_lakes = Math.min(Integer.parseInt(lakes), 10);
+            this.num_lakes = Math.min(Integer.parseInt(lakes), 15);
             System.out.println("lakes set");
         } catch (Exception e) {
             this.num_lakes = rng.nextInt(2, 10);
         }
 
         try{
-            this.num_aquifers = Math.min(Integer.parseInt(aquifers), 10);
+            this.num_aquifers = Math.min(Integer.parseInt(aquifers), 15);
             System.out.println("aquifers set");
         } catch (Exception e) {
             this.num_aquifers = rng.nextInt(2,10);
