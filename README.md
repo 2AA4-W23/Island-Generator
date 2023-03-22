@@ -182,7 +182,7 @@ For a feature to be considered done it must be work without throwing any excepti
 | F28 | Define Volcano Altimetric profile                                 | Virochaan | 03/13/2023 | 03/13/2023 | D      |
 | F29 | Define Mountain Altimetric Profile                                | Virochaan | 03/13/2023 | 03/13/2023 | D      |
 | F30 | Island can have random number of lakes                            | Ibrahim   | 03/10/2023 | 03/14/2023 | D      |
-| F31 | Lakes affect surrounding vegetation and humidity                  | Ibrahim   | 03/13/2023 |            | S      |
+| F31 | Lakes affect surrounding vegetation and humidity                  | Ibrahim   | 03/13/2023 | 03/15/2023 | D      |
 | F33 | Rivers start at vertex and flow to lowest point                   | Omar      | 03/15/2023 | 03/15/2023 | D      |
 | F34 | Rivers add moisture to the surrounding tiles                      | Ibrahim   | 03/15/2023 | 03/15/2023 | D      |
 | F36 | Accept command line to choose number of rivers                    | Omar      | 03/15/2023 | 03/15/2023 | D      |
