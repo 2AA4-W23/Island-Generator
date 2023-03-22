@@ -10,7 +10,7 @@ public abstract class Graph {
 
     public boolean isConnected(int i1, int i2) {
         try {
-            return adjacencyList[i1].contains(i2) || adjacencyList[i2].contains(i1);
+            return adjacencyList[i1].contains(i2);
         } catch (Exception e) {
             return false;
         }
