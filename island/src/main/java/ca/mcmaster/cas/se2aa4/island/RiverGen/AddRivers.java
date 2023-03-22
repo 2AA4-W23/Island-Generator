@@ -101,7 +101,6 @@ public class AddRivers {
             Structs.Segment riverSeg = Structs.Segment.newBuilder(s).addProperties(color).addProperties(segTag).addProperties(riverNum).addProperties(thick).build();
             int index = allSegments.indexOf(s);
             if(index != -1) allSegments.set(index, riverSeg); //prevents occasional OutOfBoundsErrors
-            else System.out.println("you fucked up");
         }
         return allSegments;
     }  
