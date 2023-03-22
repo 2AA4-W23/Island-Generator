@@ -111,9 +111,9 @@ public class AddRivers {
         String tag = edgeTagEx.extractValues(segment.getPropertiesList());
         if(tag.equals("river")){
             try{
-                thick += Integer.parseInt(existingThickness);
+                thick = Math.max(Integer.parseInt(existingThickness), thick) + 1;
                 System.out.println("merged!");
-            } catch (NumberFormatException e )  {}
+            } catch (Exception e )  {}
         }
         System.out.println(thick);
         return thick;
