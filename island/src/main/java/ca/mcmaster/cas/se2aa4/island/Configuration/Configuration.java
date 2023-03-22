@@ -71,10 +71,10 @@ public class Configuration {
         }
 
         try{
-            this.num_rivers = Math.min(Integer.parseInt(rivers), 10);
+            this.num_rivers = Math.min(Integer.parseInt(rivers), 30);
             System.out.println("rivers set");
         } catch (Exception e) {
-            this.num_rivers = rng.nextInt(2,10);
+            this.num_rivers = rng.nextInt(2,30);
         }
 
         String altPath = "ca.mcmaster.cas.se2aa4.island.Altitude.";
