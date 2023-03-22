@@ -1,10 +1,6 @@
 package ca.mcmaster.cas.se2aa4.island.Altitude;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
-import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
-import ca.mcmaster.cas.se2aa4.a2.io.Structs.Property;
-import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
-import ca.mcmaster.cas.se2aa4.island.Extractors.AltitudeExtractor;
 import ca.mcmaster.cas.se2aa4.island.Graph.VertexPolygonConnections;
 
 import java.awt.geom.CubicCurve2D;
@@ -127,8 +123,5 @@ public class MountainAltitude implements AltitudeProfile {
         ansList.add(smoothenVertices(pModList, vList, vpc));
         return ansList;
 
-    }
-    private double distance(double x1, double y1, double x2, double y2) {
-        return Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
     }
 }

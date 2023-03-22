@@ -1,8 +1,6 @@
 package ca.mcmaster.cas.se2aa4.island.Altitude;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
-import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
-import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
 import ca.mcmaster.cas.se2aa4.island.Graph.VertexPolygonConnections;
 
 import java.util.ArrayList;
@@ -16,7 +14,6 @@ public class RandomAltitude implements AltitudeProfile{
     public List<Object> addAltitudeValues(List<Structs.Polygon> plist, List<Structs.Segment> sList, List<Structs.Vertex> vlist) {
         List<Structs.Polygon> pModList = new ArrayList<>();
         List <Structs.Vertex> vList = new ArrayList<>(vlist);
-        int altConst = 500;
 
         for(Structs.Polygon p:plist){
             int sum = 0;

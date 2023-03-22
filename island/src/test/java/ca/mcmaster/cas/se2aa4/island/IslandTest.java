@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -98,7 +97,7 @@ public class IslandTest {
         List<Structs.Polygon> plist = FinalMesh.getPolygonsList();
 
         List<Structs.Polygon> lakeTiles = new ArrayList<>();
-        List lakeList = new ArrayList<>();
+        List<String> lakeList = new ArrayList<>();
         for(Structs.Polygon p: plist){
             String tileTag = tileTagEx.extractValues(p.getPropertiesList());
             if(tileTag.equals("lake")){

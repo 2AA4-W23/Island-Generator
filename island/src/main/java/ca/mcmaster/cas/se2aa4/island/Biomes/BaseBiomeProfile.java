@@ -11,7 +11,7 @@ public class BaseBiomeProfile implements BiomeProfile{
     private final double amax = 30;
     private final double amin = -10;
     @Override
-    public List addBiomes(List<Structs.Polygon> pList) {
+    public List<Structs.Polygon> addBiomes(List<Structs.Polygon> pList) {
         double minAlt = 100000;
         double maxAlt = 0;
         double minHumid = 100000;

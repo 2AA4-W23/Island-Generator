@@ -6,7 +6,6 @@ import ca.mcmaster.cas.se2aa4.island.Lagoon;
 import org.apache.commons.cli.*;
 
 import java.io.IOException;
-import java.util.Random;
 
 public class Main {
     public static void main(String[] args) throws ParseException, IOException, ClassNotFoundException {
@@ -40,7 +39,6 @@ public class Main {
         config.generateConfig(args, options);
 
         if(mode == null || !(mode.equals("lagoon"))){
-            String shape = cmd.getOptionValue("shape");
             outputMesh = IslandGenerator.Generate(config);
         } else {
             Lagoon lagoon = new Lagoon();

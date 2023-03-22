@@ -6,7 +6,6 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
 import ca.mcmaster.cas.se2aa4.island.Altitude.AltitudeProfile;
 import ca.mcmaster.cas.se2aa4.island.AquiferGen.AddAquifers;
 import ca.mcmaster.cas.se2aa4.island.BeachGen.AddBeaches;
-import ca.mcmaster.cas.se2aa4.island.Biomes.BaseBiomeProfile;
 import ca.mcmaster.cas.se2aa4.island.Biomes.BiomeProfile;
 import ca.mcmaster.cas.se2aa4.island.Configuration.Configuration;
 import ca.mcmaster.cas.se2aa4.island.Extractors.AltitudeExtractor;
@@ -23,11 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IslandGenerator {
-    private static final Extractor rgbEx = new RGBExtractor();
+    
     private static final Extractor tileTagsEx = new TileTagExtractor();
-    private static final Extractor altEx = new AltitudeExtractor();
-    private static final Extractor edgeEx = new EdgeTagExtractor();
-
+    
     public static Structs.Mesh Generate(Configuration config){
         Structs.Mesh mesh = config.inputMesh;
         Shape islandShape = config.shapeObj;

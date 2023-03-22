@@ -11,7 +11,6 @@ import ca.mcmaster.cas.se2aa4.island.Shape.Shape;
 import org.apache.commons.cli.*;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Random;
 
 public class Configuration {
@@ -25,9 +24,6 @@ public class Configuration {
     public int num_rivers;
 
     public void generateConfig(String args[], Options options) throws ParseException, FileNotFoundException {
-        ArrayList classObj = new ArrayList<>();
-
-
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
         String inputM = cmd.getOptionValue("i");

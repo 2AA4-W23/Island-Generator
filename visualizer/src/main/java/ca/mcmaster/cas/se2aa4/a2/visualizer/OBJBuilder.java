@@ -3,14 +3,11 @@ package ca.mcmaster.cas.se2aa4.a2.visualizer;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
-import java.util.random.RandomGenerator;
 
 import org.locationtech.jts.algorithm.ConvexHull;
 import org.locationtech.jts.geom.Coordinate;

@@ -9,7 +9,7 @@ import ca.mcmaster.cas.se2aa4.island.Extractors.TileTagExtractor;
 import java.util.List;
 
 public interface BiomeProfile {
-    public List addBiomes(List<Structs.Polygon> pList);
+    public List<Structs.Polygon> addBiomes(List<Structs.Polygon> pList);
     Extractor tileTagEx = new TileTagExtractor();
     Extractor altEx = new AltitudeExtractor();
     Extractor humidEx = new HumidityExtractor();

@@ -25,8 +25,6 @@ import org.locationtech.jts.geom.GeometryFactory;;
 
 public class GraphicRenderer {
 
-    private Boolean alphaSet = false;
-    private int alpha = 0;
     public String extractValues(List<Structs.Property> properties, String key) {
         String tag = null;
         for(Structs.Property p: properties) {
@@ -38,12 +36,11 @@ public class GraphicRenderer {
             return "null";
         return tag;
     }
-    public void render(Mesh aMesh, Graphics2D canvas, Boolean debug, Boolean thickSet, int thick, Boolean alphaSet, int alpha, Boolean alt, Boolean humid) {
-        this.alphaSet = alphaSet;
-        this.alpha = alpha;
+    public void render(Mesh aMesh, Graphics2D canvas, boolean debug, boolean thickSet, int thick, boolean alphaSet, int alpha, boolean alt, boolean humid) {
         canvas.setColor(Color.BLACK);
-        Stroke stroke = new BasicStroke(0.5f);
+        Stroke stroke = new BasicStroke(0.1f);
         canvas.setStroke(stroke);
+        canvas.setBackground(Color.BLACK);
 
         List<Vertex> VertexList = aMesh.getVerticesList();
         List<Segment> SegmentList = aMesh.getSegmentsList();
@@ -51,20 +48,14 @@ public class GraphicRenderer {
         int lowCentroidIdx = VertexList.size();
         System.out.println("Here");
         if(alt){
-            int landCount = 0;
-            int sum = 0;
             int max = 0;
             int min = 100;
-            int average =0;
             for (Polygon p: PolygonList){
                 if(!extractValues(p.getPropertiesList(), "tile_tag").equals("ocean")){
-                    landCount ++;
-                    sum += Integer.parseInt(extractValues(p.getPropertiesList(),"altitude"));
                     max =  Math.max(max,Integer.parseInt(extractValues(p.getPropertiesList(),"altitude")));
                     min =  Math.min(min,Integer.parseInt(extractValues(p.getPropertiesList(),"altitude")));
                 }
             }
-            average = sum/landCount;
             for (Polygon p : PolygonList) {
                 Coordinate points[] = new Coordinate[p.getSegmentIdxsCount()];
                 Set<Integer> added = new HashSet<>();
@@ -100,7 +91,6 @@ public class GraphicRenderer {
                 } else {
                     double altitude =  (double)Integer.parseInt(extractValues(p.getPropertiesList(),"altitude"));
                     double sat = ((double)altitude- (double)min)/((double)max-(double)min);
-                    int rgb = Color.HSBtoRGB(360, 0.4f, 1f);
                     new1 = Color.getHSBColor(0F,(float) sat,1f);
 //                    System.out.println(altitude);
 //                    int[] intVals = extractColor(p.getPropertiesList());
@@ -137,22 +127,16 @@ public class GraphicRenderer {
             System.out.println(min);
             System.out.println(max);
         } else if (humid) {
-            int landCount = 0;
-            int sum = 0;
             int max = 0;
             int min = 100000;
-            int average =0;
             for (Polygon p: PolygonList){
                 if(!extractValues(p.getPropertiesList(), "tile_tag").equals("ocean")){
-                    landCount ++;
                     try{
-                        sum += Integer.parseInt(extractValues(p.getPropertiesList(),"humidity"));
                         max =  Math.max(max,Integer.parseInt(extractValues(p.getPropertiesList(),"humidity")));
                         min =  Math.min(min,Integer.parseInt(extractValues(p.getPropertiesList(),"humidity")));
                     } catch(NumberFormatException e){}
                 }
             }
-            average = sum/landCount;
             for (Polygon p : PolygonList) {
                 Coordinate points[] = new Coordinate[p.getSegmentIdxsCount()];
                 Set<Integer> added = new HashSet<>();
@@ -492,7 +476,6 @@ public class GraphicRenderer {
         String val = null;
         for(Property p: properties) {
             if (p.getKey().equals("thickness")) {
-//                System.out.println(p.getValue());
                 val = p.getValue();
             }
         }

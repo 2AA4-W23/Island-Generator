@@ -12,7 +12,7 @@ public class TropicalBiomeProfile implements BiomeProfile{
     private final double amin = 15;
 
     @Override
-    public List addBiomes(List<Structs.Polygon> pList) {
+    public List<Structs.Polygon> addBiomes(List<Structs.Polygon> pList) {
         double minAlt = 100000;
         double maxAlt = 0;
         double minHumid = 100000;

@@ -3,9 +3,6 @@ package ca.mcmaster.cas.se2aa4.island;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.*;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
-import org.locationtech.jts.awt.PointShapeFactory;
-
-import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,8 +69,6 @@ public class Lagoon {
         }
         if (color == null)
             return "null";
-
-        String[] raw = color.split(",");
 //        int red = Integer.parseInt(raw[0]);
 //        int green = Integer.parseInt(raw[1]);
 //        int blue = Integer.parseInt(raw[2]);

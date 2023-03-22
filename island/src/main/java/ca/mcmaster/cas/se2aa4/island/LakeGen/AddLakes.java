@@ -1,8 +1,6 @@
 package ca.mcmaster.cas.se2aa4.island.LakeGen;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
-import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
-import ca.mcmaster.cas.se2aa4.a2.io.Structs.Property;
 import ca.mcmaster.cas.se2aa4.island.Extractors.AltitudeExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.Extractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.LakeExtractor;
@@ -10,7 +8,6 @@ import ca.mcmaster.cas.se2aa4.island.Extractors.TileTagExtractor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.Random;
 
 public class AddLakes {
