@@ -11,6 +11,7 @@ import ca.mcmaster.cas.se2aa4.island.Extractors.RiverThicknessExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.TileTagExtractor;
 import ca.mcmaster.cas.se2aa4.island.Graph.VertexGraph;
 import ca.mcmaster.cas.se2aa4.island.Graph.VertexPolygonConnections;
+import ca.mcmaster.cas.se2aa4.island.Properties.PropertyAdder;
 
 public class AddRivers {
 
@@ -25,15 +26,15 @@ public class AddRivers {
        List<Structs.Segment> newSegments = new ArrayList<>();
        newSegments.addAll(segments);
        Set<Integer> riverVertices = new HashSet<>();
+       VertexGraph vvGraph = new VertexGraph(newSegments, vertices);
+       VertexPolygonConnections vpc = new VertexPolygonConnections(tiles, segments, vertices);
         for(int i = 0; i < numRivers; i++) {
-            VertexGraph vvGraph = new VertexGraph(newSegments, vertices);
-            VertexPolygonConnections vpc = new VertexPolygonConnections(tiles, segments, vertices);
             Structs.Vertex initialPoint;
             int thickness = rng.nextInt(2,5);
             List<Structs.Segment> river = new ArrayList<>();
             do initialPoint = vertices.get(rng.nextInt(vertices.size()));
             while (isWaterVertex(initialPoint, vertices, vpc, tiles) || riverVertices.contains(vertices.indexOf(initialPoint)));
-
+            
             Queue<Structs.Vertex> queue = new LinkedList<>();
             Set<Structs.Vertex> visitedVertices = new HashSet<>();
             Map<Structs.Vertex, Structs.Vertex> parent = new HashMap<>();
@@ -87,22 +88,21 @@ public class AddRivers {
                 continue;
             }   
             newSegments = addRiverProps(river, newSegments, i + 1, thickness);
+            vvGraph.refreshSegments(river);
         }
         return newSegments;
     }
 
     private static List<Structs.Segment> addRiverProps(List<Structs.Segment> river, List<Structs.Segment> allSegments, int riverNumber, int thickness) {
         for (Structs.Segment s : river) {
-            Structs.Property color = Structs.Property.newBuilder().setKey("rgb_color").setValue("10,100,255").build();
-            Structs.Property segTag = Structs.Property.newBuilder().setKey("seg_tag").setValue("river").build();
-            Structs.Property riverNum = Structs.Property.newBuilder().setKey("river_num").setValue(riverNumber + "").build();
-            Structs.Property thick = Structs.Property.newBuilder().setKey("thickness").setValue(getThickness(s, allSegments, thickness) + "").build();
-            Structs.Segment riverSeg = Structs.Segment.newBuilder(s).addProperties(color).addProperties(segTag).addProperties(riverNum).addProperties(thick).build();
+            Structs.Segment riverSeg = PropertyAdder.addProperty(s, "rgb_color", "10,100,255");
+            riverSeg = PropertyAdder.addProperty(riverSeg, "seg_tag", "river");
+            riverSeg = PropertyAdder.addProperty(riverSeg, "thickness", getThickness(s, allSegments, thickness) + "");
             int index = allSegments.indexOf(s);
             if(index != -1) allSegments.set(index, riverSeg); //prevents occasional OutOfBoundsErrors
             else System.out.println("Did not add river "  + riverNumber + " due to error");
         }
-        System.out.println("River " + riverNumber + " has size " + river.size());
+        //System.out.println("River " + riverNumber + " has size " + river.size());
         return allSegments;
     }  
     
@@ -115,7 +115,7 @@ public class AddRivers {
                 System.out.println("merged!");
             } catch (Exception e )  {}
         }
-        System.out.println(thick);
+        //System.out.println(thick);
         return thick;
     }  
 
@@ -125,9 +125,8 @@ public class AddRivers {
         for(Integer i : connections) {
             Structs.Polygon connectedTile = tiles.get(i);
             String tag = tileTagEx.extractValues(connectedTile.getPropertiesList());
-            //System.out.println(tag);
             if(tag.equals("lake") || tag.equals("ocean")){
-                return true;
+               return true;
             }
         }
         return false;

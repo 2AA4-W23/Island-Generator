@@ -12,7 +12,7 @@ public class VertexGraph extends Graph {
 
     private Map<String, Structs.Segment> vertexToSegmentMap = new HashMap<>();
 
-    public VertexGraph(List<Structs.Segment> segments, List<Structs.Vertex> vertices){
+    public VertexGraph(List<Structs .Segment> segments, List<Structs.Vertex> vertices){
         size = vertices.size();
         adjacencyList = new HashSet[size];
         for(Structs.Segment s : segments){
@@ -21,6 +21,14 @@ public class VertexGraph extends Graph {
             adjacencyList[s.getV1Idx()].add(s.getV2Idx());
             adjacencyList[s.getV2Idx()].add(s.getV1Idx());
             vertexToSegmentMap.put(s.getV1Idx() + " " + s.getV2Idx(), s);
+        }
+    }
+
+    public void refreshSegments(List<Structs.Segment> segments){
+        for(Structs.Segment s : segments) {
+            int v1 = s.getV1Idx();
+            int v2 = s.getV2Idx();
+            vertexToSegmentMap.replace(v1 + " " + v2, s);
         }
     }
 
