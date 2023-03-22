@@ -186,6 +186,8 @@ For a feature to be considered done it must be work without throwing any excepti
 | F33 | Rivers start at vertex and flow to lowest point                   | Omar      | 03/15/2023 | 03/15/2023 | D      |
 | F34 | Rivers add moisture to the surrounding tiles                      | Ibrahim   | 03/15/2023 | 03/15/2023 | D      |
 | F36 | Accept command line to choose number of rivers                    | Omar      | 03/15/2023 | 03/15/2023 | D      |
+| F37 | Rivers have random discharge level (size/thickness)                    | Ibrahim      | 03/21/2023 | 03/21/2023 | D      |
+| F38 | Rivers can combine into thicker ones, accumulating more moisture                   | Ibrahim      | 03/21/2023 | 03/21/2023 | D      |
 | F39 | Island has random aquifers number of aquifers                     | Ibrahim   | 03/14/2023 | 03/14/2023 | D      |
 | F40 | Aquifers add moisture (humidity) to the surrounding tiles         | Ibrahim   | 03/14/2023 | 03/14/2023 | D      |
 | F54 | Heatmap mode to visualize altitudes and humidity                  | Virochaan | 03/13/2023 |            | S      |
