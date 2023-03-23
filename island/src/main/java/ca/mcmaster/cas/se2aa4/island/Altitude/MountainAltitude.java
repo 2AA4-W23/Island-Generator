@@ -1,41 +1,61 @@
 package ca.mcmaster.cas.se2aa4.island.Altitude;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
-import ca.mcmaster.cas.se2aa4.island.Graph.VertexPolygonConnections;
+import ca.mcmaster.cas.se2aa4.island.Properties.PropertyAdder;
 
-import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class MountainAltitude implements AltitudeProfile {
+public class MountainAltitude extends AltitudeTemplate {
+    private double distance;
     @Override
-    public List<Object> addAltitudeValues(List<Structs.Polygon> plist, List<Structs.Segment> slist, List<Structs.Vertex> vlist) {
+    public List<Object> addAltitudeValues(List<Structs.Polygon> plist, List<Structs.Segment> slist, List<Structs.Vertex> vlist){
         List<Structs.Polygon> pModList = new ArrayList<>();
-        List <Structs.Vertex> vList = new ArrayList<>(vlist);
+        List <Structs.Vertex> vModList = new ArrayList<>(vlist);
+        List<Line2D> lines = generateMountainRange();
+        for(Structs.Polygon p:plist){
+            if(tagEx.extractValues(p.getPropertiesList()).equals("ocean")){
+                Structs.Polygon pColoredModify = PropertyAdder.addProperty(p, "altitude","0");
+                pModList.add(pColoredModify);
+            } else {
+                Set<Integer> vInts = findVerticesIndex(p, slist);
+                this.distance = minDistanceMountainRange(p, vModList, lines);
+                vModList = setVertexAltitude(vModList, vInts);
 
-        double minx = 500;
-        double miny = 500;
-        double maxx = 0;
-        double maxy = 0;
-
-
-        for(Structs.Polygon p :plist){
-            if(!tagEx.extractValues(p.getPropertiesList()).equals("ocean")){
-                int centroidIdx = p.getCentroidIdx();
-                Structs.Vertex centroid = vList.get(centroidIdx);
-                minx = Math.min(centroid.getX(), minx);
-                maxx = Math.max(centroid.getX(), maxx);
-                maxy = Math.max(centroid.getY(), maxy);
-                miny = Math.min(centroid.getY(), miny);
+                int average = averageAltitude(vModList, vInts);
+                Structs.Polygon pColoredModify = PropertyAdder.addProperty(p, "altitude",Integer.toString(average));
+                pModList.add(pColoredModify);
             }
         }
-
-
-        CubicCurve2D c = new CubicCurve2D.Double();
-        c.setCurve(100,300, 200,150,250,400, 300,100);
+        return createAnswerList(pModList, slist, vModList);
+    }
+    @Override
+    protected List<Structs.Vertex> setVertexAltitude(List<Structs.Vertex> vModList, Set<Integer> vInts){
+        int altVal;
+        for(Integer i: vInts){
+            Structs.Vertex v = vModList.get(i);
+            if(altEx.extractValues(v.getPropertiesList()).equals("null")){
+                if(this.distance > 200){
+                    altVal = rng.nextInt(0,1000);
+                } else if (this.distance > 150) {
+                    altVal = rng.nextInt(1000,2000);
+                } else if (this.distance > 100) {
+                    altVal = rng.nextInt(2000,3000);
+                } else if (this.distance > 50) {
+                    altVal = rng.nextInt(3000,4000);
+                } else {
+                    altVal = rng.nextInt(4000,5000);
+                }
+                Structs.Property altTag = Structs.Property.newBuilder().setKey("altitude").setValue(Integer.toString(altVal)).build();
+                Structs.Vertex mV = Structs.Vertex.newBuilder(v).addProperties(altTag).build();
+                vModList.set(i, mV);
+            }
+        }
+        return vModList;
+    }
+    private List <Line2D> generateMountainRange(){
         List<Line2D> lines = new ArrayList<>();
 
         int numLines = rng.nextInt(1,5);
@@ -55,73 +75,15 @@ public class MountainAltitude implements AltitudeProfile {
             System.out.println("");
             lines.add(d);
         }
-
-
-        System.out.println(maxx + " " + minx);
-        System.out.println(maxy + " " + miny);
-
-        double centerX = (maxx+minx)/2;
-        double centerY = (maxy+miny)/2;
-
-        System.out.println(centerX + " " + centerY);
-
-        for(Structs.Polygon p:plist){
-            int sum = 0;
-            if(tagEx.extractValues(p.getPropertiesList()).equals("ocean")){
-                Structs.Property color = Structs.Property.newBuilder().setKey("rgb_color").setValue("43,101,236").build();
-                Structs.Property altTag = Structs.Property.newBuilder().setKey("altitude").setValue("0").build();
-                Structs.Polygon pColoredModify = Structs.Polygon.newBuilder(p).addProperties(color).addProperties(altTag).build();
-                pModList.add(pColoredModify);
-            } else {
-                Set<Integer> vInts = new HashSet<>();
-                for(int i = 0; i < p.getSegmentIdxsCount(); i++){
-                    Structs.Segment seg = slist.get(p.getSegmentIdxs(i));
-                    vInts.add(seg.getV1Idx());
-                    vInts.add(seg.getV2Idx());
-                }
-                int centroidIdx = p.getCentroidIdx();
-                Structs.Vertex centroid = vList.get(centroidIdx);
-                double distance = 1000000;
-                for(Line2D d: lines){
-                    distance = Math.min(distance, d.ptLineDist(centroid.getX(),centroid.getY()));
-                }
-
-
-                int altVal;
-                for(Integer i: vInts){
-                    Structs.Vertex v = vList.get(i);
-                    if(altEx.extractValues(v.getPropertiesList()).equals("null")){
-                        if(distance > 200){
-                            altVal = rng.nextInt(0,1000);
-                        } else if (distance > 150) {
-                            altVal = rng.nextInt(1000,2000);
-                        } else if (distance > 100) {
-                            altVal = rng.nextInt(2000,3000);
-                        } else if (distance > 50) {
-                            altVal = rng.nextInt(3000,4000);
-                        } else {
-                            altVal = rng.nextInt(4000,5000);
-                        }
-                        Structs.Property altTag = Structs.Property.newBuilder().setKey("altitude").setValue(Integer.toString(altVal)).build();
-                        Structs.Vertex mV = Structs.Vertex.newBuilder(v).addProperties(altTag).build();
-                        vList.set(i, mV);
-                    }
-                }
-                for(Integer i: vInts){
-                    sum += Integer.valueOf(altEx.extractValues(vList.get(i).getPropertiesList()));
-                }
-                int average = sum/vInts.size();
-                Structs.Property altTag = Structs.Property.newBuilder().setKey("altitude").setValue(Integer.toString(average)).build();
-                Structs.Polygon pColoredModify = Structs.Polygon.newBuilder(p).addProperties(altTag).build();
-                pModList.add(pColoredModify);
-            }
+        return lines;
+    }
+    private double minDistanceMountainRange(Structs.Polygon p, List<Structs.Vertex> vModList, List<Line2D> lines){
+        int centroidIdx = p.getCentroidIdx();
+        Structs.Vertex centroid = vModList.get(centroidIdx);
+        double distance = 1000000;
+        for(Line2D d: lines){
+            distance = Math.min(distance, d.ptLineDist(centroid.getX(),centroid.getY()));
         }
-        List<Object> ansList = new ArrayList<>();
-        VertexPolygonConnections vpc = new VertexPolygonConnections(pModList, slist, vList);
-        ansList.add(pModList);
-        ansList.add(slist);
-        ansList.add(smoothenVertices(pModList, vList, vpc));
-        return ansList;
-
+        return distance;
     }
 }

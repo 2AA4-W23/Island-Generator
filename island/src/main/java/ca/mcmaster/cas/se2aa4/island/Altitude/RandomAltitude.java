@@ -2,19 +2,19 @@ package ca.mcmaster.cas.se2aa4.island.Altitude;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.island.Graph.VertexPolygonConnections;
+import ca.mcmaster.cas.se2aa4.island.Properties.PropertyAdder;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class RandomAltitude implements AltitudeProfile{
+public class RandomAltitude extends AltitudeTemplate{
 
     @Override
-    public List<Object> addAltitudeValues(List<Structs.Polygon> plist, List<Structs.Segment> sList, List<Structs.Vertex> vlist) {
+    public List<Object> addAltitudeValues(List<Structs.Polygon> plist, List<Structs.Segment> slist, List<Structs.Vertex> vlist) {
         List<Structs.Polygon> pModList = new ArrayList<>();
-        List <Structs.Vertex> vList = new ArrayList<>(vlist);
-
+        List <Structs.Vertex> vModList = new ArrayList<>(vlist);
         for(Structs.Polygon p:plist){
             int sum = 0;
             if(tagEx.extractValues(p.getPropertiesList()).equals("ocean")){
@@ -23,35 +23,13 @@ public class RandomAltitude implements AltitudeProfile{
                 Structs.Polygon pColoredModify = Structs.Polygon.newBuilder(p).addProperties(color).addProperties(altTag).build();
                 pModList.add(pColoredModify);
             } else {
-                Set<Integer> vInts = new HashSet<>();
-                for(int i = 0; i < p.getSegmentIdxsCount(); i++){
-                    Structs.Segment seg = sList.get(p.getSegmentIdxs(i));
-                    vInts.add(seg.getV1Idx());
-                    vInts.add(seg.getV2Idx());
-                }
-                for(Integer i: vInts){
-                    Structs.Vertex v = vList.get(i);
-                    if(altEx.extractValues(v.getPropertiesList()).equals("null")){
-                        int altVal = rng.nextInt(0,5000);
-                        Structs.Property altTag = Structs.Property.newBuilder().setKey("altitude").setValue(Integer.toString(altVal)).build();
-                        Structs.Vertex mV = Structs.Vertex.newBuilder(v).addProperties(altTag).build();
-                        vList.set(i, mV);
-                    }
-                }
-                for(Integer i: vInts){
-                    sum += Integer.valueOf(altEx.extractValues(vList.get(i).getPropertiesList()));
-                }
-                int average = sum/vInts.size();
-                Structs.Property altTag = Structs.Property.newBuilder().setKey("altitude").setValue(Integer.toString(average)).build();
-                Structs.Polygon pColoredModify = Structs.Polygon.newBuilder(p).addProperties(altTag).build();
+                Set<Integer> vInts = findVerticesIndex(p, slist);
+                vModList = setVertexAltitude(vModList, vInts);
+                int average = averageAltitude(vModList, vInts);
+                Structs.Polygon pColoredModify = PropertyAdder.addProperty(p,"altitude",Integer.toString(average));
                 pModList.add(pColoredModify);
             }
         }
-        List<Object> ansList = new ArrayList<>();
-        VertexPolygonConnections vpc = new VertexPolygonConnections(pModList, sList, vList);
-        ansList.add(pModList);
-        ansList.add(sList);
-        ansList.add(smoothenVertices(pModList, vList, vpc));
-        return ansList;
+        return createAnswerList(pModList, slist, vModList);
     }
 }
