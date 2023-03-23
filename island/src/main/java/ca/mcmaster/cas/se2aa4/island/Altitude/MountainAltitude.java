@@ -65,14 +65,8 @@ public class MountainAltitude extends AltitudeTemplate {
             int y1 = rng.nextInt(0,500);
             int x2 = rng.nextInt(0,500);
             int y2 = rng.nextInt(0,500);
-
             Line2D d = new Line2D.Double();
             d.setLine(x1,y1,x2, y2);
-            System.out.print(x1);
-            System.out.print(y1);
-            System.out.print(x2);
-            System.out.print(y2);
-            System.out.println("");
             lines.add(d);
         }
         return lines;

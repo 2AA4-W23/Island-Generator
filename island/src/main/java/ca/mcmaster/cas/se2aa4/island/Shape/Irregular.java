@@ -18,29 +18,18 @@ public class Irregular implements Shape{
 
         return this.shape.contains(point);
     }
-
     @Override
     public void create() {
-
         int numPoints = bag.nextInt(50,75);
         Coordinate[] pts =  new Coordinate[numPoints+1];
         pts[0] = new Coordinate(250,250);
-
-
         for (int i = 1; i < numPoints+1; i++) {
             int x = bag.nextInt(25,475);
             int y = bag.nextInt(25,475);
             pts[i] = new Coordinate(x,y);
         }
-        for(Coordinate c: pts){
-//            System.out.println(c);
-        }
-//        ConcaveHull cv = new ConcaveHull();
-//        ConvexHull c = new ConvexHull(pts, new GeometryFactory());
-
         Geometry g1 = new GeometryFactory().createLineString(pts);
         this.shape = ConcaveHull.concaveHullByLengthRatio(g1, 0.5, false);
-//        this.shape = c.getConvexHull();
 
     }
 }

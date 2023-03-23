@@ -1,59 +1,46 @@
 package ca.mcmaster.cas.se2aa4.island.Biomes;
 
-import ca.mcmaster.cas.se2aa4.a2.io.Structs;
+public class ArcticBiomeProfile extends BiomeTemplate{
+    enum Biome{
+        TUNDRA("tundra", "195,210,235"),
+        TAIGA("taiga", "2,48,32"),
+        BOREAL("boreal_forest", "0,100,0"),
+        FOREST("deciduous_forest", "34,139,34"),
+        STEPPES("steppes", "228,192,122");
+        public final String biome_name;
+        public final String rgb_color;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class ArcticBiomeProfile implements BiomeProfile{
-    private final double hmax = 250;
-    private final double hmin = 0;
-    private final double amax = 10;
-    private final double amin = -10;
-    @Override
-    public List<Structs.Polygon> addBiomes(List<Structs.Polygon> pList) {
-        double minAlt = 100000;
-        double maxAlt = 0;
-        double minHumid = 100000;
-        double maxHumid = 0;
-        List<Structs.Polygon> modList = new ArrayList<>();
-        for(Structs.Polygon p: pList){
-            if(!tileTagEx.extractValues(p.getPropertiesList()).equals("ocean")){
-                minHumid = Math.min(Double.parseDouble(humidEx.extractValues(p.getPropertiesList())), minHumid);
-                minAlt = Math.min(Double.parseDouble(altEx.extractValues(p.getPropertiesList())), minAlt);
-                maxHumid = Math.max(Double.parseDouble(humidEx.extractValues(p.getPropertiesList())), maxHumid);
-                maxAlt = Math.max(Double.parseDouble(altEx.extractValues(p.getPropertiesList())), maxAlt);
-            }
+        Biome(String biome_name, String rgb_color) {
+            this.biome_name = biome_name;
+            this.rgb_color = rgb_color;
         }
-        for(Structs.Polygon p: pList) {
-            if (!tileTagEx.extractValues(p.getPropertiesList()).equals("ocean") && !tileTagEx.extractValues(p.getPropertiesList()).equals("lake")) {
-                double alt = Double.parseDouble(altEx.extractValues(p.getPropertiesList()));
-                double humid = Double.parseDouble(humidEx.extractValues(p.getPropertiesList()));
-                double altMod = amin + (((alt - minAlt) * (amax - amin)) / (maxAlt - minAlt));
-                double humidMod = hmin + (((humid - minHumid) * (hmax - hmin)) / (maxHumid - minHumid));
-//                System.out.println("A: " + altMod + " H: " + humidMod);
-                ArcticBiome b;
-                if (altMod < -5){
-                    b = ArcticBiome.TUNDRA;
-                } else if (humidMod < 100) {
-                    b = ArcticBiome.STEPPES;
-                } else if (altMod > 5) {
-                    b = ArcticBiome.FOREST;
-                } else if (altMod > 0) {
-                    b = ArcticBiome.BOREAL;
-                } else {
-                    b = ArcticBiome.TAIGA;
-                }
-                Structs.Property biomeTag = Structs.Property.newBuilder().setKey("biome").setValue(b.biome_name).build();
-                Structs.Property rgbTag = Structs.Property.newBuilder().setKey("rgb_color").setValue(b.rgb_color).build();
-                Structs.Polygon bModP = Structs.Polygon.newBuilder(p).addProperties(biomeTag).addProperties(rgbTag).build();
-                modList.add(bModP);
-            } else {
-                modList.add(p);
-            }
-
-        }
-
-        return modList;
     }
+
+    @Override
+    public String[] identifyBiome(double[] modifiedVals) {
+        double altMod = modifiedVals[0];
+        double humidMod = modifiedVals[1];
+        Biome b;
+        if (altMod < -5){
+            b = Biome.TUNDRA;
+        } else if (humidMod < 100) {
+            b = Biome.STEPPES;
+        } else if (altMod > 5) {
+            b = Biome.FOREST;
+        } else if (altMod > 0) {
+            b = Biome.BOREAL;
+        } else {
+            b = Biome.TAIGA;
+        }
+        return new String[]{b.biome_name, b.rgb_color};
+    }
+
+    @Override
+    public void setBiomeRange() {
+        this.hmin = 0;
+        this.hmax = 250;
+        this.amin = -10;
+        this.amax = 10;
+    }
+
 }
