@@ -34,7 +34,7 @@ public abstract class BiomeTemplate implements BiomeProfile{
     protected double[] modifiedInputs(Structs.Polygon p, double[] range){
         double alt = Double.parseDouble(altEx.extractValues(p.getPropertiesList()));
         double humid = Double.parseDouble(humidEx.extractValues(p.getPropertiesList()));
-        double altMod = amin + (((alt - range[2]) * (amax - amin)) / (range[3] - range[2]));
+        double altMod = amax + (((alt - range[2]) * (amin - amax)) / (range[3] - range[2]));
         double humidMod = hmin + (((humid - range[0]) * (hmax - hmin)) / (range[1] - range[0]));
         return new double[]{altMod, humidMod};
     }
@@ -43,7 +43,6 @@ public abstract class BiomeTemplate implements BiomeProfile{
         double maxAlt = 0;
         double minHumid = Double.POSITIVE_INFINITY;
         double maxHumid = 0;
-        List<Structs.Polygon> modList = new ArrayList<>();
         for(Structs.Polygon p: pList){
             if(!tileTagEx.extractValues(p.getPropertiesList()).equals("ocean")){
                 minHumid = Math.min(Double.parseDouble(humidEx.extractValues(p.getPropertiesList())), minHumid);

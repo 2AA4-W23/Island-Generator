@@ -4,9 +4,9 @@ public class TemperateBiomeProfile extends BiomeTemplate{
     enum Biome{
         PRAIRIES("prairies", "156,240,101"),
         TEMPDESERT("desert", "252,134,23"),
-        FOREST("forest", "45,196,65"),
-        TEMPRAINFOREST("rainforest", "1,130,18"),
-        WETLANDS("wetlands", "68,110,41");
+        FOREST("forest", "12,173,36"),
+        TEMPRAINFOREST("rainforest", "78,138,62"),
+        WETLANDS("wetlands", "135,99,52");
         public final String biome_name;
         public final String rgb_color;
 
@@ -24,9 +24,9 @@ public class TemperateBiomeProfile extends BiomeTemplate{
             b = Biome.TEMPDESERT;
         } else if (humidMod > 250) {
             b = Biome.TEMPRAINFOREST;
-        } else if (10>altMod && altMod>5 && humidMod > 150) {
+        } else if (altMod<10 && altMod>5 && humidMod > 150) {
             b = Biome.WETLANDS;
-        } else if (altMod > 10 && humidMod > 125) {
+        } else if (humidMod > 125 && altMod>10) {
             b = Biome.FOREST;
         } else {
             b = Biome.PRAIRIES;
@@ -38,7 +38,7 @@ public class TemperateBiomeProfile extends BiomeTemplate{
     public void setBiomeRange() {
         this.hmin = 0;
         this.hmax = 350;
-        this.amin = 5;
-        this.amax = 1;
+        this.amin = 15;
+        this.amax = 5;
     }
 }

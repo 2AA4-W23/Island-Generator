@@ -7,7 +7,7 @@ public class TropicalBiomeProfile extends BiomeTemplate{
         DESERT("desert", "224,213,85"),
         LUSHFOREST("temp_forest", "12,173,36"),
         MANGROVE("mangrove", "98,124,61"),
-        RAINFOREST("rainforest", "8,240,0");
+        RAINFOREST("rainforest", "78,138,62");
         public final String biome_name;
         public final String rgb_color;
         Biome(String biome_name, String rgb_color) {

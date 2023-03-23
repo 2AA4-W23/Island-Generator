@@ -24,59 +24,52 @@ import java.util.List;
 public class IslandGenerator {
     
     private static final Extractor tileTagsEx = new TileTagExtractor();
-    
+    static Structs.Mesh mesh;
+    static Shape islandShape;
+    static AltitudeProfile altProfile;
+    static BiomeProfile biomeProfile;
+    static int numLakes;
+    static int numAquifers;
+    static int numRivers;
     public static Structs.Mesh Generate(Configuration config){
-        Structs.Mesh mesh = config.inputMesh;
-        Shape islandShape = config.shapeObj;
-        AltitudeProfile altProfile = config.altProfile;
-        BiomeProfile biomeProfile = config.biomeProfile;
-        int numLakes = config.num_lakes;
-        int numAquifers = config.num_aquifers;
-        int numRivers = config.num_rivers;
+        setConfigValues(config);
         islandShape.create();
         List<Structs.Polygon> pList = mesh.getPolygonsList();
         List<Structs.Vertex> vList = mesh.getVerticesList();
-        List<Structs.Polygon> landTiles = new ArrayList<>();
-        List<Structs.Polygon> newList = new ArrayList<>();
 
+        List<List<Structs.Polygon>> seperatedTiles = findLandTiles.seperateTiles(islandShape, pList, vList);
+        List<Structs.Polygon> pModList = seperatedTiles.get(0);
+        List<Structs.Polygon> landTiles;
 
-        for (Structs.Polygon p: pList) {
-            int indexc = p.getCentroidIdx();
-            Structs.Vertex v = vList.get(indexc);
-            if(!islandShape.contains(v.getX(), v.getY())){
-                Structs.Property color = Structs.Property.newBuilder().setKey("rgb_color").setValue("43,101,236").build();
-                Structs.Property tileTag = Structs.Property.newBuilder().setKey("tile_tag").setValue("ocean").build();
-                Structs.Polygon pColoredModify = Structs.Polygon.newBuilder(p).addProperties(color).addProperties(tileTag).build();
-                newList.add(pColoredModify);
-            }  else {
-                Structs.Property color = Structs.Property.newBuilder().setKey("rgb_color").setValue("144,238,144").build();
-                Structs.Property tileTag = Structs.Property.newBuilder().setKey("tile_tag").setValue("land").build();
-                Structs.Polygon pColoredModify = Structs.Polygon.newBuilder(p).addProperties(color).addProperties(tileTag).build();
-                newList.add(pColoredModify);
-                landTiles.add(pColoredModify);
-            }
-        }
-        List<Object> altLists = new ArrayList<>();
-        altLists = altProfile.addAltitudeValues(newList,mesh.getSegmentsList(),vList);
-
-        newList = (List<Structs.Polygon>) altLists.get(0);
-        newList = AddBeaches.addBeaches(landTiles, newList);
-        landTiles = updateLandTiles(newList);
-        newList = AddLakes.addLakes(landTiles, numLakes, newList);
-        landTiles = updateLandTiles(newList);
-        newList = AddAquifers.addAquifers(landTiles, numAquifers, newList);
+        List<Object> altLists;
+        altLists = altProfile.addAltitudeValues(pModList,mesh.getSegmentsList(),vList);
+        pModList = (List<Structs.Polygon>) altLists.get(0);
         vList = (List<Structs.Vertex>) altLists.get(2);
-        List<Structs.Segment> sList = (List<Structs.Segment>) altLists.get(1);
-        sList = AddRivers.addRivers(newList, sList, vList, numRivers);
-        //for(Structs.Segment s : sList) System.out.println(edgeEx.extractValues(s.getPropertiesList()));
-        newList = TileHumidifier.setHumidities(newList, sList);
-        newList = biomeProfile.addBiomes(newList);
-        List<Object> lakeList = AddLakes.fixLakeAltitudes(numLakes, newList, sList, vList);
-        newList = (List<Polygon>) lakeList.get(0);
-        vList = (List<Vertex>) lakeList.get(1);
-        return Structs.Mesh.newBuilder().addAllPolygons(newList).addAllSegments(sList).addAllVertices(vList).build();
-    }
 
+        landTiles = updateLandTiles(pModList);
+        pModList = AddLakes.addLakes(landTiles, numLakes, pModList);
+        landTiles = updateLandTiles(pModList);
+        pModList = AddAquifers.addAquifers(landTiles, numAquifers, pModList);
+
+        List<Structs.Segment> sList = (List<Structs.Segment>) altLists.get(1);
+        sList = AddRivers.addRivers(pModList, sList, vList, numRivers);
+        pModList = TileHumidifier.setHumidities(pModList, sList);
+        pModList = biomeProfile.addBiomes(pModList);
+
+        List<Object> lakeList = AddLakes.fixLakeAltitudes(numLakes, pModList, sList, vList);
+        pModList = (List<Polygon>) lakeList.get(0);
+        vList = (List<Vertex>) lakeList.get(1);
+        return Structs.Mesh.newBuilder().addAllPolygons(pModList).addAllSegments(sList).addAllVertices(vList).build();
+    }
+    private static void setConfigValues(Configuration config){
+        mesh = config.inputMesh;
+        islandShape = config.shapeObj;
+        altProfile = config.altProfile;
+        biomeProfile = config.biomeProfile;
+        numLakes = config.num_lakes;
+        numAquifers = config.num_aquifers;
+        numRivers = config.num_rivers;
+    }
     private static List<Structs.Polygon> updateLandTiles(List<Structs.Polygon> tiles){
         List<Structs.Polygon> landTiles = new ArrayList<>();
         for(Structs.Polygon p : tiles){
