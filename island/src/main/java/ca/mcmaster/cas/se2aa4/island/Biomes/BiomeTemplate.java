@@ -19,7 +19,8 @@ public abstract class BiomeTemplate implements BiomeProfile{
         setBiomeRange();
         double[] range = findRange(pList);
         for(Structs.Polygon p: pList) {
-            if (!tileTagEx.extractValues(p.getPropertiesList()).equals("ocean") && !tileTagEx.extractValues(p.getPropertiesList()).equals("lake")) {
+            String tag = tileTagEx.extractValues(p.getPropertiesList());
+            if (!tag.equals("ocean") && !tag.equals("lake") && !tag.equals("endor_lake") ) {
                 double[] modifiedVals = modifiedInputs(p, range);
                 String[] biomeVals = identifyBiome(modifiedVals);
                 Structs.Polygon bModP = PropertyAdder.addProperty(p,"biome",biomeVals[0]);

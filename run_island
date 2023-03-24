@@ -14,7 +14,7 @@ then
     cd ../island
 fi
 
-java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude random --lakes 5 --aquifers 2 --rivers 15 --biomes Arctic
+java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude volcano --lakes 5 --aquifers 2 --rivers 30 --biomes Arctic
 cd ../visualizer
 java -jar visualizer.jar ../island/island.mesh sample.svg -A 255 -O
 cd ..

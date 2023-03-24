@@ -57,7 +57,8 @@ public class AddLakes {
             minAlt[i] = 100000;
         }
         for(Structs.Polygon p : newList) {
-            if(!tileTagsEx.extractValues(p.getPropertiesList()).equals("lake")) continue;
+            String tag = tileTagsEx.extractValues(p.getPropertiesList());
+            if(!tag.equals("lake") || !tag.equals("endor_lake")) continue;
             int lake_num = Integer.parseInt(lakeEx.extractValues(p.getPropertiesList())) - 1;
             lakes[lake_num].add(p);
             try {

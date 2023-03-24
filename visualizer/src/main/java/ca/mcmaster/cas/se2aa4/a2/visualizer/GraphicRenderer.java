@@ -292,17 +292,6 @@ public class GraphicRenderer {
                     if(alphaSet){
                         canvas.setColor(new Color(90,90,90,alpha));
                     }
-                } else if(!thickSet) {
-                    int v1Thickness = extractThickness(VertexList.get(s.getV1Idx()).getPropertiesList());
-                    int v2Thickness = extractThickness(VertexList.get(s.getV2Idx()).getPropertiesList());
-                    if(Math.abs(y1 - y2) < 0.01) {
-                        x1 += v1Thickness/2.0d;
-                        x2 -= v2Thickness/2.0d;
-                    }
-                    else if(Math.abs(x1 - x2) < 0.01) {
-                        y1 += v1Thickness/2.0d;
-                        y2 -= v2Thickness/2.0d;
-                    }
                 }
                 if(thickSet){
                     canvas.setStroke(new BasicStroke(Math.max(1, thick - 1)));

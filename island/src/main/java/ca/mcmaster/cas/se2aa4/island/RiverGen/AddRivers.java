@@ -3,6 +3,8 @@ package ca.mcmaster.cas.se2aa4.island.RiverGen;
 import java.util.*;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
+import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
+import ca.mcmaster.cas.se2aa4.a2.io.Structs.Segment;
 import ca.mcmaster.cas.se2aa4.island.Extractors.AltitudeExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.EdgeTagExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.Extractor;
@@ -11,6 +13,7 @@ import ca.mcmaster.cas.se2aa4.island.Extractors.RiverThicknessExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.TileTagExtractor;
 import ca.mcmaster.cas.se2aa4.island.Graph.VertexGraph;
 import ca.mcmaster.cas.se2aa4.island.Graph.VertexPolygonConnections;
+import ca.mcmaster.cas.se2aa4.island.LakeGen.AddLakes;
 import ca.mcmaster.cas.se2aa4.island.Properties.PropertyAdder;
 
 public class AddRivers {
@@ -21,6 +24,7 @@ public class AddRivers {
     private static Extractor thickEx = new RiverThicknessExtractor(); 
     private static Extractor altEx = new AltitudeExtractor();
     private static Random rng = new Random();
+    private static Extractor tileTagsEx = new TileTagExtractor();
 
     public static List<Structs.Segment> addRivers(List<Structs.Polygon> tiles, List<Structs.Segment> segments, List<Structs.Vertex> vertices, int numRivers){
        List<Structs.Segment> newSegments = new ArrayList<>();
@@ -43,21 +47,29 @@ public class AddRivers {
             visitedVertices.add(initialPoint);
             riverVertices.add(vertices.indexOf(initialPoint));
             Structs.Vertex riverVertex = null;
+            Structs.Vertex endorLakeVertex = null;
 
-            int tries = 0;
-            while (!queue.isEmpty() && tries < 100) {
-                tries++;
+            int riverLen = 0;
+            while (!queue.isEmpty()) {
                 Structs.Vertex currentVertex = queue.remove();
                 if (isWaterVertex(currentVertex, vertices, vpc, tiles)) {
-                    riverVertex = currentVertex;
+                    riverVertex = currentVertex;    
                     break;
                 }
                 Structs.Vertex nextVertex = getNextVertex(currentVertex, vertices, vvGraph);
-                if (nextVertex == null) continue;
+                if (nextVertex == null || visitedVertices.contains(nextVertex)) continue;
                 visitedVertices.add(nextVertex);
                 riverVertices.add(vertices.indexOf(nextVertex));
                 parent.put(nextVertex, currentVertex);
                 queue.add(nextVertex);
+                riverLen++;
+                if(rng.nextInt(10,15) < riverLen) {
+                    Structs.Polygon tile = getInitialLakeTile(tiles, vertices, newSegments, nextVertex, vpc);
+                    if(tile == null) continue;
+                    endorLakeVertex = nextVertex;
+                    riverVertex = currentVertex;  
+                    break;
+                }
             }
             if (riverVertex != null) {
                 Structs.Vertex currentVertex = riverVertex;
@@ -89,6 +101,7 @@ public class AddRivers {
             }   
             newSegments = addRiverProps(river, newSegments, i + 1, thickness);
             vvGraph.refreshSegments(newSegments);
+            addEndorheicLake(tiles, vertices, newSegments, endorLakeVertex, vpc);
         }
         return newSegments;
     }
@@ -112,7 +125,6 @@ public class AddRivers {
         if(tag.equals("river")){
             try{
                 thick = Math.max(Integer.parseInt(existingThickness), thick) + 1;
-                System.out.println("merged!");
             } catch (Exception e )  {}
         }
         //System.out.println(thick);
@@ -125,12 +137,38 @@ public class AddRivers {
         for(Integer i : connections) {
             Structs.Polygon connectedTile = tiles.get(i);
             String tag = tileTagEx.extractValues(connectedTile.getPropertiesList());
-            if(tag.equals("lake") || tag.equals("ocean")){
+            if(tag.equals("lake") || tag.equals("ocean") || tag.equals("endor_lake")){
                return true;
             }
         }
         return false;
     }
+
+    private static void addEndorheicLake(List<Structs.Polygon> tiles, List<Structs.Vertex> vertices, List<Structs.Segment> segments, Structs.Vertex initialPoint, VertexPolygonConnections G){
+        if(initialPoint == null) return;
+        Structs.Polygon initialTile = getInitialLakeTile(tiles, vertices, segments, initialPoint, G);
+        if(initialTile == null) return;
+        List<Structs.Polygon> tilesInLake = new ArrayList<>();
+        tilesInLake.add(initialTile);
+        int lakeSize = rng.nextInt(2,5);
+        int checks = 0;
+        while(tilesInLake.size() < lakeSize && checks < 100){
+            Structs.Polygon nextTile = tilesInLake.get(rng.nextInt(tilesInLake.size()));
+            Structs.Polygon tileToAdd = tiles.get(nextTile.getNeighborIdxs(rng.nextInt(nextTile.getNeighborIdxsList().size())));
+            checks++;
+            if(!checkEligibleLakeTile(tileToAdd, tiles, segments)) continue;
+            tilesInLake.add(tileToAdd);
+        }
+        for(Structs.Polygon p : tilesInLake){
+            Structs.Polygon pLake = PropertyAdder.addProperty(p, "rgb_color", "255,0,0");
+            pLake = PropertyAdder.addProperty(pLake, "tile_tag", "endor_lake");
+            int idx = tiles.indexOf(p);
+            if(idx != -1) tiles.set(idx, pLake);
+            else System.out.println("Endorheic lake skipped due to error");
+        }
+        return;
+    }
+        
 
     private static Structs.Vertex getNextVertex(Structs.Vertex v, List<Structs.Vertex> vertices, VertexGraph G) {
         Set<Integer> connections = G.getConnections(v, vertices);
@@ -156,5 +194,33 @@ public class AddRivers {
         } catch (NumberFormatException e) {
             return 0;
         }
+    }
+
+    private static boolean checkEligibleLakeTile(Structs.Polygon tile, List<Structs.Polygon> tiles, List<Structs.Segment> segments) {
+        if(tile == null) return false;
+        for(int idx : tile.getNeighborIdxsList()){
+            String tag = tileTagsEx.extractValues(tiles.get(idx).getPropertiesList());
+            if(!tag.equals("land")) return false;
+            for(Integer i : tile.getSegmentIdxsList()){
+                Segment s = segments.get(i);
+                String segTag = edgeTagEx.extractValues(s.getPropertiesList());
+                if(segTag.equals("river")) return false;
+            }
+        }
+        return true;
+    }
+
+    private static Structs.Polygon getInitialLakeTile(List<Structs.Polygon> tiles, List<Structs.Vertex> vertices, List<Structs.Segment> segments, Structs.Vertex initialPoint, VertexPolygonConnections G){
+        Structs.Polygon initialTile = null;
+        Set<Integer> connections = G.getConnections(initialPoint, vertices);
+        if(connections == null || connections.size() == 0) return null;
+        for(Integer i : connections) {
+            initialTile = tiles.get(i);
+            if(!checkEligibleLakeTile(initialTile, tiles, segments)) initialTile = null;
+            else break;
+        }
+        if(initialTile == null) return null;
+        if(G.isNonAdjacentWaterTile(initialTile, tiles)) return null;
+        return initialTile;
     }
 }

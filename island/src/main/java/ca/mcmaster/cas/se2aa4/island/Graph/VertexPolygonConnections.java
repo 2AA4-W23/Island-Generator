@@ -16,7 +16,7 @@ public class VertexPolygonConnections extends Graph {
         size = vertices.size();
         adjacencyList = new HashSet[size];
         for(Structs.Polygon p : polygons){
-            if(isNonAdjacentOceanTile(p, polygons)) continue;
+            if(isNonAdjacentWaterTile(p, polygons)) continue;
             for(Integer i : p.getSegmentIdxsList()){
                 Structs.Segment s = segments.get(i);    
                 if(adjacencyList[s.getV1Idx()] == null) adjacencyList[s.getV1Idx()] = new HashSet<>();
@@ -27,7 +27,7 @@ public class VertexPolygonConnections extends Graph {
         }
     }
 
-    private boolean isNonAdjacentOceanTile(Structs.Polygon tile, List<Structs.Polygon> polygons){
+    public boolean isNonAdjacentWaterTile(Structs.Polygon tile, List<Structs.Polygon> polygons){
         String tag = tileTagEx.extractValues(tile.getPropertiesList());
         if(!tag.equals("ocean")) return false;
         for(Integer i : tile.getNeighborIdxsList()){
