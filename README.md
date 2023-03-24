@@ -303,18 +303,23 @@ For a feature to be considered done it must be work without throwing any excepti
 | F31 | Lakes affect surrounding vegetation and humidity                  | Ibrahim   | 03/13/2023 | 03/15/2023 | D      |
 | F33 | Rivers start at vertex and flow to lowest point                   | Omar      | 03/15/2023 | 03/15/2023 | D      |
 | F34 | Rivers add moisture to the surrounding tiles                      | Ibrahim   | 03/15/2023 | 03/15/2023 | D      |
-| F35 | Rivers create endorheic lakes                       | Ibrahim   | 03/23/2023 | 03/24/2023 | D      |
+| F35 | Rivers create endorheic lakes                                     | Ibrahim   | 03/23/2023 | 03/24/2023 | D      |
 | F36 | Accept command line to choose number of rivers                    | Omar      | 03/15/2023 | 03/15/2023 | D      |
-| F37 | Rivers have random discharge level (size/thickness)                    | Ibrahim      | 03/21/2023 | 03/21/2023 | D      |
-| F38 | Rivers can combine into thicker ones, accumulating more moisture                   | Ibrahim      | 03/21/2023 | 03/21/2023 | D      |
+| F37 | Rivers have random discharge level (size/thickness)               | Ibrahim   | 03/21/2023 | 03/21/2023 | D      |
+| F38 | Rivers can combine into thicker ones, accumulating more moisture  | Ibrahim   | 03/21/2023 | 03/21/2023 | D      |
 | F39 | Island has random aquifers number of aquifers                     | Ibrahim   | 03/14/2023 | 03/14/2023 | D      |
 | F40 | Aquifers add moisture (humidity) to the surrounding tiles         | Ibrahim   | 03/14/2023 | 03/14/2023 | D      |
-| F46 | Tiles are assigned base biomes based on humidity levels and temperature/elevation                          | Virochaan | 03/14/2023 | 03/14/2023 | D      |
-| F47 | Select Biomes distribution using the --biomes command line argument                      | Virochaan | 03/21/2023 | 03/21/2023 | D      |
-| F48 | Use Arctic Biomes and biome calculation model with artic for the --biomes input                      | Virochaan | 03/21/2023 | 03/21/2023 | D      |
-| F49 | Use Tropical Biomes and biome calculation model with Tropical for the --biomes input                      | Virochaan | 03/21/2023 | 03/21/2023 | D      |
-| F50 | Use Temperate Biomes and biome calculation model with Temperate for the --biomes input                      | Virochaan | 03/21/2023 | 03/21/2023 | D      |
-| F51 | Islands are generated using set seed which is outputted to user                      | Virochaan | 03/24/2023 | 03/24/2023 | D      |
+| F41 | Aquifers add moisture (humidity) to the surrounding tiles         | Ibrahim   | 03/14/2023 | 03/14/2023 | D      |
+| F42 | Soil can absorb humidity from bodies of water based on distance   | Ibrahim   | 03/24/2023 | 03/24/2023 | D      |
+| F43 | Accept command line to choose absorption profile                  | Ibrahim   | 03/24/2023 | 03/24/2023 | D      |
+| F44 | Modify soil absorption for wet soil profile for greater range of humidity         | Ibrahim   | 03/24/2023 | 03/24/2023 | D      |
+| F45 | Modify soil absorption for dry soil profile for limited range of humidity         | Ibrahim   | 03/24/2023 | 03/24/2023 | D      |
+| F46 | Tiles are assigned base biomes based on humidity levels and temperature/elevation | Virochaan | 03/14/2023 | 03/14/2023 | D      |
+| F47 | Select Biomes distribution using the --biomes command line argument               | Virochaan | 03/21/2023 | 03/21/2023 | D      |
+| F48 | Use Arctic Biomes and biome calculation model with artic for the --biomes input   | Virochaan | 03/21/2023 | 03/21/2023 | D      |
+| F49 | Use Tropical Biomes and biome calculation model with Tropical for the --biomes input    | Virochaan | 03/21/2023 | 03/21/2023 | D      |
+| F50 | Use Temperate Biomes and biome calculation model with Temperate for the --biomes input  | Virochaan | 03/21/2023 | 03/21/2023 | D      |
+| F51 | Islands are generated using set seed which is outputted to user                                           | Virochaan | 03/24/2023 | 03/24/2023 | D      |
 | F52 | Accept command line arg to allow user to choose seeds to generate specific islands and control randomness | 03/24/2023 | 03/24/2023 | D      |
-| F54 | Heatmap mode to visualize altitudes and humidity               | Virochaan | 03/13/2023 |            | S      |
-| F55 | Generated OBJ file shows altitudes                                | Ibrahim   | 03/13/2023 | 03/14/2023 | S      |
+| F54 | Heatmap mode to visualize altitudes and humidity                                                          | Virochaan | 03/13/2023 |            | S      |
+| F55 | Generated OBJ file shows altitudes                                                                        | Ibrahim   | 03/13/2023 | 03/14/2023 | S      |
