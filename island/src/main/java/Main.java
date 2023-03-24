@@ -7,10 +7,9 @@ import ca.mcmaster.cas.se2aa4.island.RandomNumberGenerator.RandomNumber;
 import org.apache.commons.cli.*;
 
 import java.io.IOException;
-import java.util.Random;
 
 public class Main {
-    public static void main(String[] args) throws ParseException, IOException, ClassNotFoundException {
+    public static void main(String[] args) throws ParseException, IOException{
         System.out.println("Hello world!");
         Options options = new Options();
         options.addOption("m", "mode", true, "Decide whether it is lagoon or normal generation");
@@ -23,6 +22,7 @@ public class Main {
         options.addOption("h", "help", false, "Show instructions for control variables");
         options.addOption("r", "rivers", true, "Number of rivers to be generated");
         options.addOption("b", "biomes", true, "Decide Biomes type selected (Whittaker Diagram)");
+        options.addOption("s", "seed", true, "Input island seed for recreation of island.");
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
@@ -32,9 +32,23 @@ public class Main {
             formatter.printHelp("Generator", options);
             System.exit(0);
         }
-        RandomNumber.getRandomInstance();
-        RandomNumber.setSeed();
 
+        String seed = cmd.getOptionValue("seed");
+        if(seed == null){
+            RandomNumber.getRandomInstance();
+            RandomNumber.setSeed();
+        } else {
+            try{
+                RandomNumber.getRandomInstance();
+                System.out.println(seed);
+                System.out.println(seed.getClass());
+                RandomNumber.setSeed(Long.parseLong(seed));
+            } catch (NumberFormatException e){
+                System.out.println("Invalid Seed. Proceeding with Random seed.");
+                RandomNumber.getRandomInstance();
+                RandomNumber.setSeed();
+            }
+        }
         String mode = cmd.getOptionValue("mode");
         Structs.Mesh inputMesh = new MeshFactory().read(cmd.getOptionValue("i"));
         Structs.Mesh outputMesh;
@@ -50,7 +64,6 @@ public class Main {
         }
         MeshFactory factory = new MeshFactory();
         factory.write(outputMesh, cmd.getOptionValue("o"));
-
     }
 
 }

@@ -19,12 +19,12 @@ public class RandomNumber {
             System.out.println("Random Seed is: "+ seed);
         }
     }
-    public static void setSeed(int seed){
+    public static void setSeed(long seed){
         if(randomInstance == null){
             throw new RuntimeException("Not possible Instantiate instance first.");
         } else{
             randomInstance.setSeed(seed);
-            System.out.println("Random Seed is: "+ seed);
+            System.out.println("Seed is: "+ seed);
         }
     }
 }
