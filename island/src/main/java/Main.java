@@ -22,7 +22,7 @@ public class Main {
         options.addOption("h", "help", false, "Show instructions for control variables");
         options.addOption("r", "rivers", true, "Number of rivers to be generated");
         options.addOption("b", "biomes", true, "Decide Biomes type selected (Whittaker Diagram)");
-        options.addOption("s", "seed", true, "Input island seed for recreation of island.");
+        options.addOption("se", "seed", true, "Input island seed for recreation of island.");
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
