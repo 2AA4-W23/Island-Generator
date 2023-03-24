@@ -10,13 +10,14 @@ import ca.mcmaster.cas.se2aa4.island.Extractors.EdgeTagExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.HumidityExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.RiverThicknessExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.TileTagExtractor;
+import ca.mcmaster.cas.se2aa4.island.RandomNumberGenerator.RandomNumber;
 
 public class TileHumidifier {
 
 
     private static HumidityExtractor humidEx = new HumidityExtractor();
     private static TileTagExtractor tagEx = new TileTagExtractor();
-    private static Random rng = new Random();
+    private static Random rng = RandomNumber.getRandomInstance();
     private static EdgeTagExtractor edgeEx = new EdgeTagExtractor();
     private static RiverThicknessExtractor thickEx = new RiverThicknessExtractor();
 

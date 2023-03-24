@@ -3,9 +3,11 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.island.Configuration.Configuration;
 import ca.mcmaster.cas.se2aa4.island.IslandGenerator;
 import ca.mcmaster.cas.se2aa4.island.Lagoon;
+import ca.mcmaster.cas.se2aa4.island.RandomNumberGenerator.RandomNumber;
 import org.apache.commons.cli.*;
 
 import java.io.IOException;
+import java.util.Random;
 
 public class Main {
     public static void main(String[] args) throws ParseException, IOException, ClassNotFoundException {
@@ -30,6 +32,8 @@ public class Main {
             formatter.printHelp("Generator", options);
             System.exit(0);
         }
+        RandomNumber.getRandomInstance();
+        RandomNumber.setSeed();
 
         String mode = cmd.getOptionValue("mode");
         Structs.Mesh inputMesh = new MeshFactory().read(cmd.getOptionValue("i"));

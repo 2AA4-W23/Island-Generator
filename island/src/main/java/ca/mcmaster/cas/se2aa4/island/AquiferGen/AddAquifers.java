@@ -3,13 +3,14 @@ package ca.mcmaster.cas.se2aa4.island.AquiferGen;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.island.Extractors.Extractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.TileTagExtractor;
+import ca.mcmaster.cas.se2aa4.island.RandomNumberGenerator.RandomNumber;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class AddAquifers {
-    static Random rng = new Random();
+    static Random rng = RandomNumber.getRandomInstance();
     private static final Extractor tileTagsEx = new TileTagExtractor();
 
     public static List<Structs.Polygon> addAquifers(List<Structs.Polygon> landTiles, int numAqs, List<Structs.Polygon> newList){

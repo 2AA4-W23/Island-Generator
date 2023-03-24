@@ -15,6 +15,7 @@ import ca.mcmaster.cas.se2aa4.island.Graph.VertexGraph;
 import ca.mcmaster.cas.se2aa4.island.Graph.VertexPolygonConnections;
 import ca.mcmaster.cas.se2aa4.island.LakeGen.AddLakes;
 import ca.mcmaster.cas.se2aa4.island.Properties.PropertyAdder;
+import ca.mcmaster.cas.se2aa4.island.RandomNumberGenerator.RandomNumber;
 
 public class AddRivers {
 
@@ -23,7 +24,7 @@ public class AddRivers {
     private static Extractor riverEx = new RiverExtractor(); 
     private static Extractor thickEx = new RiverThicknessExtractor(); 
     private static Extractor altEx = new AltitudeExtractor();
-    private static Random rng = new Random();
+    private static Random rng = RandomNumber.getRandomInstance();
     private static Extractor tileTagsEx = new TileTagExtractor();
 
     public static List<Structs.Segment> addRivers(List<Structs.Polygon> tiles, List<Structs.Segment> segments, List<Structs.Vertex> vertices, int numRivers){

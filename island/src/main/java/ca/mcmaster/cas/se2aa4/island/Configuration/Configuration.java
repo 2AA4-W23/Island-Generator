@@ -6,6 +6,7 @@ import ca.mcmaster.cas.se2aa4.island.Altitude.AltitudeProfile;
 import ca.mcmaster.cas.se2aa4.island.Altitude.RandomAltitude;
 import ca.mcmaster.cas.se2aa4.island.Biomes.BaseBiomeProfile;
 import ca.mcmaster.cas.se2aa4.island.Biomes.BiomeProfile;
+import ca.mcmaster.cas.se2aa4.island.RandomNumberGenerator.RandomNumber;
 import ca.mcmaster.cas.se2aa4.island.Shape.Irregular;
 import ca.mcmaster.cas.se2aa4.island.Shape.Shape;
 import org.apache.commons.cli.*;
@@ -19,7 +20,7 @@ public class Configuration {
     public int num_lakes;
     public AltitudeProfile altProfile;
     public BiomeProfile biomeProfile;
-    private Random rng = new Random();
+    private Random rng = RandomNumber.getRandomInstance();
     public int num_aquifers;
     public int num_rivers;
 

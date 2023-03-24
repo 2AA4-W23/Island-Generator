@@ -16,7 +16,6 @@ public class RandomAltitude extends AltitudeTemplate{
         List<Structs.Polygon> pModList = new ArrayList<>();
         List <Structs.Vertex> vModList = new ArrayList<>(vlist);
         for(Structs.Polygon p:plist){
-            int sum = 0;
             if(tagEx.extractValues(p.getPropertiesList()).equals("ocean")){
                 Structs.Property color = Structs.Property.newBuilder().setKey("rgb_color").setValue("43,101,236").build();
                 Structs.Property altTag = Structs.Property.newBuilder().setKey("altitude").setValue("0").build();

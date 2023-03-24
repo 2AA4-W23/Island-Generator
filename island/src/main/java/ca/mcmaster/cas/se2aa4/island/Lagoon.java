@@ -17,9 +17,6 @@ public class Lagoon {
         Ellipse2D outer = new Ellipse2D.Double(50,50,400,400);
         Ellipse2D lake = new Ellipse2D.Double(150,150,200,200);
 
-//        for (Polygon p: pList){
-//            System.out.println(extractColor(p.getPropertiesList()));
-//        }
         for (Polygon p: pList) {
             int indexc = p.getCentroidIdx();
             Vertex v = vList.get(indexc);
@@ -53,11 +50,6 @@ public class Lagoon {
             }
             index++;
         }
-//        System.out.println("After Modification");
-//        for (Polygon p: newList){
-//            System.out.println(extractColor(p.getPropertiesList()));
-//        }
-//        System.out.println(pList.size()== newList.size());
         return Structs.Mesh.newBuilder().addAllPolygons(newList).addAllSegments(mesh.getSegmentsList()).addAllVertices(mesh.getVerticesList()).build();
     }
     public String extractColor(List<Property> properties) {
@@ -69,10 +61,6 @@ public class Lagoon {
         }
         if (color == null)
             return "null";
-//        int red = Integer.parseInt(raw[0]);
-//        int green = Integer.parseInt(raw[1]);
-//        int blue = Integer.parseInt(raw[2]);
-
        return color;
     }
     public String extractTag(List<Property> properties) {
@@ -84,11 +72,6 @@ public class Lagoon {
         }
         if (tag == null)
             return "null";
-//        String[] raw = color.split(",");
-////        int red = Integer.parseInt(raw[0]);
-////        int green = Integer.parseInt(raw[1]);
-////        int blue = Integer.parseInt(raw[2]);
-
         return tag;
     }
 }

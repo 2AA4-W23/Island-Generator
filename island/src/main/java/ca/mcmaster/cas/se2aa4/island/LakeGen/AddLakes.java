@@ -5,13 +5,14 @@ import ca.mcmaster.cas.se2aa4.island.Extractors.AltitudeExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.Extractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.LakeExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.TileTagExtractor;
+import ca.mcmaster.cas.se2aa4.island.RandomNumberGenerator.RandomNumber;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class AddLakes {
-    static Random rng = new Random();
+    static Random rng = RandomNumber.getRandomInstance();
     private static final Extractor tileTagsEx = new TileTagExtractor();
     private static final Extractor lakeEx = new LakeExtractor();
     private static final Extractor altEx = new AltitudeExtractor();
