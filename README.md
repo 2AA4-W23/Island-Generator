@@ -309,7 +309,7 @@ For a feature to be considered done it must be work without throwing any excepti
 | F38 | Rivers can combine into thicker ones, accumulating more moisture  | Ibrahim   | 03/21/2023 | 03/21/2023 | D      |
 | F39 | Island has random aquifers number of aquifers                     | Ibrahim   | 03/14/2023 | 03/14/2023 | D      |
 | F40 | Aquifers add moisture (humidity) to the surrounding tiles         | Ibrahim   | 03/14/2023 | 03/14/2023 | D      |
-| F41 | Aquifers add moisture (humidity) to the surrounding tiles         | Ibrahim   | 03/14/2023 | 03/14/2023 | D      |
+| F41 | Command Line argument to set number of aquifers                   | Ibrahim   | 03/14/2023 | 03/14/2023 | D      |
 | F42 | Soil can absorb humidity from bodies of water based on distance   | Ibrahim   | 03/24/2023 | 03/24/2023 | D      |
 | F43 | Accept command line to choose absorption profile                  | Ibrahim   | 03/24/2023 | 03/24/2023 | D      |
 | F44 | Modify soil absorption for wet soil profile for greater range of humidity         | Ibrahim   | 03/24/2023 | 03/24/2023 | D      |
