@@ -56,6 +56,8 @@ To view all available options and how to interact with generator tool, use the `
 mosser@azrael generator % java -jar generator.jar sample.mesh -h
 ```
 
+## A2
+
 ### Visualizer
 
 To visualize an existing mesh, go the the `visualizer` directory, and use `java -jar` to run the product. The product take two arguments (so far): the file containing the mesh, and the name of the file to store the visualization (as an SVG image).
@@ -134,6 +136,122 @@ mosser@azrael visualizer %
 ```
 
 If the tags are used in a different order, the result will be the same. This example implements all the possible tags, but they can easily be ommitted, in which case the program will act accordingly and generate/visualize the mesh based on the default values. 
+
+## A3
+
+### Island
+
+To generate a lagoon, use the `-m` or `--mode` tags (Omitting this tag will generate a normal island).
+
+```
+mosser@azrael island % java -jar island.jar -i ../generator/sample.mesh -o island.mesh --mode lagoon
+```
+
+To control the shape of the island, use the tag `--shape` followed by the specified shape (circle, rectangle, irregular).
+
+```
+mosser@azrael island % java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular
+```
+
+To control the altitude of the island, use the tag `--altitude` followed by the altimetric profile (random, volcano, mountain).
+
+```
+mosser@azrael island % java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude volcano
+```
+
+To modify the number of lakes, use the tag `--lakes` followed by a number up to 15. It will default to a randomized number between 2 and 10.
+
+```
+mosser@azrael island % java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude volcano --lakes 5
+```
+
+To modify the number of rivers, use the tag `--rivers` followed by a number up to 30. It will default to a randomized number between 2 and 30.
+
+```
+mosser@azrael island % java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude volcano --lakes 5 --rivers 30
+```
+
+To modify the number of aquifers, use the tag `--aquifers` followed by a number up to 15. It will default to a randomized number between 2 and 10.
+
+```
+mosser@azrael island % java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude volcano --lakes 5 --rivers 30 --aquifers 2
+```
+
+To control the soil absoprtion levels, use the tag `--` followed by the absorption profile (wet, dry).
+
+```
+mosser@azrael island % java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude volcano --lakes 5 --rivers 30 --aquifers 2 --
+```
+
+To control the biome distribution, use the tag `--biomes` followed by the biome profile (Arctic, Temperate, Tropical, Base).
+
+```
+mosser@azrael island % java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude volcano --lakes 5 --aquifers 2 --rivers 30 --***soil*** --biomes Arctic
+```
+
+To regenerate specific islands, use the tag `--seed` followed by the seed ID (ID is given after generation).
+
+```
+mosser@azrael island % java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude volcano --lakes 5 --aquifers 2 --rivers 30 --biomes Arctic --seed 1203
+```
+
+### Visualizer
+
+The visualizer works similar to before, with the same tags, only that `island.mesh` is being visualized. There are also new visualizer tags specifically for island generation.
+
+To view the island as a humidity heatmap, use the tag `-Humid`.
+
+```
+mosser@azrael visualizer % java -jar visualizer.jar ../island/island.mesh sample.svg -A 255 -Humid
+```
+
+To view the island as an altitude heatmap, use the tag `-Alt`.
+
+```
+mosser@azrael visualizer % java -jar visualizer.jar ../island/island.mesh sample.svg -A 255 -Alt
+```
+
+### Scenario
+
+To generate and visualize an island, use the above commands in their respective directories with the associated tags. In this scenario we will generate an Arctic island with an irregular shape, volcanic altitude, 10 lakes, 5 aquifiers, and 30 rivers:
+
+```
+mosser@azrael A2 % cd generator
+mosser@azrael generator % java -jar generator.jar sample.mesh -mt irregular -np 500 -lr 15
+
+... (debug information printed to stdout) ...
+
+mosser@azrael generator % ls -lh sample.mesh
+-rw-r--r--  1 mosser  staff    29K 29 Jan 10:52 sample.mesh
+mosser@azrael generator %
+```
+
+Followed by:
+
+```
+mosser@azrael A2 % cd ../island
+mosser@azrael island % java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude volcano --lakes 5 --aquifers 2 --rivers 30 --biomes Arctic
+
+... (debug information printed to stdout) ...
+
+mosser@azrael island % ls -lh island.mesh
+-rw-r--r--  1 mosser  staff    56K 29 Jan 10:53 sample.svg
+mosser@azrael island %
+```
+
+Finally:
+
+```
+mosser@azrael A2 % cd ../visualizer
+mosser@azrael visualizer % java -jar visualizer.jar ../generator/sample.mesh sample.svg -A 250 -O
+
+... (debug information printed to stdout) ...
+
+mosser@azrael visualizer % ls -lh sample.svg
+-rw-r--r--  1 mosser  staff    56K 29 Jan 10:53 sample.svg
+mosser@azrael visualizer %
+```
+
 
 ## How to contribute to the project
 
