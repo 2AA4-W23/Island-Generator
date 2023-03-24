@@ -303,7 +303,7 @@ For a feature to be considered done it must be work without throwing any excepti
 | F31 | Lakes affect surrounding vegetation and humidity                  | Ibrahim   | 03/13/2023 | 03/15/2023 | D      |
 | F33 | Rivers start at vertex and flow to lowest point                   | Omar      | 03/15/2023 | 03/15/2023 | D      |
 | F34 | Rivers add moisture to the surrounding tiles                      | Ibrahim   | 03/15/2023 | 03/15/2023 | D      |
-| F35 | Rivers create endorheic lakes                       | Ibrahim   | 03/23/2023 |  | S      |
+| F35 | Rivers create endorheic lakes                       | Ibrahim   | 03/23/2023 | 03/24/2023 | D      |
 | F36 | Accept command line to choose number of rivers                    | Omar      | 03/15/2023 | 03/15/2023 | D      |
 | F37 | Rivers have random discharge level (size/thickness)                    | Ibrahim      | 03/21/2023 | 03/21/2023 | D      |
 | F38 | Rivers can combine into thicker ones, accumulating more moisture                   | Ibrahim      | 03/21/2023 | 03/21/2023 | D      |
