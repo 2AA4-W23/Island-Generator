@@ -230,7 +230,7 @@ Followed by:
 
 ```
 mosser@azrael A2 % cd ../island
-mosser@azrael island % java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude volcano --lakes 5 --aquifers 2 --rivers 30 --biomes Arctic
+mosser@azrael island % java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude volcano --lakes 10 --aquifers 5 --rivers 30 --biomes Arctic
 
 ... (debug information printed to stdout) ...
 
