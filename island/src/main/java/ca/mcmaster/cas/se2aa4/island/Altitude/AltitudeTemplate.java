@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 public abstract class AltitudeTemplate implements AltitudeProfile{
+    protected final int maxAlt = 10000;
     protected Set<Integer> findVerticesIndex(Structs.Polygon p, List<Structs.Segment> sList){
         Set<Integer> vInts = new HashSet<>();
         for(int i = 0; i < p.getSegmentIdxsCount(); i++){

@@ -48,12 +48,12 @@ public class GraphicRenderer {
         int lowCentroidIdx = VertexList.size();
         System.out.println("Here");
         if(alt){
-            int max = 0;
-            int min = 100;
+            double max = 0;
+            double min = Double.POSITIVE_INFINITY;
             for (Polygon p: PolygonList){
                 if(!extractValues(p.getPropertiesList(), "tile_tag").equals("ocean")){
-                    max =  Math.max(max,Integer.parseInt(extractValues(p.getPropertiesList(),"altitude")));
-                    min =  Math.min(min,Integer.parseInt(extractValues(p.getPropertiesList(),"altitude")));
+                    max =  Math.max(max,Double.parseDouble(extractValues(p.getPropertiesList(),"altitude")));
+                    min =  Math.min(min,Double.parseDouble(extractValues(p.getPropertiesList(),"altitude")));
                 }
             }
             for (Polygon p : PolygonList) {
@@ -90,12 +90,12 @@ public class GraphicRenderer {
                     new1 = new Color(0,0,0);
                 } else {
                     double altitude =  (double)Integer.parseInt(extractValues(p.getPropertiesList(),"altitude"));
+                    System.out.println(altitude);
+                    System.out.println(max);
+                    System.out.println(min);
                     double sat = ((double)altitude- (double)min)/((double)max-(double)min);
+                    System.out.println(sat);
                     new1 = Color.getHSBColor(0F,(float) sat,1f);
-//                    System.out.println(altitude);
-//                    int[] intVals = extractColor(p.getPropertiesList());
-//                    new1 = new Color(intVals[0], intVals[1], intVals[2]);
-
                 }
                     canvas.setColor(new1);
                 if(debug){

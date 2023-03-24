@@ -5,7 +5,7 @@ public class TropicalBiomeProfile extends BiomeTemplate{
     enum Biome{
         SAVANNA("savanna", "191,199,34"),
         DESERT("desert", "224,213,85"),
-        LUSHFOREST("temp_forest", "12,173,36"),
+        LUSHFOREST("tropical_forest", "12,173,36"),
         MANGROVE("mangrove", "98,124,61"),
         RAINFOREST("rainforest", "78,138,62");
         public final String biome_name;

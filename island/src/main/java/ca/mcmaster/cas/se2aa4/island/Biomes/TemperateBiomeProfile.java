@@ -24,7 +24,7 @@ public class TemperateBiomeProfile extends BiomeTemplate{
             b = Biome.TEMPDESERT;
         } else if (humidMod > 250) {
             b = Biome.TEMPRAINFOREST;
-        } else if (altMod<10 && altMod>5 && humidMod > 150) {
+        } else if (altMod<10 && altMod>=5 && humidMod > 150) {
             b = Biome.WETLANDS;
         } else if (humidMod > 125 && altMod>10) {
             b = Biome.FOREST;

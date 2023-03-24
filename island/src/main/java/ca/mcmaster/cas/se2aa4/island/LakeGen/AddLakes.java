@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class AddLakes {
+public class AddLakes{
     static Random rng = RandomNumber.getRandomInstance();
     private static final Extractor tileTagsEx = new TileTagExtractor();
     private static final Extractor lakeEx = new LakeExtractor();
@@ -35,7 +35,6 @@ public class AddLakes {
                 tilesInLake.add(tileToAdd);
                 landTiles.remove(tileToAdd);
             }
-//            System.out.println("Size = " + tilesInLake.size());
             for(Structs.Polygon p : tilesInLake){
                 Structs.Property color = Structs.Property.newBuilder().setKey("rgb_color").setValue("10,100,255").build();
                 Structs.Property tileTag = Structs.Property.newBuilder().setKey("tile_tag").setValue("lake").build();

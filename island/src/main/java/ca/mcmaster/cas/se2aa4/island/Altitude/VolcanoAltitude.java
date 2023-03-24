@@ -17,7 +17,6 @@ public class VolcanoAltitude extends AltitudeTemplate{
         List <Structs.Vertex> vModList = new ArrayList<>(vlist);
         double[] centerCoordinates = findIslandCenter(plist, vlist);
         for(Structs.Polygon p:plist){
-            int sum = 0;
             if(tagEx.extractValues(p.getPropertiesList()).equals("ocean")){
                 Structs.Polygon pColoredModify = PropertyAdder.addProperty(p, "altitude","0");
                 pModList.add(pColoredModify);
@@ -62,17 +61,8 @@ public class VolcanoAltitude extends AltitudeTemplate{
         for(Integer i: vInts){
             Structs.Vertex v = vModList.get(i);
             if(altEx.extractValues(v.getPropertiesList()).equals("null")){
-                if(distance > 200){
-                    altVal = rng.nextInt(0,1000);
-                } else if (distance > 150) {
-                    altVal = rng.nextInt(1000,2000);
-                } else if (distance > 100) {
-                    altVal = rng.nextInt(2000,3000);
-                } else if (distance > 50) {
-                    altVal = rng.nextInt(3000,4000);
-                } else {
-                    altVal = rng.nextInt(4000,5000);
-                }
+                System.out.println((int)distance);
+                altVal =  1000 - (int)distance;
                 Structs.Property altTag = Structs.Property.newBuilder().setKey("altitude").setValue(Integer.toString(altVal)).build();
                 Structs.Vertex mV = Structs.Vertex.newBuilder(v).addProperties(altTag).build();
                 vModList.set(i, mV);
