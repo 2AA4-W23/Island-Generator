@@ -8,14 +8,6 @@ public class TileTagExtractor implements Extractor{
 
     @Override
     public String extractValues(List<Structs.Property> properties) {
-        String tag = null;
-        for(Structs.Property p: properties) {
-            if (p.getKey().equals("tile_tag")) {
-                tag = p.getValue();
-            }
-        }
-        if (tag == null)
-            return "null";
-        return tag;
+        return Extractor.getValue(properties, "tile_tag");
     }
 }

@@ -8,14 +8,7 @@ public class HumidityExtractor implements Extractor {
 
     @Override
     public String extractValues(List<Property> properties) {
-        String humidity = "null";
-        for(Property p: properties) {
-            if (p.getKey().equals("humidity")) {
-                humidity = p.getValue();
-            }
-        }
-        return humidity;
-        
+        return Extractor.getValue(properties, "humidity");
     }
     
 }

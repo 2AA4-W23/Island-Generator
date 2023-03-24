@@ -8,15 +8,7 @@ public class RiverThicknessExtractor implements Extractor{
 
     @Override
     public String extractValues(List<Structs.Property> properties) {
-        String thickness = null;
-        for(Structs.Property p: properties) {
-            if (p.getKey().equals("thickness")) {
-                thickness = p.getValue();
-            }
-        }
-        if (thickness == null)
-            return "null";
-        return thickness;
+        return Extractor.getValue(properties, "thickness");
     }
     
 }
