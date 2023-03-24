@@ -7,6 +7,7 @@ import ca.mcmaster.cas.se2aa4.island.Biomes.BaseBiomeProfile;
 import ca.mcmaster.cas.se2aa4.island.Configuration.Configuration;
 import ca.mcmaster.cas.se2aa4.island.IslandGenerator;
 import ca.mcmaster.cas.se2aa4.island.Shape.Irregular;
+import ca.mcmaster.cas.se2aa4.island.SoilAbsorption.WetSoilProfile;
 import ca.mcmaster.cas.se2aa4.island.TestSuite;
 import org.junit.jupiter.api.Test;
 
@@ -53,6 +54,7 @@ public class AltitudeTests implements TestSuite {
         config.num_aquifers = 2;
         config.biomeProfile = new BaseBiomeProfile();
         config.altProfile = new RandomAltitude();
+        config.soilProfile = new WetSoilProfile();
         Structs.Mesh FinalMesh = IslandGenerator.Generate(config);
         List<Structs.Polygon> plist = FinalMesh.getPolygonsList();
         boolean checkTiles = true;

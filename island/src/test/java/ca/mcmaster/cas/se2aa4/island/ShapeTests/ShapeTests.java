@@ -9,6 +9,7 @@ import ca.mcmaster.cas.se2aa4.island.Shape.Circle;
 import ca.mcmaster.cas.se2aa4.island.Shape.Irregular;
 import ca.mcmaster.cas.se2aa4.island.Shape.Rectangle;
 import ca.mcmaster.cas.se2aa4.island.Shape.Shape;
+import ca.mcmaster.cas.se2aa4.island.SoilAbsorption.WetSoilProfile;
 import ca.mcmaster.cas.se2aa4.island.TestSuite;
 import org.junit.jupiter.api.Test;
 
@@ -46,6 +47,7 @@ public class ShapeTests implements TestSuite {
         config.altProfile = new RandomAltitude();
         config.num_aquifers = 2;
         config.biomeProfile = new BaseBiomeProfile();
+        config.soilProfile = new WetSoilProfile();
         Structs.Mesh islandMesh = IslandGenerator.Generate(config);
         assertNotNull(islandMesh);
     }
@@ -57,6 +59,7 @@ public class ShapeTests implements TestSuite {
         config.altProfile = new RandomAltitude();
         config.num_aquifers = 2;
         config.biomeProfile = new BaseBiomeProfile();
+        config.soilProfile = new WetSoilProfile();
         Structs.Mesh islandMesh = IslandGenerator.Generate(config);
         assertNotNull(islandMesh);
     }
@@ -68,6 +71,7 @@ public class ShapeTests implements TestSuite {
         config.altProfile = new RandomAltitude();
         config.num_aquifers = 2;
         config.biomeProfile = new BaseBiomeProfile();
+        config.soilProfile = new WetSoilProfile();
         Structs.Mesh islandMesh = IslandGenerator.Generate(config);
         assertNotNull(islandMesh);
     }

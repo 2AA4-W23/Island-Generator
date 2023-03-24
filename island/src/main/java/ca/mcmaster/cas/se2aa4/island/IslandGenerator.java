@@ -17,6 +17,8 @@ import ca.mcmaster.cas.se2aa4.island.Humidity.TileHumidifier;
 import ca.mcmaster.cas.se2aa4.island.LakeGen.AddLakes;
 import ca.mcmaster.cas.se2aa4.island.RiverGen.AddRivers;
 import ca.mcmaster.cas.se2aa4.island.Shape.Shape;
+import ca.mcmaster.cas.se2aa4.island.SoilAbsorption.SoilProfile;
+import ca.mcmaster.cas.se2aa4.island.SoilAbsorption.WetSoilProfile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,7 @@ public class IslandGenerator {
     static Shape islandShape;
     static AltitudeProfile altProfile;
     static BiomeProfile biomeProfile;
+    static SoilProfile soilProfile;
     static int numLakes;
     static int numAquifers;
     static int numRivers;
@@ -53,7 +56,7 @@ public class IslandGenerator {
 
         List<Structs.Segment> sList = (List<Structs.Segment>) altLists.get(1);
         sList = AddRivers.addRivers(pModList, sList, vList, numRivers);
-        pModList = TileHumidifier.setHumidities(pModList, sList);
+        pModList = TileHumidifier.setHumidities(pModList, sList, soilProfile);
         pModList = biomeProfile.addBiomes(pModList);
 
         List<Object> lakeList = AddLakes.fixLakeAltitudes(numLakes, pModList, sList, vList);
@@ -69,6 +72,7 @@ public class IslandGenerator {
         numLakes = config.num_lakes;
         numAquifers = config.num_aquifers;
         numRivers = config.num_rivers;
+        soilProfile = config.soilProfile;
     }
     private static List<Structs.Polygon> updateLandTiles(List<Structs.Polygon> tiles){
         List<Structs.Polygon> landTiles = new ArrayList<>();
