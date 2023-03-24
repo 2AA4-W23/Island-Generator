@@ -4,7 +4,7 @@ public class ArcticBiomeProfile extends BiomeTemplate{
     enum Biome{
         TUNDRA("tundra", "195,210,235"),
         TAIGA("taiga", "2,48,32"),
-        BOREAL("boreal_forest", "0,100,0"),
+        BOREAL("boreal_forest", "15,84,0"),
         FOREST("deciduous_forest", "25,112,17"),
         STEPPES("steppes", "228,192,122");
         public final String biome_name;
