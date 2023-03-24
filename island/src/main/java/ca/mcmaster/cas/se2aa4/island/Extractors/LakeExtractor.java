@@ -7,14 +7,6 @@ import java.util.List;
 public class LakeExtractor implements Extractor{
     @Override
     public String extractValues(List<Structs.Property> properties) {
-        String lakeNum = null;
-        for(Structs.Property p: properties) {
-            if (p.getKey().equals("lake_num")) {
-                lakeNum = p.getValue();
-            }
-        }
-        if (lakeNum == null)
-            return "null";
-        return lakeNum;
+        return Extractor.getValue(properties, "lake_num");
     }
 }

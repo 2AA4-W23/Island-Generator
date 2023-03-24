@@ -8,14 +8,6 @@ public class RGBExtractor implements Extractor{
 
     @Override
     public String extractValues(List<Structs.Property> properties) {
-        String color = null;
-        for(Structs.Property p: properties) {
-            if (p.getKey().equals("rgb_color")) {
-                color = p.getValue();
-            }
-        }
-        if (color == null)
-            return "null";
-        return color;
+        return Extractor.getValue(properties, "rgb_color");
     }
 }
