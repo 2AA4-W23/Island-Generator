@@ -5,7 +5,7 @@ public class TemperateBiomeProfile extends BiomeTemplate{
         PRAIRIES("prairies", "156,240,101"),
         TEMPDESERT("desert", "252,134,23"),
         FOREST("forest", "12,173,36"),
-        TEMPRAINFOREST("rainforest", "78,138,62"),
+        TEMPRAINFOREST("temp_rainforest", "78,138,62"),
         WETLANDS("wetlands", "135,99,52");
         public final String biome_name;
         public final String rgb_color;
