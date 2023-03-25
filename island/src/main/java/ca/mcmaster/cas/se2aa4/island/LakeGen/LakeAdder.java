@@ -4,6 +4,7 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.island.Extractors.AltitudeExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.Extractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.LakeExtractor;
+import ca.mcmaster.cas.se2aa4.island.Extractors.RGBExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.TileTagExtractor;
 import ca.mcmaster.cas.se2aa4.island.RandomNumberGenerator.RandomNumber;
 
@@ -11,41 +12,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class AddLakes{
+public class LakeAdder extends WaterBody{
     static Random rng = RandomNumber.getRandomInstance();
     private static final Extractor tileTagsEx = new TileTagExtractor();
     private static final Extractor lakeEx = new LakeExtractor();
     private static final Extractor altEx = new AltitudeExtractor();
+    private static final Extractor rgbEx = new RGBExtractor();
 
-    public static List<Structs.Polygon> addLakes(List<Structs.Polygon> landTiles, int numLakes, List<Structs.Polygon> newList){
-        Structs.Polygon initialTile;
+    public static List<Structs.Polygon> addLakes(List<Structs.Polygon> newList, int numLakes){
         for(int i = 0; i < numLakes; i++){
-            do initialTile = landTiles.get(rng.nextInt(landTiles.size()));
-            while(!checkEligible(initialTile, newList));
-            List<Structs.Polygon> tilesInLake = new ArrayList<>();
-            tilesInLake.add(initialTile);
-            landTiles.remove(initialTile);
-            int lakeSize = rng.nextInt(5,15);
-            int checks = 0;
-            while(tilesInLake.size() < lakeSize && checks < 100){
-                Structs.Polygon nextTile = tilesInLake.get(rng.nextInt(tilesInLake.size()));
-                Structs.Polygon tileToAdd = newList.get(nextTile.getNeighborIdxs(rng.nextInt(nextTile.getNeighborIdxsList().size())));
-                checks++;
-                if(!checkEligible(tileToAdd, newList)) continue;
-                tilesInLake.add(tileToAdd);
-                landTiles.remove(tileToAdd);
-            }
-            for(Structs.Polygon p : tilesInLake){
-                Structs.Property color = Structs.Property.newBuilder().setKey("rgb_color").setValue("10,100,255").build();
-                Structs.Property tileTag = Structs.Property.newBuilder().setKey("tile_tag").setValue("lake").build();
-                Structs.Property lakeNum = Structs.Property.newBuilder().setKey("lake_num").setValue(Integer.toString(i+1)).build();
-                Structs.Polygon pLake = Structs.Polygon.newBuilder(p).addProperties(color).addProperties(tileTag).addProperties(lakeNum).build();
-                int idx = newList.indexOf(p);
-                if(idx != -1) {
-                    newList.set(idx, pLake);
-                }
-            }
+            List<Structs.Polygon> tilesInLake = addBody(newList, rng);
+            tilesInLake = addProperties(newList, tilesInLake, i + i, "lake", "lake_num");
+            newList = addColor(newList, tilesInLake);
         }
+        for(Structs.Polygon p : newList) 
+            if(tileTagsEx.extractValues(p.getPropertiesList()).equals("lake"))
+                System.out.println(rgbEx.extractValues(p.getPropertiesList()));
         return newList;
     }
 
@@ -90,14 +72,5 @@ public class AddLakes{
         updatedLists.add(newList);
         updatedLists.add(vList);
         return updatedLists;
-    }
-
-    private static boolean checkEligible(Structs.Polygon tile, List<Structs.Polygon> newList) {
-        if(tile == null) return false;
-        for(int idx : tile.getNeighborIdxsList()){
-            String tag = tileTagsEx.extractValues(newList.get(idx).getPropertiesList());
-            if(!tag.equals("land")) return false;
-        }
-        return true;
     }
 }

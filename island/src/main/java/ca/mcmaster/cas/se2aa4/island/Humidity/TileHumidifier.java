@@ -8,6 +8,7 @@ import java.util.Random;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.island.Extractors.EdgeTagExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.HumidityExtractor;
+import ca.mcmaster.cas.se2aa4.island.Extractors.NumRiversExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.RiverThicknessExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.SaturationExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.TileTagExtractor;
@@ -24,6 +25,7 @@ public class TileHumidifier {
     private static EdgeTagExtractor edgeEx = new EdgeTagExtractor();
     private static RiverThicknessExtractor thickEx = new RiverThicknessExtractor();
     private static SaturationExtractor satEx = new SaturationExtractor();
+    private static NumRiversExtractor riverNumEx = new NumRiversExtractor();
 
     public static List<Structs.Polygon> setHumidities (List<Structs.Polygon> tiles, List<Structs.Segment> segments, SoilProfile sp) {
         Queue<Structs.Polygon> tileQ = new LinkedList<>();
@@ -64,6 +66,7 @@ public class TileHumidifier {
                 double multiplier = (double) totalThickness / 2.5 / (double) numRivers;
                 int humidVal = (int) (rng.nextInt(Math.max(percentRivers - 20, 20), Math.max(percentRivers - 10, 25)) * multiplier);
                 Structs.Polygon humidP = PropertyAdder.addProperty(p, "humidity", humidVal + "");
+                humidP = PropertyAdder.addProperty(p, "num_rivers", numRivers + "");
                 tileQ.add(humidP);
                 tiles.set(index, humidP);
             
@@ -73,8 +76,16 @@ public class TileHumidifier {
         //breadth first search of neighboring tiles of lakes/aquifers
         while(!tileQ.isEmpty()){ 
             Structs.Polygon currentTile = tileQ.remove();
-            int parentHumidity = Integer.parseInt(humidEx.extractValues(currentTile.getPropertiesList()));
+            int parentHumidity;
+            try{
+                parentHumidity = Integer.parseInt(humidEx.extractValues(currentTile.getPropertiesList()));
+            } catch (Exception e) { parentHumidity = 10; System.out.println("null");}
+            String parentTag = tagEx.extractValues(currentTile.getPropertiesList());
+            String riverTag = riverNumEx.extractValues(currentTile.getPropertiesList());
             for(int i : currentTile.getNeighborIdxsList()){
+                if(parentTag.equals("lake")  || parentTag.equals("aquifer") || !riverTag.equals("null")){
+                    //TODO
+                }
                 Structs.Polygon neighborTile = tiles.get(i);
                 int absorbed = Math.min(sp.getAbsorptionLevel(), sp.getMaxSaturation());
                 int humidityVal = Math.max(parentHumidity - absorbed, 0);
