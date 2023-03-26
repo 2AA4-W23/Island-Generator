@@ -8,7 +8,10 @@ import ca.mcmaster.cas.se2aa4.island.Extractors.*;
 public interface TestSuite {
     Structs.Mesh globalMesh = MeshCreator();
     Extractor tileTagEx = new TileTagExtractor();
+    Extractor edgeTagEx = new EdgeTagExtractor();
     Extractor lakeTagEx = new LakeExtractor();
+    Extractor aqTagEx = new AquiferNumExtractor();
+    Extractor riverExtractor = new RiverExtractor();
     Extractor altTagEx = new AltitudeExtractor();
     Extractor biomeTagEx = new BiomeExtractor();
     Extractor rgbTagEx = new RGBExtractor();

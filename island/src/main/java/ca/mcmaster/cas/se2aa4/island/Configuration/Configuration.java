@@ -84,43 +84,43 @@ public class Configuration {
 
         if(alt != null) {
             alt = alt.toLowerCase();
-            alt = altPath + alt.substring(0, 1).toUpperCase() + alt.substring(1) + "Altitude";
+            alt = alt.substring(0, 1).toUpperCase() + alt.substring(1) + "Altitude";
         }
         try {
-            this.altProfile = (AltitudeProfile) Class.forName(alt).getDeclaredConstructor().newInstance();
+            this.altProfile = (AltitudeProfile) Class.forName(altPath + alt).getDeclaredConstructor().newInstance();
         } catch (Exception e){
             this.altProfile = new RandomAltitude();
             alt = "random";
         }
-        System.out.println("Using " + alt + " altitude profile");
+        System.out.println("Using " + alt + " profile");
 
         String biomesPath = "ca.mcmaster.cas.se2aa4.island.Biomes.";
         String biomes = cmd.getOptionValue("biomes");
         if(biomes != null) {
             biomes = biomes.toLowerCase();
-            biomes = biomesPath + biomes.substring(0, 1).toUpperCase() + biomes.substring(1) + "BiomeProfile";
+            biomes = biomes.substring(0, 1).toUpperCase() + biomes.substring(1) + "BiomeProfile";
         }
         try {
-            this.biomeProfile = (BiomeProfile) Class.forName(biomes).getDeclaredConstructor().newInstance();
+            this.biomeProfile = (BiomeProfile) Class.forName(biomesPath + biomes).getDeclaredConstructor().newInstance();
         } catch (Exception e){
             this.biomeProfile = new BaseBiomeProfile();
             biomes = "base";
         }
-        System.out.println("Using " + biomes + " biome profile");
+        System.out.println("Using " + biomes + " profile");
         
         String soilPath = "ca.mcmaster.cas.se2aa4.island.SoilAbsorption.";
         String soil = cmd.getOptionValue("soil");
         if(soil != null) {
             soil = soil.toLowerCase();
-            soil = soilPath + soil.substring(0, 1).toUpperCase() + soil.substring(1) + "SoilProfile";
+            soil = soil.substring(0, 1).toUpperCase() + soil.substring(1) + "SoilProfile";
         }
         try {
-            this.soilProfile = (SoilProfile) Class.forName(soil).getDeclaredConstructor().newInstance();
+            this.soilProfile = (SoilProfile) Class.forName(soilPath + soil).getDeclaredConstructor().newInstance();
         } catch (Exception e){
             soil = "wet";
             this.soilProfile = new WetSoilProfile();
         }
-        System.out.println("Using " + soil + " soil profile");
+        System.out.println("Using " + soil + " profile");
     }
 }
 
