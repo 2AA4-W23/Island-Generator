@@ -20,6 +20,7 @@ public interface TestSuite {
     Extractor altTagEx = new AltitudeExtractor();
     Extractor biomeTagEx = new BiomeExtractor();
     Extractor rgbTagEx = new RGBExtractor();
+    Extractor thickEx = new RiverThicknessExtractor();
     Configuration config = setConfig();
     static Structs.Mesh MeshCreator(){
         //Create Mesh

@@ -1,6 +1,7 @@
 package ca.mcmaster.cas.se2aa4.island.WaterTests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.util.List;
 
@@ -44,6 +45,29 @@ public class WaterBodyTest implements TestSuite{
                         assertEquals(Integer.parseInt(neighborLNum), Integer.parseInt(lakeNum));
                     }
                 }
+            }
+        }
+    }
+    @Test
+    public void checkThickness(){
+        Configuration config = new Configuration();
+        config.shapeObj = new Irregular();
+        config.inputMesh = TestSuite.globalMesh;
+        config.num_lakes = 0;
+        config.num_aquifers = 0;
+        config.num_rivers = 30;
+        config.biomeProfile = new BaseBiomeProfile();
+        config.altProfile = new RandomAltitude();
+        config.soilProfile = new WetSoilProfile();
+        Structs.Mesh FinalMesh = IslandGenerator.Generate(config);
+        List<Structs.Segment> slist = FinalMesh.getSegmentsList();
+        String tileTag;
+        String thick;
+        for(Structs.Segment s: slist){
+            tileTag = edgeTagEx.extractValues(s.getPropertiesList());
+            if(tileTag.equals("river")) {
+                thick = thickEx.extractValues(s.getPropertiesList());
+                assertNotEquals(thick, "null");
             }
         }
     }
