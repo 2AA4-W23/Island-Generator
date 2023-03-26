@@ -8,7 +8,6 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
 import ca.mcmaster.cas.se2aa4.island.Extractors.AltitudeExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.EdgeTagExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.Extractor;
-import ca.mcmaster.cas.se2aa4.island.Extractors.RiverExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.RiverThicknessExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.TileTagExtractor;
 import ca.mcmaster.cas.se2aa4.island.Graph.VertexGraph;
@@ -20,7 +19,6 @@ public class AddRivers {
 
     private static Extractor tileTagEx = new TileTagExtractor(); 
     private static Extractor edgeTagEx = new EdgeTagExtractor(); 
-    private static Extractor riverEx = new RiverExtractor(); 
     private static Extractor thickEx = new RiverThicknessExtractor(); 
     private static Extractor altEx = new AltitudeExtractor();
     private static Random rng = RandomNumber.getRandomInstance();

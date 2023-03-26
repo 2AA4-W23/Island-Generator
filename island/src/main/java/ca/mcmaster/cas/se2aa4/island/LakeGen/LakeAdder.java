@@ -25,9 +25,6 @@ public class LakeAdder extends WaterBody{
             tilesInLake = addProperties(newList, tilesInLake, i + i, "lake", "lake_num");
             newList = addColor(newList, tilesInLake);
         }
-        for(Structs.Polygon p : newList) 
-            if(tileTagsEx.extractValues(p.getPropertiesList()).equals("lake"))
-                System.out.println(rgbEx.extractValues(p.getPropertiesList()));
         return newList;
     }
 
