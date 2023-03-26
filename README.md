@@ -321,5 +321,6 @@ For a feature to be considered done it must be work without throwing any excepti
 | F50 | Use Temperate Biomes and biome calculation model with Temperate for the --biomes input  | Virochaan | 03/21/2023 | 03/21/2023 | D      |
 | F51 | Islands are generated using set seed which is outputted to user                                           | Virochaan | 03/24/2023 | 03/24/2023 | D      |
 | F52 | Accept command line arg to allow user to choose seeds to generate specific islands and control randomness | 03/24/2023 | 03/24/2023 | D      |
+| F53 | Accept help command line to view all possible options             | Omar      | 03/10/2023 | 03/10/2023 | D      |
 | F54 | Heatmap mode to visualize altitudes and humidity                                                          | Virochaan | 03/13/2023 |            | S      |
 | F55 | Generated OBJ file shows altitudes                                                                        | Ibrahim   | 03/13/2023 | 03/14/2023 | S      |
