@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class ShapeTests implements TestSuite {
     @Test
     public void PolygonCreation(){
-
         Shape Irregular = new Irregular();
         Shape Circle = new Circle();
         Shape Rectangle = new Rectangle();
@@ -41,37 +40,19 @@ public class ShapeTests implements TestSuite {
     }
     @Test
     public void checkIrregularIslandCreation(){
-        Configuration config = new Configuration();
         config.shapeObj = new Irregular();
-        config.inputMesh = this.globalMesh;
-        config.altProfile = new RandomAltitude();
-        config.num_aquifers = 2;
-        config.biomeProfile = new BaseBiomeProfile();
-        config.soilProfile = new WetSoilProfile();
         Structs.Mesh islandMesh = IslandGenerator.Generate(config);
         assertNotNull(islandMesh);
     }
     @Test
     public void checkRectangularIslandCreation(){
-        Configuration config = new Configuration();
         config.shapeObj = new Rectangle();
-        config.inputMesh = globalMesh;
-        config.altProfile = new RandomAltitude();
-        config.num_aquifers = 2;
-        config.biomeProfile = new BaseBiomeProfile();
-        config.soilProfile = new WetSoilProfile();
         Structs.Mesh islandMesh = IslandGenerator.Generate(config);
         assertNotNull(islandMesh);
     }
     @Test
     public void checkCircularIslandCreation(){
-        Configuration config = new Configuration();
         config.shapeObj = new Circle();
-        config.inputMesh = globalMesh;
-        config.altProfile = new RandomAltitude();
-        config.num_aquifers = 2;
-        config.biomeProfile = new BaseBiomeProfile();
-        config.soilProfile = new WetSoilProfile();
         Structs.Mesh islandMesh = IslandGenerator.Generate(config);
         assertNotNull(islandMesh);
     }
