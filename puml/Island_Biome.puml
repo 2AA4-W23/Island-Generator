@@ -1,0 +1,127 @@
+@startuml
+
+package Biomes {
+    interface BiomeProfile {
+            -identifyBiome(modifiedVals: double[]): String[]
+            +setBiomeRange(): void
+            #addBiomes(pList: List<Polygon>): List<Polygon>
+        }
+        abstract class BiomeTemplate {
+            -double hmax
+            +double hmin
+            #doulbe amax
+            ~double amin
+            -enum Biome
+            ---
+            -<<override>> addBiomes()
+        }
+        class ArcticBiomeProfile {
+            -TUNDRA: Biome
+            -TAIGA: Biome
+            -BOREAL: Biome
+            -FOREST: Biome
+            -STEPPES: Biome
+            biome_name: String
+            rgb_color: String
+            ---
+            this(biome_name: String, rgb_color: String)
+            ---
+            +<<override>> identifyBiome(): String[]
+            #<<override>> setBiomeRange(): void
+        }
+        class BaseBiomeProfile {
+            -SAVANNA: Biome
+            -PRAIRIES: Biome
+            -DESERT: Biome
+            -FOREST: Biome
+            -TUNDRA: Biome
+            -RAINFOREST: Biome
+            biome_name: String
+            rgb_color: String
+            ---
+            this(biome_name: String, rgb_color: String)
+            ---
+            +<<override>> identifyBiome(): String[]
+            #<<override>> setBiomeRange(): void
+        }
+        class TemperateBiomeProfile {
+            -PRAIRIES: Biome
+            -TEMPDESERT: Biome
+            -FOREST: Biome
+            -TEMPRAINFOREST: Biome
+            -WETLANDS: Biome
+            biome_name: String
+            rgb_color: String
+            ---
+            this(biome_name: String, rgb_color: String)
+            ---
+            +<<override>> identifyBiome(): String[]
+            #<<override>> setBiomeRange(): void
+        }
+        class TropicalBiomeProfile {
+            -SAVANNA: Biome
+            -DESERT: Biome
+            -LUSHFOREST: Biome
+            -MANGROVE: Biome
+            -RAINFOREST: Biome
+            biome_name: String
+            rgb_color: String
+            ---
+            this(biome_name: String, rgb_color: String)
+            ---
+            +<<override>> identifyBiome(): String[]
+            #<<override>> setBiomeRange(): void
+        }
+        class BiomeValCalculator {
+            -double hmax
+            +double hmin
+            #doulbe amax
+            ~double amin
+            ---
+            -BiomeValCalculator(hmax, hmin, amax, amin)
+            +modifiedInputs(p: Polygon, range: double[]): double[]
+            #findRange(pList: List<Polygon>): double[] 
+        }
+
+        BiomeProfile <|.. BiomeTemplate
+        BiomeTemplate <|-- ArcticBiomeProfile
+        BiomeTemplate <|-- BaseBiomeProfile
+        BiomeTemplate <|-- TemperateBiomeProfile
+        BiomeTemplate <|-- TropicalBiomeProfile
+        BiomeTemplate ..> BiomeValCalculator
+}
+
+package Extractors {
+    interface Extractor {
+        -getValue(properties: List<Property>, key: String): String
+        +extractValues(properties: List<Property>): String
+
+    }
+    class AltitudeExtractor {
+        -<<override>> extractValues(): String
+    }
+    class TileTagExtractor {
+        -<<override>> extractValues(): String
+    }
+    class HumidityExtractor {
+        -<<override>> extractValues(): String
+    }
+    Extractor <|.. AltitudeExtractor
+    Extractor <|.. TileTagExtractor
+    Extractor <|.. HumidityExtractor
+}
+
+package Properties {
+    class PropertyAdder {
+        -addProperty(polygon: Polygon, tag: String, val: String)
+    }
+}
+
+BiomeTemplate ..> PropertyAdder
+BiomeProfile ..> AltitudeExtractor
+BiomeProfile ..> HumidityExtractor
+BiomeProfile ..> TileTagExtractor
+
+
+@enduml
+
