@@ -18,14 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class AltitudeTests implements TestSuite {
     @Test
     public void checkAltTagsVolcano(){
-        Configuration config = new Configuration();
-        config.shapeObj = new Irregular();
-        config.inputMesh = this.globalMesh;
-        config.num_lakes = 7;
-        config.biomeProfile = new BaseBiomeProfile();
-        config.num_aquifers = 2;
         config.altProfile = new VolcanoAltitude();
-        config.soilProfile = new WetSoilProfile();
         Structs.Mesh FinalMesh = IslandGenerator.Generate(config);
         List<Structs.Polygon> plist = FinalMesh.getPolygonsList();
         boolean checkTiles = true;
@@ -48,14 +41,6 @@ public class AltitudeTests implements TestSuite {
     }
     @Test
     public void checkAltTags(){
-        Configuration config = new Configuration();
-        config.shapeObj = new Irregular();
-        config.inputMesh = this.globalMesh;
-        config.num_lakes = 7;
-        config.num_aquifers = 2;
-        config.biomeProfile = new BaseBiomeProfile();
-        config.altProfile = new RandomAltitude();
-        config.soilProfile = new WetSoilProfile();
         Structs.Mesh FinalMesh = IslandGenerator.Generate(config);
         List<Structs.Polygon> plist = FinalMesh.getPolygonsList();
         boolean checkTiles = true;

@@ -49,7 +49,6 @@ public class LagoonTests implements TestSuite {
 
     @Test
     public void checkTileTags(){
-
         Lagoon lagoonMap = new Lagoon();
         Structs.Mesh newMesh = lagoonMap.LagoonTerrain(globalMesh);
         List<Structs.Polygon> pList = newMesh.getPolygonsList();
@@ -66,7 +65,6 @@ public class LagoonTests implements TestSuite {
     }
     @Test
     public void checkRGB(){
-
         Lagoon lagoonMap = new Lagoon();
         Structs.Mesh newMesh = lagoonMap.LagoonTerrain(globalMesh);
         List<Structs.Polygon> pList = newMesh.getPolygonsList();
