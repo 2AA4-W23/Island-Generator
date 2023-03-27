@@ -1,0 +1,132 @@
+@startuml
+
+participant Main
+participant IslandGenerator
+participant Configuration
+participant Shape
+participant Mesh
+participant findLandTiles
+participant AltitudeProfile
+
+participant LakeAdder
+participant AquiferAdder
+participant AddRivers
+
+participant BiomeProfile
+participant EndorheicLake
+participant Graph
+participant TileHumidifier
+participant SoilAbsorption
+
+participant Extractor
+
+Main -> IslandGenerator: Generate(Configuration)
+activate Main
+
+activate IslandGenerator
+IslandGenerator -> Configuration: setConfigValues(configuration)
+activate Configuration
+Configuration -> IslandGenerator: inputMesh
+Configuration -> IslandGenerator: shapeObj
+Configuration -> IslandGenerator: altProfile
+Configuration -> IslandGenerator: BiomeProfile
+Configuration -> IslandGenerator: num_lakes
+Configuration -> IslandGenerator: num_aquifers
+Configuration -> IslandGenerator: num_rivers
+Configuration -> IslandGenerator: soilProfile
+deactivate Configuration
+
+IslandGenerator -> Shape: create()
+activate Shape
+Shape -> IslandGenerator
+deactivate Shape
+
+IslandGenerator -> Mesh: getPolygonsList()
+activate Mesh
+Mesh -> IslandGenerator
+IslandGenerator -> Mesh: getVerticesList()
+Mesh -> IslandGenerator
+deactivate Mesh
+
+IslandGenerator -> findLandTiles: seperateTiles(islandShape, pList, vList)
+activate findLandTiles
+findLandTiles -> IslandGenerator
+deactivate findLandTiles
+
+IslandGenerator -> AltitudeProfile: addAltitudeValues(pModList, Mesh.getSegmentsList(), vList)
+activate AltitudeProfile
+AltitudeProfile -> IslandGenerator
+deactivate AltitudeProfile
+
+IslandGenerator -> LakeAdder: addLakes(pModList, numLakes)
+activate LakeAdder
+LakeAdder -> Extractor: AltitudeExtractor(), LakeExtractor(), TileTagExtractor()
+activate Extractor
+Extractor -> LakeAdder
+deactivate Extractor
+LakeAdder -> IslandGenerator
+deactivate LakeAdder
+
+IslandGenerator -> AquiferAdder: addAquifers(pModList, numAquifers)
+activate AquiferAdder
+AquiferAdder -> IslandGenerator
+deactivate AquiferAdder
+
+IslandGenerator -> AltitudeProfile
+activate AltitudeProfile
+AltitudeProfile -> AltitudeProfile: get altitude values
+AltitudeProfile -> AddRivers: addRivers(pModList, sList, vList, numRivers)
+deactivate AltitudeProfile
+
+activate AddRivers
+AddRivers -> Extractor: TileTagExtractor(), EdgeTagExtractor(), RiverThicknessExtractor(), AltitudeExtractor()
+activate Extractor
+Extractor -> AddRivers
+deactivate Extractor
+AddRivers -> Graph: VertexGraph()
+activate Graph
+Graph -> AddRivers
+deactivate Graph
+
+AddRivers -> EndorheicLake: addEndorheicLake()
+activate EndorheicLake
+EndorheicLake -> AddRivers
+deactivate EndorheicLake
+
+AddRivers -> TileHumidifier: setHumidities(pModList, sList, soilProfile)
+activate TileHumidifier
+AddRivers -> IslandGenerator
+deactivate AddRivers
+
+TileHumidifier -> Extractor: HumidityExtractor(), TileTagExtractor(), EdgeTagExtractor(), RiverThicknessExtractor() 
+activate Extractor
+Extractor -> TileHumidifier
+deactivate Extractor
+TileHumidifier -> SoilAbsorption: getAbsorptionLevel()
+activate SoilAbsorption
+SoilAbsorption -> TileHumidifier
+deactivate SoilAbsorption
+TileHumidifier -> IslandGenerator
+deactivate TileHumidifier
+
+IslandGenerator -> BiomeProfile
+activate BiomeProfile
+BiomeProfile -> TileHumidifier: addBiomes(pModList)
+activate TileHumidifier
+TileHumidifier -> BiomeProfile
+deactivate TileHumidifier
+BiomeProfile -> IslandGenerator
+deactivate BiomeProfile
+
+IslandGenerator -> LakeAdder: fixLakeAltitudes(numLakes, pModList, sList, vList)
+activate LakeAdder
+LakeAdder -> IslandGenerator
+deactivate LakeAdder
+
+IslandGenerator -> Mesh: build Mesh
+activate Mesh
+Mesh --> IslandGenerator: return Mesh
+deactivate Mesh
+IslandGenerator --> Main: Mesh
+
+@enduml
