@@ -211,6 +211,12 @@ To view the island as an altitude heatmap, use the tag `-Alt`.
 mosser@azrael visualizer % java -jar visualizer.jar ../island/island.mesh sample.svg -A 255 -Alt
 ```
 
+To generate Wavefront .obj and .mtl file WTIH DEPTH, use the tag `-O`. As before, this can be viewed in Blender with the new depth dimension.
+
+```
+mosser@azrael visualizer % java -jar visualizer.jar ../island/island.mesh sample.svg -A 255 -O
+```
+
 ### Scenario
 
 To generate and visualize an island, use the above commands in their respective directories with the associated tags. In this scenario we will generate an Arctic island with an irregular shape, volcanic altitude, 10 lakes, 5 aquifiers, and 30 rivers:
@@ -321,5 +327,6 @@ For a feature to be considered done it must be work without throwing any excepti
 | F50 | Use Temperate Biomes and biome calculation model with Temperate for the --biomes input  | Virochaan | 03/21/2023 | 03/21/2023 | D      |
 | F51 | Islands are generated using set seed which is outputted to user                                           | Virochaan | 03/24/2023 | 03/24/2023 | D      |
 | F52 | Accept command line arg to allow user to choose seeds to generate specific islands and control randomness | 03/24/2023 | 03/24/2023 | D      |
+| F53 | Accept help command line to view all possible options             | Omar      | 03/10/2023 | 03/10/2023 | D      |
 | F54 | Heatmap mode to visualize altitudes and humidity                                                          | Virochaan | 03/13/2023 |            | S      |
 | F55 | Generated OBJ file shows altitudes                                                                        | Ibrahim   | 03/13/2023 | 03/14/2023 | S      |
