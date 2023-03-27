@@ -1,12 +1,8 @@
 package ca.mcmaster.cas.se2aa4.island.BiomeTests;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
-import ca.mcmaster.cas.se2aa4.island.Altitude.RandomAltitude;
 import ca.mcmaster.cas.se2aa4.island.Biomes.*;
-import ca.mcmaster.cas.se2aa4.island.Configuration.Configuration;
 import ca.mcmaster.cas.se2aa4.island.IslandGenerator;
-import ca.mcmaster.cas.se2aa4.island.Shape.Irregular;
-import ca.mcmaster.cas.se2aa4.island.SoilAbsorption.WetSoilProfile;
 import ca.mcmaster.cas.se2aa4.island.TestSuite;
 import org.junit.jupiter.api.Test;
 

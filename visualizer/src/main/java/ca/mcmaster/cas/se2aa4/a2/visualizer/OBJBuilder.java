@@ -47,7 +47,7 @@ public class OBJBuilder {
         for(Vertex v : VertexList) {
             for(Property p : v.getPropertiesList()) {
                 if(p.getKey().equals("altitude")) {
-                    double z = Double.parseDouble(p.getValue()) / 1500.0;
+                    double z = Double.parseDouble(p.getValue()) / 150.0;
                     if(z != 0.0) minZ = Math.min(minZ, z);
                 }
             }
@@ -63,7 +63,7 @@ public class OBJBuilder {
             y = Math.round(y * 1000.0) / 1000.0;
             for(Property p : v.getPropertiesList()) {
                 if(p.getKey().equals("altitude")) {
-                    z = Double.parseDouble(p.getValue()) / 1500.0;
+                    z = Double.parseDouble(p.getValue()) / 150.0;
                     if(z > 0.0) z-= minZ;
                 }
             }

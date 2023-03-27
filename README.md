@@ -177,13 +177,13 @@ To modify the number of aquifers, use the tag `--aquifers` followed by a number 
 mosser@azrael island % java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude volcano --lakes 5 --rivers 30 --aquifers 2
 ```
 
-To control the soil absoprtion levels, use the tag `--soil` followed by the absorption profile (wet, dry).
+To control the soil absoprtion levels, use the tag `--soil` followed by the absorption profile (wet, dry). It will default to the wet soil profile.
 
 ```
 mosser@azrael island % java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude volcano --lakes 5 --rivers 30 --aquifers 2 --
 ```
 
-To control the biome distribution, use the tag `--biomes` followed by the biome profile (Arctic, Temperate, Tropical, Base).
+To control the biome distribution, use the tag `--biomes` followed by the biome profile (Arctic, Temperate, Tropical, Base). It will default to the base biome profile.
 
 ```
 mosser@azrael island % java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude volcano --lakes 5 --aquifers 2 --rivers 30 --***soil*** --biomes Arctic
@@ -211,7 +211,7 @@ To view the island as an altitude heatmap, use the tag `-Alt`.
 mosser@azrael visualizer % java -jar visualizer.jar ../island/island.mesh sample.svg -A 255 -Alt
 ```
 
-To generate Wavefront .obj and .mtl file WTIH DEPTH, use the tag `-O`. As before, this can be viewed in Blender with the new depth dimension.
+To generate Wavefront .obj and .mtl file WITH DEPTH, use the tag `-O`. As before, this can be viewed in Blender with the new depth dimension.
 
 ```
 mosser@azrael visualizer % java -jar visualizer.jar ../island/island.mesh sample.svg -A 255 -O

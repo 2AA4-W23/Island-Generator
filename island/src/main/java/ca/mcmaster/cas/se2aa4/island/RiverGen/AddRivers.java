@@ -22,8 +22,6 @@ public class AddRivers {
     private static Extractor thickEx = new RiverThicknessExtractor(); 
     private static Extractor altEx = new AltitudeExtractor();
     private static Random rng = RandomNumber.getRandomInstance();
-    private static Extractor tileTagsEx = new TileTagExtractor();
-
     public static List<Structs.Segment> addRivers(List<Structs.Polygon> tiles, List<Structs.Segment> segments, List<Structs.Vertex> vertices, int numRivers){
        List<Structs.Segment> newSegments = new ArrayList<>();
        newSegments.addAll(segments);

@@ -21,7 +21,7 @@ public class LagoonTests implements TestSuite {
     public void LakeGenerationTest(){
         Configuration config = new Configuration();
         config.shapeObj = new Irregular();
-        config.inputMesh = this.globalMesh;
+        config.inputMesh = TestSuite.globalMesh;
         config.num_lakes = 7;
         config.num_aquifers = 2;
         config.biomeProfile = new BaseBiomeProfile();

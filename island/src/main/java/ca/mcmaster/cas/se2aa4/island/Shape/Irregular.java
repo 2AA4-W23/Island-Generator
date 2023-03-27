@@ -3,8 +3,6 @@ package ca.mcmaster.cas.se2aa4.island.Shape;
 import org.locationtech.jts.geom.*;
 import org.locationtech.jts.algorithm.hull.*;
 
-import java.util.Random;
-
 public class Irregular implements Shape{
     Geometry shape;
 

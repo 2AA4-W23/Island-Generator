@@ -32,7 +32,6 @@ public class WaterBodyTest implements TestSuite{
         List<Structs.Polygon> plist = FinalMesh.getPolygonsList();
         String tileTag;
         String lakeNum;
-        String aqNum;
         for(Structs.Polygon p: plist){
             tileTag = tileTagEx.extractValues(p.getPropertiesList());
             lakeNum = lakeTagEx.extractValues(p.getPropertiesList());

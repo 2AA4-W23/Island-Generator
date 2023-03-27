@@ -1,11 +1,9 @@
 package ca.mcmaster.cas.se2aa4.island.Altitude;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
-import ca.mcmaster.cas.se2aa4.island.Graph.VertexPolygonConnections;
 import ca.mcmaster.cas.se2aa4.island.Properties.PropertyAdder;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 

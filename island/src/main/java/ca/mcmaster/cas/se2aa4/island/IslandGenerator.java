@@ -4,13 +4,9 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
 import ca.mcmaster.cas.se2aa4.island.Altitude.AltitudeProfile;
-import ca.mcmaster.cas.se2aa4.island.BeachGen.AddBeaches;
 import ca.mcmaster.cas.se2aa4.island.Biomes.BiomeProfile;
 import ca.mcmaster.cas.se2aa4.island.Configuration.Configuration;
-import ca.mcmaster.cas.se2aa4.island.Extractors.AltitudeExtractor;
-import ca.mcmaster.cas.se2aa4.island.Extractors.EdgeTagExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.Extractor;
-import ca.mcmaster.cas.se2aa4.island.Extractors.RGBExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.TileTagExtractor;
 import ca.mcmaster.cas.se2aa4.island.Humidity.TileHumidifier;
 import ca.mcmaster.cas.se2aa4.island.LakeGen.AquiferAdder;
@@ -18,14 +14,10 @@ import ca.mcmaster.cas.se2aa4.island.LakeGen.LakeAdder;
 import ca.mcmaster.cas.se2aa4.island.RiverGen.AddRivers;
 import ca.mcmaster.cas.se2aa4.island.Shape.Shape;
 import ca.mcmaster.cas.se2aa4.island.SoilAbsorption.SoilProfile;
-import ca.mcmaster.cas.se2aa4.island.SoilAbsorption.WetSoilProfile;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class IslandGenerator {
     
-    private static final Extractor tileTagsEx = new TileTagExtractor();
     static Structs.Mesh mesh;
     static Shape islandShape;
     static AltitudeProfile altProfile;
