@@ -211,7 +211,7 @@ To view the island as an altitude heatmap, use the tag `-Alt`.
 mosser@azrael visualizer % java -jar visualizer.jar ../island/island.mesh sample.svg -A 255 -Alt
 ```
 
-To generate Wavefront .obj and .mtl file WTIH DEPTH, use the tag `-O`. As before, this can be viewed in Blender with the new depth dimension.
+To generate Wavefront .obj and .mtl file with altitude, use the tag `-O`. As before, this can be viewed in Blender with the new depth dimension.
 
 ```
 mosser@azrael visualizer % java -jar visualizer.jar ../island/island.mesh sample.svg -A 255 -O
