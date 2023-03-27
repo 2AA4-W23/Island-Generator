@@ -52,7 +52,6 @@ public class OBJBuilder {
                 }
             }
         }
-        System.out.println(minZ);
         for(Vertex v : VertexList) {
             // String mtlName = getMtlName();
             // fwo.write("usemtl " + mtlName + "\n");
@@ -137,7 +136,6 @@ public class OBJBuilder {
         }
         fwo.close();
         fwm.close();
-        System.out.println("mesh.obj created");
     }
 
     // fwm.write("new mtl " + mtlName + "\n");

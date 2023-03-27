@@ -10,7 +10,7 @@ import ca.mcmaster.cas.se2aa4.island.Properties.PropertyAdder;
 
 public abstract class WaterBody {
 
-    private static TileTagExtractor tileTagsEx = new TileTagExtractor();
+    protected static TileTagExtractor tileTagsEx = new TileTagExtractor();
 
     private static boolean checkEligible(Structs.Polygon tile, List<Structs.Polygon> tiles){
         if(tile == null) return false;

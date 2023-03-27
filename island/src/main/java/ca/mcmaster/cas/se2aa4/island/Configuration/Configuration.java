@@ -45,14 +45,12 @@ public class Configuration {
         }
         try {
             this.shapeObj = (Shape) Class.forName(shape).getDeclaredConstructor().newInstance();
-            System.out.println("Set");
         } catch (Exception e) {
             this.shapeObj = new Irregular();
         }
 
         try {
             this.inputMesh = new MeshFactory().read(inputM);
-            System.out.println(inputMesh.getClass());
         } catch (Exception e) {
             throw new FileNotFoundException();
         }
@@ -73,7 +71,6 @@ public class Configuration {
 
         try{
             this.num_rivers = Math.min(Integer.parseInt(rivers), 30);
-            System.out.println("rivers set");
         } catch (Exception e) {
             this.num_rivers = rng.nextInt(2,30);
         }
@@ -106,7 +103,7 @@ public class Configuration {
             this.biomeProfile = new BaseBiomeProfile();
             biomes = "base";
         }
-        System.out.println("Using " + biomes + " profile");
+        System.out.println("Using " + biomes);
         
         String soilPath = "ca.mcmaster.cas.se2aa4.island.SoilAbsorption.";
         String soil = cmd.getOptionValue("soil");
@@ -120,7 +117,7 @@ public class Configuration {
             soil = "wet";
             this.soilProfile = new WetSoilProfile();
         }
-        System.out.println("Using " + soil + " profile");
+        System.out.println("Using " + soil);
     }
 }
 

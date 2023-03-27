@@ -46,8 +46,8 @@ public class GraphicRenderer {
         List<Segment> SegmentList = aMesh.getSegmentsList();
         List<Polygon> PolygonList = aMesh.getPolygonsList();
         int lowCentroidIdx = VertexList.size();
-        System.out.println("Here");
         if(alt){
+            System.out.println("Creating altitude heatmap...");
             double max = 0;
             double min = Double.POSITIVE_INFINITY;
             for (Polygon p: PolygonList){
@@ -75,7 +75,6 @@ public class GraphicRenderer {
                             float x = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getX();
                             float y = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getY();
                             points[j] = new Coordinate(x, y);
-                            //System.out.println(points[j]);
                             added.add(v2);
                             j++;
                         }
@@ -90,11 +89,7 @@ public class GraphicRenderer {
                     new1 = new Color(0,0,0);
                 } else {
                     double altitude =  (double)Integer.parseInt(extractValues(p.getPropertiesList(),"altitude"));
-                    System.out.println(altitude);
-                    System.out.println(max);
-                    System.out.println(min);
                     double sat = ((double)altitude- (double)min)/((double)max-(double)min);
-                    System.out.println(sat);
                     new1 = Color.getHSBColor(0F,(float) sat,1f);
                 }
                     canvas.setColor(new1);
@@ -124,9 +119,8 @@ public class GraphicRenderer {
                 }
                 canvas.setColor(old);
             }
-            System.out.println(min);
-            System.out.println(max);
         } else if (humid) {
+            System.out.println("Creating humidity heatmap...");
             int max = 0;
             int min = 100000;
             for (Polygon p: PolygonList){
@@ -156,7 +150,6 @@ public class GraphicRenderer {
                             float x = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getX();
                             float y = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getY();
                             points[j] = new Coordinate(x, y);
-                            //System.out.println(points[j]);
                             added.add(v2);
                             j++;
                         }
@@ -181,9 +174,6 @@ public class GraphicRenderer {
                         else canvas.setColor(new Color(0,0,0));
                     }
                     canvas.setColor(new1);
-                    //  System.out.println(altitude);
-//                    int[] intVals = extractColor(p.getPropertiesList());
-//                    new1 = new Color(intVals[0], intVals[1], intVals[2]);
 
                 }
                 List<Coordinate> valPoints = new ArrayList<>();
@@ -208,8 +198,6 @@ public class GraphicRenderer {
                 }
                 canvas.setColor(old);
             }
-            System.out.println(min);
-            System.out.println(max);
         } else {
 
             for (Polygon p : PolygonList) {
@@ -231,7 +219,6 @@ public class GraphicRenderer {
                             float x = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getX();
                             float y = (float) VertexList.get(SegmentList.get(i).getV2Idx()).getY();
                             points[j] = new Coordinate(x, y);
-                            //System.out.println(points[j]);
                             added.add(v2);
                             j++;
                         }
@@ -316,7 +303,6 @@ public class GraphicRenderer {
                     double cy1 = VertexList.get(centroidIdx).getY();
                     double cx2 = VertexList.get(PolygonList.get(p.getNeighborIdxs(i)).getCentroidIdx()).getX();
                     double cy2 = VertexList.get(PolygonList.get(p.getNeighborIdxs(i)).getCentroidIdx()).getY();
-                    //System.out.println(centroidIdx + ": " + cx1 + " " + PolygonList.get(p.getNeighborIdxs(i)).getCentroidIdx() + ": " + cy1 + " " + cx2 + " " + cy2);
                     if(thickSet) {
                         canvas.setStroke(new BasicStroke(Math.max(1, thick - 1)));
                     }
@@ -425,14 +411,10 @@ public class GraphicRenderer {
         }
         if (color == null)
             color="0,0,0";
-//        System.out.println(color);
         String[] raw = color.split(",");
         int red = Integer.parseInt(raw[0]);
         int green = Integer.parseInt(raw[1]);
         int blue = Integer.parseInt(raw[2]);
-//        System.out.println(red);
-//        System.out.println(blue);
-//        System.out.println(green);
         return new int[]{red, green, blue};
     }
     private Color extractColor(List<Property> properties, boolean alphaSet, int alphaVal) {
@@ -440,7 +422,6 @@ public class GraphicRenderer {
         String alpha = null;
         for(Property p: properties) {
             if (p.getKey().equals("rgb_color")) {
-//System.out.println(p.getValue());
                 color = p.getValue();
             }
             if(p.getKey().equals("alpha")) {

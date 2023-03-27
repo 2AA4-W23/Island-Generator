@@ -61,7 +61,6 @@ public class VolcanoAltitude extends AltitudeTemplate{
         for(Integer i: vInts){
             Structs.Vertex v = vModList.get(i);
             if(altEx.extractValues(v.getPropertiesList()).equals("null")){
-                System.out.println((int)distance);
                 altVal =  1000 - (int)distance;
                 Structs.Property altTag = Structs.Property.newBuilder().setKey("altitude").setValue(Integer.toString(altVal)).build();
                 Structs.Vertex mV = Structs.Vertex.newBuilder(v).addProperties(altTag).build();

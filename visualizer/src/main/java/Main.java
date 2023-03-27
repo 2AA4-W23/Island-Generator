@@ -62,7 +62,6 @@ public class Main {
                 System.out.println("Alpha Value not in range");
             }
         } catch (Exception e) {
-            System.out.println("Alpha value not valid. Proceeding with Default");
         }
         try {
             thick = Integer.parseInt(cmd.getOptionValue("T"));
@@ -72,7 +71,6 @@ public class Main {
                 System.out.println("Thickness Value not in expected range");
             }
         } catch (Exception e) {
-            System.out.println("Thick value not valid. Proceeding with default.");
         }
 
         // Getting width and height for the canvas
