@@ -177,7 +177,7 @@ To modify the number of aquifers, use the tag `--aquifers` followed by a number 
 mosser@azrael island % java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude volcano --lakes 5 --rivers 30 --aquifers 2
 ```
 
-To control the soil absoprtion levels, use the tag `--` followed by the absorption profile (wet, dry).
+To control the soil absoprtion levels, use the tag `--soil` followed by the absorption profile (wet, dry).
 
 ```
 mosser@azrael island % java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude volcano --lakes 5 --rivers 30 --aquifers 2 --

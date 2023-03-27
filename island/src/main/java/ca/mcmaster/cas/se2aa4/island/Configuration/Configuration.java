@@ -28,17 +28,50 @@ public class Configuration {
     public int num_rivers;
     public SoilProfile soilProfile;
 
-    public void generateConfig(String args[], Options options) throws ParseException, FileNotFoundException {
-        CommandLineParser parser = new DefaultParser();
-        CommandLine cmd = parser.parse(options, args);
-        String inputM = cmd.getOptionValue("i");
-        String shape = cmd.getOptionValue("shape");
-        String lakes = cmd.getOptionValue("lakes");
-        String aquifers = cmd.getOptionValue("aquifers");
-        String rivers = cmd.getOptionValue("rivers");
-
+    private void setAltProfile(String alt) {
+        String altPath = "ca.mcmaster.cas.se2aa4.island.Altitude.";
+        if(alt != null) {
+            alt = alt.toLowerCase();
+            alt = alt.substring(0, 1).toUpperCase() + alt.substring(1) + "Altitude";
+        }
+        try {
+            this.altProfile = (AltitudeProfile) Class.forName(altPath + alt).getDeclaredConstructor().newInstance();
+        } catch (Exception e){
+            this.altProfile = new RandomAltitude();
+            alt = "random";
+        }
+        System.out.println("Using " + alt + " profile");
+    }
+    private void setBiomeProfile(String biomes){
+        String biomesPath = "ca.mcmaster.cas.se2aa4.island.Biomes.";
+        if(biomes != null) {
+            biomes = biomes.toLowerCase();
+            biomes = biomes.substring(0, 1).toUpperCase() + biomes.substring(1) + "BiomeProfile";
+        }
+        try {
+            this.biomeProfile = (BiomeProfile) Class.forName(biomesPath + biomes).getDeclaredConstructor().newInstance();
+        } catch (Exception e){
+            this.biomeProfile = new BaseBiomeProfile();
+            biomes = "base";
+        }
+        System.out.println("Using " + biomes);
+    }
+    private void setSoilProfile(String soil){
+        String soilPath = "ca.mcmaster.cas.se2aa4.island.SoilAbsorption.";
+        if(soil != null) {
+            soil = soil.toLowerCase();
+            soil = soil.substring(0, 1).toUpperCase() + soil.substring(1) + "SoilProfile";
+        }
+        try {
+            this.soilProfile = (SoilProfile) Class.forName(soilPath + soil).getDeclaredConstructor().newInstance();
+        } catch (Exception e){
+            soil = "wet";
+            this.soilProfile = new WetSoilProfile();
+        }
+        System.out.println("Using " + soil);
+    }
+    private void setShapeObj(String shape){
         String shapePath = "ca.mcmaster.cas.se2aa4.island.Shape.";
-
         if(shape!= null) {
             shape = shape.toLowerCase();
             shape = shapePath + shape.substring(0, 1).toUpperCase() + shape.substring(1);
@@ -48,6 +81,18 @@ public class Configuration {
         } catch (Exception e) {
             this.shapeObj = new Irregular();
         }
+    }
+    public void generateConfig(String args[], Options options) throws ParseException, FileNotFoundException {
+        CommandLineParser parser = new DefaultParser();
+        CommandLine cmd = parser.parse(options, args);
+        String inputM = cmd.getOptionValue("i");
+        String shape = cmd.getOptionValue("shape");
+        String lakes = cmd.getOptionValue("lakes");
+        String aquifers = cmd.getOptionValue("aquifers");
+        String rivers = cmd.getOptionValue("rivers");
+        String alt = cmd.getOptionValue("altitude");
+        String biomes = cmd.getOptionValue("biomes");
+        String soil = cmd.getOptionValue("soil");
 
         try {
             this.inputMesh = new MeshFactory().read(inputM);
@@ -55,6 +100,13 @@ public class Configuration {
             throw new FileNotFoundException();
         }
 
+        setAltProfile(alt);
+        setBiomeProfile(biomes);
+        setSoilProfile(soil);
+        setShapeObj(shape);
+        setBodiesofWater(lakes, aquifers, rivers);
+    }
+    private void setBodiesofWater(String lakes, String aquifers, String rivers){
         try{
             this.num_lakes = Math.min(Integer.parseInt(lakes), 15);
         } catch (Exception e) {
@@ -75,49 +127,6 @@ public class Configuration {
             this.num_rivers = rng.nextInt(2,30);
         }
         System.out.println("Creating " + this.num_rivers + " rivers");
-
-        String altPath = "ca.mcmaster.cas.se2aa4.island.Altitude.";
-        String alt = cmd.getOptionValue("a");
-
-        if(alt != null) {
-            alt = alt.toLowerCase();
-            alt = alt.substring(0, 1).toUpperCase() + alt.substring(1) + "Altitude";
-        }
-        try {
-            this.altProfile = (AltitudeProfile) Class.forName(altPath + alt).getDeclaredConstructor().newInstance();
-        } catch (Exception e){
-            this.altProfile = new RandomAltitude();
-            alt = "random";
-        }
-        System.out.println("Using " + alt + " profile");
-
-        String biomesPath = "ca.mcmaster.cas.se2aa4.island.Biomes.";
-        String biomes = cmd.getOptionValue("biomes");
-        if(biomes != null) {
-            biomes = biomes.toLowerCase();
-            biomes = biomes.substring(0, 1).toUpperCase() + biomes.substring(1) + "BiomeProfile";
-        }
-        try {
-            this.biomeProfile = (BiomeProfile) Class.forName(biomesPath + biomes).getDeclaredConstructor().newInstance();
-        } catch (Exception e){
-            this.biomeProfile = new BaseBiomeProfile();
-            biomes = "base";
-        }
-        System.out.println("Using " + biomes);
-        
-        String soilPath = "ca.mcmaster.cas.se2aa4.island.SoilAbsorption.";
-        String soil = cmd.getOptionValue("soil");
-        if(soil != null) {
-            soil = soil.toLowerCase();
-            soil = soil.substring(0, 1).toUpperCase() + soil.substring(1) + "SoilProfile";
-        }
-        try {
-            this.soilProfile = (SoilProfile) Class.forName(soilPath + soil).getDeclaredConstructor().newInstance();
-        } catch (Exception e){
-            soil = "wet";
-            this.soilProfile = new WetSoilProfile();
-        }
-        System.out.println("Using " + soil);
     }
 }
 

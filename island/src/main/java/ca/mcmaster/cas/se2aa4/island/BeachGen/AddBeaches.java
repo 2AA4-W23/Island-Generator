@@ -11,7 +11,6 @@ import ca.mcmaster.cas.se2aa4.island.Extractors.TileTagExtractor;
 public class AddBeaches {
     
     private static Extractor tileTagsEx = new TileTagExtractor();
-
     public static List<Structs.Polygon> addBeaches(List<Structs.Polygon> landTiles, List<Polygon> newList){
         List<Structs.Polygon> l2 = new ArrayList<>();
         for(Structs.Polygon p: landTiles){

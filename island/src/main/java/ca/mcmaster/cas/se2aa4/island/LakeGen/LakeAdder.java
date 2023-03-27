@@ -17,7 +17,6 @@ public class LakeAdder extends WaterBody{
     private static final Extractor tileTagsEx = new TileTagExtractor();
     private static final Extractor lakeEx = new LakeExtractor();
     private static final Extractor altEx = new AltitudeExtractor();
-    private static final Extractor rgbEx = new RGBExtractor();
 
     public static List<Structs.Polygon> addLakes(List<Structs.Polygon> newList, int numLakes){
         for(int i = 0; i < numLakes; i++){
