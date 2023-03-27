@@ -39,8 +39,7 @@ public class MountainAltitude extends AltitudeTemplate {
             Structs.Vertex v = vModList.get(i);
             if(altEx.extractValues(v.getPropertiesList()).equals("null")){
                 altVal =  1000 - (int)distance;
-                Structs.Property altTag = Structs.Property.newBuilder().setKey("altitude").setValue(Integer.toString(altVal)).build();
-                Structs.Vertex mV = Structs.Vertex.newBuilder(v).addProperties(altTag).build();
+                Structs.Vertex mV = PropertyAdder.addProperty(v, "altitude", altVal + "");
                 vModList.set(i, mV);
             }
         }

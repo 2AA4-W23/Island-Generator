@@ -4,12 +4,10 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.island.Extractors.AltitudeExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.Extractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.TileTagExtractor;
-import ca.mcmaster.cas.se2aa4.island.Graph.VertexPolygonConnections;
 import ca.mcmaster.cas.se2aa4.island.RandomNumberGenerator.RandomNumber;
 
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 public interface AltitudeProfile {
     Extractor altEx = new AltitudeExtractor();

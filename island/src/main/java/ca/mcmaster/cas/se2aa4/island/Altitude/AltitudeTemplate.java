@@ -68,8 +68,7 @@ public abstract class AltitudeTemplate implements AltitudeProfile{
                     break;
                 }
             }
-            Structs.Property altitude = Structs.Property.newBuilder().setKey("altitude").setValue(averageAlt + "").build();
-            Structs.Vertex smoothV = Structs.Vertex.newBuilder(v).addProperties(altitude).build();
+            Structs.Vertex smoothV = PropertyAdder.addProperty(v, "altitude", averageAlt + "");
             vlist.set(vlist.indexOf(v), smoothV);
         }
         return vlist;

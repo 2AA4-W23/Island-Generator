@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class findLandTiles {
+public class FindLandTiles {
     public static List<List<Structs.Polygon>> seperateTiles(Shape shape, List<Structs.Polygon> pList, List<Structs.Vertex> vList){
         List<Structs.Polygon> landTiles = new ArrayList<>();
         List<Structs.Polygon> newList = new ArrayList<>();

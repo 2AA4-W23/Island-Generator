@@ -47,6 +47,7 @@ public class OBJBuilder {
         for(Vertex v : VertexList) {
             for(Property p : v.getPropertiesList()) {
                 if(p.getKey().equals("altitude")) {
+                    if(p.getValue().equals("null")) continue;
                     double z = Double.parseDouble(p.getValue()) / 150.0;
                     if(z != 0.0) minZ = Math.min(minZ, z);
                 }
@@ -63,6 +64,7 @@ public class OBJBuilder {
             y = Math.round(y * 1000.0) / 1000.0;
             for(Property p : v.getPropertiesList()) {
                 if(p.getKey().equals("altitude")) {
+                    if(p.getValue().equals("null")) continue;
                     z = Double.parseDouble(p.getValue()) / 150.0;
                     if(z > 0.0) z-= minZ;
                 }
@@ -136,6 +138,7 @@ public class OBJBuilder {
         }
         fwo.close();
         fwm.close();
+        System.out.println("Created OBJ and MTL files");
     }
 
     // fwm.write("new mtl " + mtlName + "\n");

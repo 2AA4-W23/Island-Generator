@@ -32,7 +32,7 @@ public class IslandGenerator {
         List<Structs.Polygon> pList = mesh.getPolygonsList();
         List<Structs.Vertex> vList = mesh.getVerticesList();
 
-        List<List<Structs.Polygon>> seperatedTiles = findLandTiles.seperateTiles(islandShape, pList, vList);
+        List<List<Structs.Polygon>> seperatedTiles = FindLandTiles.seperateTiles(islandShape, pList, vList);
         List<Structs.Polygon> pModList = seperatedTiles.get(0);
 
         List<Object> altLists;
@@ -48,7 +48,7 @@ public class IslandGenerator {
         pModList = TileHumidifier.setHumidities(pModList, sList, soilProfile);
         pModList = biomeProfile.addBiomes(pModList);
 
-        List<Object> lakeList = LakeAdder.fixLakeAltitudes(numLakes, pModList, sList, vList);
+        List<Object> lakeList = LakeAdder.fixLakeAltitudes(numLakes + numRivers, pModList, sList, vList);
         pModList = (List<Polygon>) lakeList.get(0);
         vList = (List<Vertex>) lakeList.get(1);
         return Structs.Mesh.newBuilder().addAllPolygons(pModList).addAllSegments(sList).addAllVertices(vList).build();

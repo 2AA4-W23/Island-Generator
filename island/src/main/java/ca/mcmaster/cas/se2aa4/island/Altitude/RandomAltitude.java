@@ -15,9 +15,8 @@ public class RandomAltitude extends AltitudeTemplate{
         List <Structs.Vertex> vModList = new ArrayList<>(vlist);
         for(Structs.Polygon p:plist){
             if(tagEx.extractValues(p.getPropertiesList()).equals("ocean")){
-                Structs.Property color = Structs.Property.newBuilder().setKey("rgb_color").setValue("43,101,236").build();
-                Structs.Property altTag = Structs.Property.newBuilder().setKey("altitude").setValue("0").build();
-                Structs.Polygon pColoredModify = Structs.Polygon.newBuilder(p).addProperties(color).addProperties(altTag).build();
+                Structs.Polygon pColoredModify = PropertyAdder.addProperty(p, "rgb_color", "43,101,236");
+                pColoredModify = PropertyAdder.addProperty(pColoredModify, "altitude", "0");
                 pModList.add(pColoredModify);
             } else {
                 Set<Integer> vInts = findVerticesIndex(p, slist);

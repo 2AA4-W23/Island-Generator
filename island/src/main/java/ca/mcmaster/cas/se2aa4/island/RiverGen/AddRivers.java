@@ -131,7 +131,6 @@ public class AddRivers {
             if(index != -1) allSegments.set(index, riverSeg); //prevents occasional OutOfBoundsErrors
             else System.out.println("Did not add river "  + riverNumber + " due to error");
         }
-        //System.out.println("River " + riverNumber + " has size " + river.size());
         return allSegments;
     }  
     
@@ -143,7 +142,6 @@ public class AddRivers {
                 thick = Math.max(Integer.parseInt(existingThickness), thick) + 1;
             } catch (Exception e )  {}
         }
-        //System.out.println(thick);
         return thick;
     }  
 
