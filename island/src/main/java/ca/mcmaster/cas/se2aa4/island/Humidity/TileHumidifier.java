@@ -65,8 +65,8 @@ public class TileHumidifier {
         Queue<Structs.Polygon> tileQ = new LinkedList<>();
         int index = 0;
         for(Structs.Polygon p : tiles){ 
-            //set humidity values to high for lakes and aquifers
-            //add lake and aquifer tiles to queue as starting points
+            //set humidity values for water bodies
+            //add water tiles to queue as starting points
             String tag = tagEx.extractValues(p.getPropertiesList());
             if(tag.equals("lake")){
                 Structs.Polygon humidP = PropertyAdder.addProperty(p, "humidity","" + rng.nextInt(90,100));
@@ -87,7 +87,6 @@ public class TileHumidifier {
                     Structs.Segment s = segments.get(i);
                     String edgetag = edgeEx.extractValues(s.getPropertiesList());
                     String thick = thickEx.extractValues(s.getPropertiesList());
-                    //System.out.println(tag);
                     if(edgetag.equals("river")) {
                         numRivers++;
                         totalThickness += Integer.parseInt(thick);
