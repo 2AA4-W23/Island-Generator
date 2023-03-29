@@ -1,8 +1,6 @@
-# Assignment A2: Mesh Generator
+# Assignment A4: Urbanism
 
-- Virochaan Ravichandran Gowri [ravicv3@mcmaster.ca]
 - Ibrahim Quraishi [quraishi@mcmaster.ca]
-- Omar Al-Asfar [alasfaro@mcmaster.ca]
 
 ## How to run the product
 
@@ -15,10 +13,10 @@ This product is handled by Maven, as a multi-module project. We assume here that
 To install the different tooling on your computer, simply run:
 
 ```
-mosser@azrael A2 % mvn install
+mosser@azrael mvn install
 ```
 
-After installation, you'll find an application named `generator.jar` in the `generator` directory, and a file named `visualizer.jar` in the `visualizer` one.
+After installation, you'll find an application named `generator.jar` in the `generator` directory, a file named `visualizer.jar` in the `visualizer` one, and a file named `island.jar` in the `island` one
 
 ### Generator
 
@@ -55,8 +53,6 @@ To view all available options and how to interact with generator tool, use the `
 ```
 mosser@azrael generator % java -jar generator.jar sample.mesh -h
 ```
-
-## A2
 
 ### Visualizer
 
@@ -136,8 +132,6 @@ mosser@azrael visualizer %
 ```
 
 If the tags are used in a different order, the result will be the same. This example implements all the possible tags, but they can easily be ommitted, in which case the program will act accordingly and generate/visualize the mesh based on the default values. 
-
-## A3
 
 ### Island
 
