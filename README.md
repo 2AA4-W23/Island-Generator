@@ -293,6 +293,7 @@ For a feature to be considered done it must be work without throwing any excepti
 ### A3 Backlog
 
 | Id  | Feature title                                                     | Who?      | Start      | End        | Status |
+| :-: | ----------------------------------------------------------------- | --------- | ---------- | ---------- | ------ |
 | MVP1| Generate Single Circular Island                                   | Virochaan | 03/06/2023 | 03/7/2023  | D      |
 | MVP2| Generate Lagoon within Island                                     | Virochaan | 03/06/2023 | 03/7/2023  | D      | 
 | MVP2| Tag tiles near water as beaches                                   | Virochaan | 03/06/2023 | 03/7/2023  | D      |
