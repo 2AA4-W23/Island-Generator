@@ -1,9 +1,9 @@
 package ca.mcmaster.cas.se2aa4.pathfinder.Graph;
 
-public class Edge<N> {
-    private final N v1;
-    private final N v2;
-    private boolean directed = false;
+public class Edge<N extends Node> {
+    public final N v1;
+    public final N v2;
+    public final boolean directed;
     public final int weight;
 
     public Edge(N v1, N v2, int weight, boolean directed){
@@ -19,13 +19,5 @@ public class Edge<N> {
 
     public boolean isDirected(){
         return directed;
-    }
-
-    public N getV1(){
-        return v1;
-    }
-
-    public N getV2(){
-        return v2;
     }
 }
