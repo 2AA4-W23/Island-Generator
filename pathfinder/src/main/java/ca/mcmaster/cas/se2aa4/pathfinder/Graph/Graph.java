@@ -14,9 +14,11 @@ public class Graph<N extends Node, E extends Edge<N>> implements Traversable<N> 
     private final int size;
     
     public Graph(List<N> nodes, List<E> edges){
+        adjacencyList = new HashMap<>();
+        for(N node : nodes) adjacencyList.put(node, new HashSet<>());
         for(E edge : edges){
             N v1 = edge.v1, v2 = edge.v2;
-            addEdge(v2, v2);
+            addEdge(v1, v2);
             if(!edge.isDirected()) addEdge(v2, v1);
         }
         size = nodes.size();
@@ -33,11 +35,14 @@ public class Graph<N extends Node, E extends Edge<N>> implements Traversable<N> 
         while(!queue.isEmpty()){
             LinkedList<N> path = queue.remove();
             N current = path.getLast();
+            if(current.id == end.id) return path;
             for(N next : getNeighbors(current)){
                 if(distance.containsKey(next)) continue;
-                path.add(next);
-                queue.add(path);
-                distance.put(next, distance.get(current));
+                LinkedList<N> nextPath = new LinkedList<>();
+                nextPath.addAll(path);
+                nextPath.add(next);
+                queue.add(nextPath);
+                distance.put(next, distance.get(current) + 1);
             }
         }
         return null;
@@ -54,9 +59,6 @@ public class Graph<N extends Node, E extends Edge<N>> implements Traversable<N> 
     }
 
     private void addEdge(N v1, N v2){
-        if(adjacencyList.get(v1) == null) {
-            adjacencyList.put(v1, new HashSet<>());
-        }
         adjacencyList.get(v1).add(v2);
     }
        
