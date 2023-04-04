@@ -1,10 +1,12 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -12,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import ca.mcmaster.cas.se2aa4.pathfinder.Graph.Edge;
 import ca.mcmaster.cas.se2aa4.pathfinder.Graph.Graph;
 import ca.mcmaster.cas.se2aa4.pathfinder.Graph.Node;
+import ca.mcmaster.cas.se2aa4.pathfinder.Graph.Path;
 
 public class GraphTest {
 
@@ -48,13 +51,25 @@ public class GraphTest {
 
     @Test
     public void shortestPath(){
-        List<Node> path1 = G.shortestPath(nodes.get(0) , nodes.get(2));
-        List<Node> path2 = G.shortestPath(nodes.get(5) , nodes.get(4));
-        List<Node> path3 = G.shortestPath(nodes.get(2) , nodes.get(7));
-        assertEquals(path1.size(), 4);
-        assertEquals(path2.size(), 3);
-        assertEquals(path3.size(), 6);
+        Path path1 = G.shortestPath(nodes.get(0) , nodes.get(2));
+        Path path2 = G.shortestPath(nodes.get(5) , nodes.get(4));
+        Path path3 = G.shortestPath(nodes.get(2) , nodes.get(7));
+        assertEquals(path1.size(), 3);
+        assertEquals(path2.size(), 2);
+        assertEquals(path3.size(), 5);
         nodes.add(new Node(10));
         assertNull(G.shortestPath(nodes.get(0), nodes.get(9)));
+    }
+
+    @Test
+    public void getters(){
+        assertNotNull(G.getNode(1));
+        assertNotNull(G.getNode(6));
+        assertNotNull(G.getNode(9));
+        assertNull(G.getNode(20));
+        Edge e = G.getEdge(1, 5);
+        assertEquals(e.v1.id, 1);
+        assertEquals(e.v2.id, 5);
+        assertNull(G.getEdge(8, 1));
     }
 }
