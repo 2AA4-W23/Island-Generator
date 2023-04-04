@@ -3,8 +3,8 @@ package ca.mcmaster.cas.se2aa4.pathfinder.Graph;
 import java.util.List;
 import java.util.Set;
 
-public interface Traversable <T> {
-    public List<T> shortestPath(T start, T end);
-    public boolean isNeighbor(T a, T b);
-    public Set<T> getNeighbors(T a);
+public interface Traversable {
+    public List<Node> shortestPath(Node start, Node end);
+    public boolean isNeighbor(Node a, Node b);
+    public Set<Node> getNeighbors(Node a);
 }

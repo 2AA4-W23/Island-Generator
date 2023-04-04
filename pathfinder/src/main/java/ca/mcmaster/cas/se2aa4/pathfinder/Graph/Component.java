@@ -6,7 +6,7 @@ import java.util.List;
 public abstract class Component {
     private List<Attribute> attributes = new ArrayList<>();
 
-    protected void addAttribute(Attribute a){
+    public void addAttribute(Attribute a){
         Attribute existing = getAttribute(a.key);
         if(existing == null) attributes.add(a);
         else {
@@ -14,14 +14,14 @@ public abstract class Component {
         }
     }
 
-    protected Attribute getAttribute(String key){
+    public Attribute getAttribute(String key){
         for(Attribute a : attributes){
             if(a.key.equals(key)) return a;
         }
         return null;
     }
 
-    protected String getValue(String key){
+    public String getValue(String key){
         for(Attribute a : attributes){
             if(a.key.equals(key)) return a.value;
         }
