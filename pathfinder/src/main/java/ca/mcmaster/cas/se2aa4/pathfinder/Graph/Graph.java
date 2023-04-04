@@ -3,10 +3,8 @@ package ca.mcmaster.cas.se2aa4.pathfinder.Graph;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 
 public class Graph implements Traversable {
@@ -14,9 +12,11 @@ public class Graph implements Traversable {
     private Map<Node, Set<Node>> adjacencyList;
     private final int size;
     private List<Node> nodes;
+    private List<Edge> edges;
 
     public Graph(List<Node> nodes, List<Edge> edges){
         this.nodes = nodes;
+        this.edges = edges;
         adjacencyList = new HashMap<>();
         for(Node node : nodes) adjacencyList.put(node, new HashSet<>());
         for(Edge edge : edges){
@@ -47,28 +47,29 @@ public class Graph implements Traversable {
         addEdge(n2, n1);
     }
 
-    @Override
-    public List<Node> shortestPath(Node start, Node end) {
-        Queue<LinkedList<Node>> queue = new LinkedList<>();
-        Map<Node, Integer> distance = new HashMap<>();
-        LinkedList<Node> startPath = new LinkedList<>();
-        startPath.add(start);
-        distance.put(start, 0);
-        queue.add(startPath);
-        while(!queue.isEmpty()){
-            LinkedList<Node> path = queue.remove();
-            Node current = path.getLast();
-            if(current.id == end.id) return path;
-            for(Node next : getNeighbors(current)){
-                if(distance.containsKey(next)) continue;
-                LinkedList<Node> nextPath = new LinkedList<>();
-                nextPath.addAll(path);
-                nextPath.add(next);
-                queue.add(nextPath);
-                distance.put(next, distance.get(current) + 1);
-            }
+    public Edge getEdge(int a, int b){
+        for(Edge e : edges){
+            if(e.v1.id == a && e.v2.id == b) return e;
+            if(e.v2.id == a && e.v1.id == b) return e;
         }
         return null;
+    }
+
+    public Edge getEdge(int i){
+        return edges.get(i);
+    }
+
+    public Node getNode(int id){
+        for(Node n : nodes){
+            if(n.id == id) return n;
+        }
+        return null;
+    }
+
+    public Path shortestPath(int a, int b){
+        Node n1 = getNode(a);
+        Node n2 = getNode(b);
+        return shortestPath(n1, n2);
     }
 
     @Override
