@@ -2,7 +2,7 @@
 
 - Ibrahim Quraishi [quraishi@mcmaster.ca]
 
-## How to construct a graph
+## Constructing a graph
 
 First, create a list of Nodes, each with an ID (typically from 0 to size - 1).
 
@@ -23,18 +23,13 @@ edges.add(new Edge(nodes.get(3), nodes.get(2), true)); //connect nodes 3 and 2 w
 Now, use these lists to construct a graph.
 
 ```java
-Graph g = new Graph(nodes, edges);
+Graph<Node, Edge> g = new Graph<>(nodes, edges);
 ```
 
-Alternatively, you can construct a graph with n nodes with IDs ranging from 1 to n as follows.
+Alternatively, you can construct the graph with only a list of nodes and edges as follows.
 
 ```java
-Graph g = new Graph(n);
-```
-
-Now add edges.
-
-```java
+Graph<Node, Edge> g = new Graph<>(nodes);
 g.addUndirectedEdge(1, 2); //connect nodes 1 and 2 with an undirected edge
 g.addDirectedEdge(3, 2); //connect nodes 3 and 2 with a directed edge
 ```
@@ -52,7 +47,7 @@ To get an edge by the nodes it connects:
 ```java
 Edge e = G.getEdge(id1, id2);
 ```
-_Note: if th edge is directed, getEdge will only return the edge if an edge exists from node 1 has an edge to node 2_
+_Note: if the edge is directed, this will only work if a direct edge from node 1 to node 2 exists_
 
 Alternatively, if the index of the edge is known, you can use that to retrieve it. The index of edges are the order it was added in starting from 0.
 
@@ -114,15 +109,58 @@ The Path object can be viewed as an unmodifiable list.
 List<Node> path = shortestPath.getList();
 ```
 
-You can also get the length of the path, or view it as a string.
+You can also get the length of the path, or view it as a string. 
+A path with size 0 indicates the start and end node are the same. A path with size -1 indicates there is no path between the nodes.
 
 ```java
 System.out.println(path.size()); //prints length of path
 System.out.println(path.toString()); //prints all nodes in path by ID
 ```
 
+
 The nodes in a Path object cannot be modified, but you can construct a new path object by adding another node.
 
 ```java
 Path newPath = shortestPath.appendNode(new Node(id));
 ```
+
+
+## Extending the library
+
+For this example, we will be extending the library to include weights. We begin by extending the Edge class.
+
+```java
+public class WeightedEdge extends Edge<Node> {
+
+    public final int weight;
+
+    public WeightedEdge(Node v1, Node v2, int weight) {
+        super(v1, v2);
+        this.weight = weight;
+    }
+}
+```
+
+We will now extend the Graph class.
+
+```java
+public class WeightedGraph extends Graph<Node, WeightedEdge> {
+
+    public WeightedGraph(List<Node> nodes) {
+        super(nodes);   
+    }
+}
+```
+
+And finally the Path class.
+
+```java
+public class WeightedPath extends Path<Node> {
+    public WeightedPath(){
+        super();
+    }
+}
+```
+
+In the WeightedGraph class, 
+

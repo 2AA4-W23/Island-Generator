@@ -4,33 +4,32 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Path {
-    private final LinkedList<Node> path;
+public class Path<N extends Node> {
+    private final LinkedList<N> path;
     private final int size;
 
     public Path(){
-        path = new LinkedList<>();
-        size = -1;
+        this(new LinkedList<>());
     }
 
-    private Path(LinkedList<Node> path){
+    public Path(LinkedList<N> path){
         this.path = path;
         this.size = path.size() - 1;
     }
 
-    public List<Node> getList(){
+    public List<N> getList(){
         return Collections.unmodifiableList(path);
     }
 
-    public Node getLast(){
+    public N getLast(){
         return path.get(size);
     }
 
-    public Path appendNode(Node node){
-        LinkedList<Node> newPath = new LinkedList<>();
+    public Path<N> appendNode(N node){
+        LinkedList<N> newPath = new LinkedList<>();
         newPath.addAll(path);
         newPath.add(node);
-        return new Path(newPath);
+        return new Path<N>(newPath);
     }
 
     public int size(){
@@ -40,7 +39,7 @@ public class Path {
     @Override
     public String toString(){
         String pathString = "";
-        for(Node n : path) pathString += n.id + " ";
+        for(N n : path) pathString += n.id + " ";
         return pathString;
     }
 }
