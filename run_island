@@ -3,7 +3,7 @@
 #cd generator
 #java -jar generator.jar sample.mesh -mt irregular -np 2000 -lr 10
 
-if pwd == "*/a2---mesh-generator-team-40"
+if pwd == "*/a4-urbanism-Ibbs620"
 then
     cd island
 elif pwd == "*/visualizer"
@@ -14,9 +14,6 @@ then
     cd ../island
 fi
 
-java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude volcano --lakes 5 --aquifers 5 --rivers 20 --biomes temperate --soil Wet
+java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude volcano --lakes 0 --aquifers 15 --rivers 0 --biomes temperate --soil Wet
 cd ../visualizer
-java -jar visualizer.jar ../island/island.mesh sample.svg -A 255 -O
-#java -jar visualizer.jar ../island/island.mesh humid.svg -A 255 -Humid
-#java -jar visualizer.jar ../island/island.mesh alt.svg -A 255 -Alt
-cd ..
+java -jar visualizer.jar ../island/island.mesh sample.svg -A 255
