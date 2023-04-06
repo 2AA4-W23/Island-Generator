@@ -8,6 +8,10 @@ import java.util.Set;
 
 public interface Traversable<N extends Node> {
     public default Path<N> shortestPath(N start, N end){
+        if(end == null || start == null) {
+            System.out.println("null");
+            return new Path<>();
+        }
         Queue<Path<N>> queue = new LinkedList<>();
         Map<N, Integer> distance = new HashMap<>();
         Path<N> startPath = new Path<N>().appendNode(start);

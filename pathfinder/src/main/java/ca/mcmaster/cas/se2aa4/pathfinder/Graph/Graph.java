@@ -1,6 +1,5 @@
 package ca.mcmaster.cas.se2aa4.pathfinder.Graph;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -17,6 +16,10 @@ public class Graph<N extends Node, E extends Edge<N>> implements Traversable<N> 
     public Graph(List<N> nodes, List<E> edges){
         this(nodes);
         this.edges = edges;
+        updateAdjacencyList(edges);
+    }
+
+    protected void updateAdjacencyList(List<E> edges) {
         for(E edge : edges){
             N v1 = edge.v1, v2 = edge.v2;
             addEdge(v1, v2);
