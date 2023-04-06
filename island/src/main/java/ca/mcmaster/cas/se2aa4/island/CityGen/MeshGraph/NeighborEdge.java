@@ -16,6 +16,7 @@ public class NeighborEdge extends Edge<CentroidNode>{
         for(CentroidNode node : nodes) {
             for(int i : node.getTile().getNeighborIdxsList()){
                 CentroidNode neighbor = CentroidNode.getNodeById(nodes, i);
+                if(neighbor == null) continue;
                 edges.add(new NeighborEdge(node, neighbor));
             }
         }

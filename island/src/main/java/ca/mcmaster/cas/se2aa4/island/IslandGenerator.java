@@ -5,6 +5,8 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
 import ca.mcmaster.cas.se2aa4.island.Altitude.AltitudeProfile;
 import ca.mcmaster.cas.se2aa4.island.Biomes.BiomeProfile;
+import ca.mcmaster.cas.se2aa4.island.CityGen.MeshGraph.CentroidNode;
+import ca.mcmaster.cas.se2aa4.island.CityGen.MeshGraph.MeshGraph;
 import ca.mcmaster.cas.se2aa4.island.Configuration.Configuration;
 import ca.mcmaster.cas.se2aa4.island.Extractors.Extractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.TileTagExtractor;
@@ -14,6 +16,8 @@ import ca.mcmaster.cas.se2aa4.island.LakeGen.LakeAdder;
 import ca.mcmaster.cas.se2aa4.island.RiverGen.AddRivers;
 import ca.mcmaster.cas.se2aa4.island.Shape.Shape;
 import ca.mcmaster.cas.se2aa4.island.SoilAbsorption.SoilProfile;
+import ca.mcmaster.cas.se2aa4.pathfinder.Graph.Path;
+
 import java.util.List;
 
 public class IslandGenerator {
@@ -51,6 +55,11 @@ public class IslandGenerator {
         List<Object> lakeList = LakeAdder.fixLakeAltitudes(numLakes + numRivers, pModList, sList, vList);
         pModList = (List<Polygon>) lakeList.get(0);
         vList = (List<Vertex>) lakeList.get(1);
+
+        MeshGraph mg = new MeshGraph(pModList, vList);
+        Path<CentroidNode> p = mg.shortestPath(1100, 1110);
+        System.out.println(p.size());
+
         return Structs.Mesh.newBuilder().addAllPolygons(pModList).addAllSegments(sList).addAllVertices(vList).build();
     }
     

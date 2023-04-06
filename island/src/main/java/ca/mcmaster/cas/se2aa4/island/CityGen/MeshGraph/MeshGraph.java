@@ -11,12 +11,12 @@ public class MeshGraph extends Graph<CentroidNode, NeighborEdge>{
 
     public MeshGraph(List<CentroidNode> nodes){
         super(nodes);
-        this.edges = NeighborEdge.getEdgesFromNodes(nodes);
+        this.edges = NeighborEdge.getEdgesFromNodes(this.nodes);
+        updateAdjacencyList(edges);
     }
     
     public MeshGraph(List<Polygon> tiles, List<Vertex> vertices){
         this(CentroidNode.getNodesFromPolygons(tiles, vertices));
-        this.edges = NeighborEdge.getEdgesFromNodes(nodes);
     }
 
     public List<CentroidNode> getNodes(){
