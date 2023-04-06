@@ -58,7 +58,7 @@ public class GraphTest {
         assertEquals(path2.size(), 2);
         assertEquals(path3.size(), 5);
         nodes.add(new Node(10));
-        assertNull(G.shortestPath(nodes.get(0), nodes.get(9)));
+        assertEquals(G.shortestPath(nodes.get(0), nodes.get(9)).size(), new Path<>().size());
     }
 
     @Test

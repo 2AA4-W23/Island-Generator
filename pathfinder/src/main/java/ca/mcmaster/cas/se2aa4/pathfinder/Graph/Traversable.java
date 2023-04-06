@@ -16,6 +16,7 @@ public interface Traversable<N extends Node> {
         while(!queue.isEmpty()){
             Path<N> path = queue.remove();
             N current = path.getLast();
+            if(current == null) return new Path<>();
             if(current.id == end.id) return path;
             for(N next : getNeighbors(current)){
                 if(distance.containsKey(next)) continue;

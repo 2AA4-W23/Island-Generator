@@ -25,7 +25,7 @@ public class Graph<N extends Node, E extends Edge<N>> implements Traversable<N> 
     }
 
     public Graph(List<N> nodes){
-        nodes = new ArrayList<>();
+        this.nodes = nodes;
         adjacencyList = new HashMap<>();
         size = nodes.size();
         for(N node : nodes) adjacencyList.put(node, new HashSet<>());
@@ -79,6 +79,7 @@ public class Graph<N extends Node, E extends Edge<N>> implements Traversable<N> 
     }
 
     private void addEdge(N v1, N v2){
+        if(!adjacencyList.containsKey(v1)) adjacencyList.put(v1, new HashSet<>());
         adjacencyList.get(v1).add(v2);
     }
        
