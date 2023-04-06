@@ -18,25 +18,25 @@ import ca.mcmaster.cas.se2aa4.pathfinder.Graph.Path;
 
 public class GraphTest {
 
-    private static Graph G;
+    private static Graph<Node, Edge<Node>> G;
     private static List<Node> nodes = new ArrayList<>();
-    private static List<Edge> edges = new ArrayList<>();
+    private static List<Edge<Node>> edges = new ArrayList<>();
 
     @BeforeAll
     public static void init(){
         for(int i = 1; i <= 9; i++){
             nodes.add(new Node(i));
         }
-        edges.add(new Edge(nodes.get(0), nodes.get(3)));
-        edges.add(new Edge(nodes.get(0), nodes.get(4)));
-        edges.add(new Edge(nodes.get(0), nodes.get(6)));
-        edges.add(new Edge(nodes.get(0), nodes.get(8)));
-        edges.add(new Edge(nodes.get(1), nodes.get(4)));
-        edges.add(new Edge(nodes.get(3), nodes.get(4)));
-        edges.add(new Edge(nodes.get(3), nodes.get(5)));
-        edges.add(new Edge(nodes.get(5), nodes.get(2)));
-        edges.add(new Edge(nodes.get(7), nodes.get(8)));
-        G = new Graph(nodes, edges);
+        edges.add(new Edge<>(nodes.get(0), nodes.get(3)));
+        edges.add(new Edge<>(nodes.get(0), nodes.get(4)));
+        edges.add(new Edge<>(nodes.get(0), nodes.get(6)));
+        edges.add(new Edge<>(nodes.get(0), nodes.get(8)));
+        edges.add(new Edge<>(nodes.get(1), nodes.get(4)));
+        edges.add(new Edge<>(nodes.get(3), nodes.get(4)));
+        edges.add(new Edge<>(nodes.get(3), nodes.get(5)));
+        edges.add(new Edge<>(nodes.get(5), nodes.get(2)));
+        edges.add(new Edge<>(nodes.get(7), nodes.get(8)));
+        G = new Graph<>(nodes, edges);
     }
 
     @Test
@@ -51,9 +51,9 @@ public class GraphTest {
 
     @Test
     public void shortestPath(){
-        Path path1 = G.shortestPath(nodes.get(0) , nodes.get(2));
-        Path path2 = G.shortestPath(nodes.get(5) , nodes.get(4));
-        Path path3 = G.shortestPath(nodes.get(2) , nodes.get(7));
+        Path<Node> path1 = G.shortestPath(nodes.get(0) , nodes.get(2));
+        Path<Node> path2 = G.shortestPath(nodes.get(5) , nodes.get(4));
+        Path<Node> path3 = G.shortestPath(nodes.get(2) , nodes.get(7));
         assertEquals(path1.size(), 3);
         assertEquals(path2.size(), 2);
         assertEquals(path3.size(), 5);
@@ -67,7 +67,7 @@ public class GraphTest {
         assertNotNull(G.getNode(6));
         assertNotNull(G.getNode(9));
         assertNull(G.getNode(20));
-        Edge e = G.getEdge(1, 5);
+        Edge<Node> e = G.getEdge(1, 5);
         assertEquals(e.v1.id, 1);
         assertEquals(e.v2.id, 5);
         assertNull(G.getEdge(8, 1));
