@@ -26,6 +26,7 @@ public class Configuration {
     private Random rng = RandomNumber.getRandomInstance();
     public int num_aquifers;
     public int num_rivers;
+    public int num_cities;
     public SoilProfile soilProfile;
 
     private void setAltProfile(String alt) {
@@ -82,6 +83,14 @@ public class Configuration {
             this.shapeObj = new Irregular();
         }
     }
+    public void setCities(String cities){
+        try{
+            this.num_cities = Math.min(Integer.parseInt(cities), 30);
+        } catch (Exception e) {
+            this.num_cities = rng.nextInt(2, 10);
+        }
+        System.out.println("Creating " + this.num_cities + " cities");
+    }
     public void generateConfig(String args[], Options options) throws ParseException, FileNotFoundException {
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
@@ -93,6 +102,7 @@ public class Configuration {
         String alt = cmd.getOptionValue("altitude");
         String biomes = cmd.getOptionValue("biomes");
         String soil = cmd.getOptionValue("soil");
+        String cities = cmd.getOptionValue("cities");
 
         try {
             this.inputMesh = new MeshFactory().read(inputM);
@@ -105,6 +115,7 @@ public class Configuration {
         setSoilProfile(soil);
         setShapeObj(shape);
         setBodiesofWater(lakes, aquifers, rivers);
+        setCities(cities);
     }
     private void setBodiesofWater(String lakes, String aquifers, String rivers){
         try{

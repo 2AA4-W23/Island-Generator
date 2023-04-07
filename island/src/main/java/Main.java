@@ -24,6 +24,7 @@ public class Main {
         options.addOption("b", "biomes", true, "Decide Biomes type selected (Whittaker Diagram)");
         options.addOption("se", "seed", true, "Input island seed for recreation of island.");
         options.addOption("sa", "soil", true, "Soil Absorption profile (wet, dry)");
+        options.addOption("c", "cities", true, "Number of cities to spawn");
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);

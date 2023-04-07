@@ -5,6 +5,7 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
 import ca.mcmaster.cas.se2aa4.island.Altitude.AltitudeProfile;
 import ca.mcmaster.cas.se2aa4.island.Biomes.BiomeProfile;
+import ca.mcmaster.cas.se2aa4.island.CityGen.CityAdder;
 import ca.mcmaster.cas.se2aa4.island.CityGen.MeshGraph.CentroidNode;
 import ca.mcmaster.cas.se2aa4.island.CityGen.MeshGraph.MeshGraph;
 import ca.mcmaster.cas.se2aa4.island.Configuration.Configuration;
@@ -30,6 +31,7 @@ public class IslandGenerator {
     static int numLakes;
     static int numAquifers;
     static int numRivers;
+    static int numCities;
     public static Structs.Mesh Generate(Configuration config){
         setConfigValues(config);
         islandShape.create();
@@ -56,9 +58,8 @@ public class IslandGenerator {
         pModList = (List<Polygon>) lakeList.get(0);
         vList = (List<Vertex>) lakeList.get(1);
 
-        MeshGraph mg = new MeshGraph(pModList, vList);
-        Path<CentroidNode> p = mg.shortestPath(1100, 1110);
-        System.out.println(p.size());
+        vList = CityAdder.addCities(pModList, vList, numCities);
+        MeshGraph graph = new MeshGraph(CentroidNode.getNodes(pModList, vList));
 
         return Structs.Mesh.newBuilder().addAllPolygons(pModList).addAllSegments(sList).addAllVertices(vList).build();
     }
@@ -72,5 +73,6 @@ public class IslandGenerator {
         numAquifers = config.num_aquifers;
         numRivers = config.num_rivers;
         soilProfile = config.soilProfile;
+        numCities = config.num_cities;
     }
 }

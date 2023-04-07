@@ -288,9 +288,19 @@ public class GraphicRenderer {
                 canvas.setStroke(oldStroke);
                 canvas.setColor(old1);
             }
+
+            for (Vertex v: VertexList) {
+                if(!isCity(v.getPropertiesList())) continue;
+                int thickness = extractThickness(v.getPropertiesList());
+                Color old = canvas.getColor();
+                canvas.setColor(extractColor(v.getPropertiesList(), true, 255));
+                double centre_x = v.getX() - (thickness/2.0d);
+                double centre_y = v.getY() - (thickness/2.0d);
+                Ellipse2D point = new Ellipse2D.Double(centre_x, centre_y, thickness, thickness);
+                canvas.fill(point);
+                canvas.setColor(old);
+            }
         }
-
-
 
         int centroidIdx;
 
@@ -400,6 +410,15 @@ public class GraphicRenderer {
         if (tag == null)
             return "null";
         return tag;
+    }
+
+    private boolean isCity(List<Property> properties) {
+        for(Structs.Property p: properties) {
+            if (p.getKey().equals("city_name")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private int[] extractColor(List<Property> properties) {
