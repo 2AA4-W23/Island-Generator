@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Path<N extends Node> {
-    private final LinkedList<N> path;
+    protected final LinkedList<N> path;
     private final int size;
 
     public Path(){
