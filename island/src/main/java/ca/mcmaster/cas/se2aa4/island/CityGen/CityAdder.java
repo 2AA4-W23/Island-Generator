@@ -24,7 +24,7 @@ public class CityAdder {
             Vertex centroid = vertices.get(cityTile.getCentroidIdx());
             centroid = PropertyAdder.addProperty(centroid, "city_name", i + "");
             centroid = PropertyAdder.addProperty(centroid, "rgb_color", "255,0,0");
-            centroid = PropertyAdder.addProperty(centroid, "thickness", "5");
+            centroid = PropertyAdder.addProperty(centroid, "thickness", rng.nextInt(3, 7) + "");
             vertices.set(cityTile.getCentroidIdx(), centroid);
         }
         return vertices;
@@ -35,4 +35,5 @@ public class CityAdder {
         String tag = tagEx.extractValues(tile.getPropertiesList());
         return tag.equals("land") || tag.equals("aquifer");
     }
+
 }
