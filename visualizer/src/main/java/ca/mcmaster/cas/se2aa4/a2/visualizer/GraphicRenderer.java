@@ -261,7 +261,8 @@ public class GraphicRenderer {
                 canvas.setColor(old);
             }
             for (Segment s : SegmentList) {
-                if(!extractTag(s.getPropertiesList()).equals("river")) continue;
+                String tag = extractTag(s.getPropertiesList());
+                if(!tag.equals("river") && !tag.equals("road")) continue;
                 double x1 = VertexList.get(s.getV1Idx()).getX();
                 double x2 = VertexList.get(s.getV2Idx()).getX();
                 double y1 = VertexList.get(s.getV1Idx()).getY();
