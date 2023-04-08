@@ -25,6 +25,6 @@ public abstract class Component {
         for(Attribute a : attributes){
             if(a.key.equals(key)) return a.value;
         }
-        return null;
+        return "null";
     }
 }

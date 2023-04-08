@@ -2,6 +2,7 @@ package ca.mcmaster.cas.se2aa4.island.CityGen.MeshGraph;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -9,7 +10,15 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs.Segment;
 import ca.mcmaster.cas.se2aa4.pathfinder.Graph.Path;
 
 public class SegmentPath extends Path<CentroidNode> {
-    
+
+    public SegmentPath(){
+        super();
+    }
+
+    public SegmentPath(LinkedList<CentroidNode> path){
+        super(path);
+    }
+
     public List<Segment> toSegmentList(){
         List<Segment> segments = new ArrayList<>();
         CentroidNode previousNode = this.path.getFirst();

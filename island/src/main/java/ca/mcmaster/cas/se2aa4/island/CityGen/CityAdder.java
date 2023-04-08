@@ -6,9 +6,11 @@ import java.util.Random;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
+import ca.mcmaster.cas.se2aa4.island.CityGen.MeshGraph.CentroidNode;
 import ca.mcmaster.cas.se2aa4.island.Extractors.TileTagExtractor;
 import ca.mcmaster.cas.se2aa4.island.Properties.PropertyAdder;
 import ca.mcmaster.cas.se2aa4.island.RandomNumberGenerator.RandomNumber;
+import ca.mcmaster.cas.se2aa4.pathfinder.Graph.Attribute;
 
 public class CityAdder {
 
@@ -28,6 +30,32 @@ public class CityAdder {
             vertices.set(cityTile.getCentroidIdx(), centroid);
         }
         return vertices;
+    }
+
+    public static List<CentroidNode> getCityNodes(List<CentroidNode> nodes){
+        List<CentroidNode> cities = new ArrayList<>();
+        for(CentroidNode node : nodes) {
+            if(node.getValue("city_name").equals("null")) continue;
+            cities.add(node);
+        }
+        return cities;
+    }
+
+    public static CentroidNode findCentralCity(List<CentroidNode> cities){
+        CentroidNode hub = cities.get(0);
+        double minScore = 600;
+        for(CentroidNode city : cities){
+            if(city == null) System.out.println("null");
+            double x = city.getVertex().getX();
+            double y = city.getVertex().getY();
+            double cityScore = Math.abs(250 - x + 250 - y);
+            if(cityScore < minScore) {
+                hub = city;
+                minScore = cityScore;
+            }
+        }
+        hub.addAttribute(new Attribute("rgb_color", "0,255,0"));
+        return hub;
     }
 
     private static boolean checkEligible(Polygon tile){

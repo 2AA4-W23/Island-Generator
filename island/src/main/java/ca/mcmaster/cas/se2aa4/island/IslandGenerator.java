@@ -6,20 +6,25 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
 import ca.mcmaster.cas.se2aa4.island.Altitude.AltitudeProfile;
 import ca.mcmaster.cas.se2aa4.island.Biomes.BiomeProfile;
 import ca.mcmaster.cas.se2aa4.island.CityGen.CityAdder;
+import ca.mcmaster.cas.se2aa4.island.CityGen.Road;
 import ca.mcmaster.cas.se2aa4.island.CityGen.MeshGraph.CentroidNode;
 import ca.mcmaster.cas.se2aa4.island.CityGen.MeshGraph.MeshGraph;
+import ca.mcmaster.cas.se2aa4.island.CityGen.MeshGraph.SegmentPath;
 import ca.mcmaster.cas.se2aa4.island.Configuration.Configuration;
 import ca.mcmaster.cas.se2aa4.island.Extractors.Extractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.TileTagExtractor;
 import ca.mcmaster.cas.se2aa4.island.Humidity.TileHumidifier;
 import ca.mcmaster.cas.se2aa4.island.LakeGen.AquiferAdder;
 import ca.mcmaster.cas.se2aa4.island.LakeGen.LakeAdder;
+import ca.mcmaster.cas.se2aa4.island.Properties.PropertyAdder;
 import ca.mcmaster.cas.se2aa4.island.RiverGen.AddRivers;
 import ca.mcmaster.cas.se2aa4.island.Shape.Shape;
 import ca.mcmaster.cas.se2aa4.island.SoilAbsorption.SoilProfile;
 import ca.mcmaster.cas.se2aa4.pathfinder.Graph.Path;
 
 import java.util.List;
+
+import com.google.protobuf.compiler.PluginProtos.CodeGeneratorRequest;
 
 public class IslandGenerator {
     
@@ -58,9 +63,13 @@ public class IslandGenerator {
         pModList = (List<Polygon>) lakeList.get(0);
         vList = (List<Vertex>) lakeList.get(1);
 
-        vList = CityAdder.addCities(pModList, vList, numCities);
-        MeshGraph graph = new MeshGraph(CentroidNode.getNodes(pModList, vList));
-
+        if(numCities > 0) {
+            vList = CityAdder.addCities(pModList, vList, numCities);
+            List<CentroidNode> nodes = CentroidNode.getNodes(pModList, vList);
+            List<CentroidNode> cityNodes = CityAdder.getCityNodes(nodes);
+            CentroidNode hub = CityAdder.findCentralCity(cityNodes);
+            vList.set(hub.id, PropertyAdder.addProperty(hub.getVertex(), "rgb_color", "0,255,0"));
+        }
         return Structs.Mesh.newBuilder().addAllPolygons(pModList).addAllSegments(sList).addAllVertices(vList).build();
     }
     
