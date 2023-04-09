@@ -2,7 +2,6 @@
 package ca.mcmaster.cas.se2aa4.island.CityGen.MeshGraph;
 
 import java.util.List;
-import java.util.Set;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;

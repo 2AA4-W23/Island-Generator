@@ -7,6 +7,8 @@ import java.util.Random;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
 import ca.mcmaster.cas.se2aa4.island.CityGen.MeshGraph.CentroidNode;
+import ca.mcmaster.cas.se2aa4.island.Extractors.HumidityExtractor;
+import ca.mcmaster.cas.se2aa4.island.Extractors.SaturationExtractor;
 import ca.mcmaster.cas.se2aa4.island.Extractors.TileTagExtractor;
 import ca.mcmaster.cas.se2aa4.island.Properties.PropertyAdder;
 import ca.mcmaster.cas.se2aa4.island.RandomNumberGenerator.RandomNumber;
@@ -15,6 +17,8 @@ import ca.mcmaster.cas.se2aa4.pathfinder.Graph.Attribute;
 public class CityAdder {
 
     private static TileTagExtractor tagEx = new TileTagExtractor();
+    private static HumidityExtractor humidEx = new HumidityExtractor();
+    private static SaturationExtractor satEx = new SaturationExtractor();
     private static Random rng = RandomNumber.getRandomInstance();
 
     public static List<Vertex> addCities(List<Polygon> tiles, List<Vertex> vertices, int numCities){
@@ -43,15 +47,17 @@ public class CityAdder {
 
     public static CentroidNode findCentralCity(List<CentroidNode> cities){
         CentroidNode hub = cities.get(0);
-        double minScore = 600;
+        int maxScore = 0;
         for(CentroidNode city : cities){
-            if(city == null) System.out.println("null");
-            double x = city.getVertex().getX();
-            double y = city.getVertex().getY();
-            double cityScore = Math.abs(250 - x + 250 - y);
-            if(cityScore < minScore) {
+            int score = 0;
+            Polygon tile = city.getTile();
+            try{
+                String scoreStr = humidEx.extractValues(tile.getPropertiesList()) + satEx.extractValues(tile.getPropertiesList());
+                score = Integer.parseInt(scoreStr);
+            }  catch (Exception e ) {}
+            if(score > maxScore) {
                 hub = city;
-                minScore = cityScore;
+                maxScore = score;
             }
         }
         hub.addAttribute(new Attribute("rgb_color", "0,255,0"));
