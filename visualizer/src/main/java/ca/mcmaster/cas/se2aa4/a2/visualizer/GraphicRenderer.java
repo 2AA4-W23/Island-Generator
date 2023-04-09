@@ -299,6 +299,7 @@ public class GraphicRenderer {
                 double centre_y = v.getY() - (thickness/2.0d);
                 Ellipse2D point = new Ellipse2D.Double(centre_x, centre_y, thickness, thickness);
                 canvas.fill(point);
+                canvas.drawString(extractName(v.getPropertiesList()), (int) v.getX(), (int) v.getY() - 10);
                 canvas.setColor(old);
             }
         }
@@ -405,6 +406,18 @@ public class GraphicRenderer {
         String tag = null;
         for(Structs.Property p: properties) {
             if (p.getKey().equals("seg_tag")) {
+                tag = p.getValue();
+            }
+        }
+        if (tag == null)
+            return "null";
+        return tag;
+    }
+
+    private String extractName(List<Property> properties) {
+        String tag = null;
+        for(Structs.Property p: properties) {
+            if (p.getKey().equals("city_name")) {
                 tag = p.getValue();
             }
         }

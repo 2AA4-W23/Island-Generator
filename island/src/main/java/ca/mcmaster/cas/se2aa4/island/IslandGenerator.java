@@ -2,7 +2,6 @@ package ca.mcmaster.cas.se2aa4.island;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
-import ca.mcmaster.cas.se2aa4.a2.io.Structs.Segment;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
 import ca.mcmaster.cas.se2aa4.island.Altitude.AltitudeProfile;
 import ca.mcmaster.cas.se2aa4.island.Biomes.BiomeProfile;
@@ -10,9 +9,7 @@ import ca.mcmaster.cas.se2aa4.island.CityGen.CityAdder;
 import ca.mcmaster.cas.se2aa4.island.CityGen.RoadAdder;
 import ca.mcmaster.cas.se2aa4.island.CityGen.MeshGraph.CentroidNode;
 import ca.mcmaster.cas.se2aa4.island.CityGen.MeshGraph.MeshGraph;
-import ca.mcmaster.cas.se2aa4.island.CityGen.MeshGraph.NeighborEdge;
 import ca.mcmaster.cas.se2aa4.island.Configuration.Configuration;
-import ca.mcmaster.cas.se2aa4.island.Extractors.EdgeTagExtractor;
 import ca.mcmaster.cas.se2aa4.island.Humidity.TileHumidifier;
 import ca.mcmaster.cas.se2aa4.island.LakeGen.AquiferAdder;
 import ca.mcmaster.cas.se2aa4.island.LakeGen.LakeAdder;
@@ -34,8 +31,7 @@ public class IslandGenerator {
     static int numAquifers;
     static int numRivers;
     static int numCities;
-    private static EdgeTagExtractor edgeEx = new EdgeTagExtractor();
-
+    
     public static Structs.Mesh Generate(Configuration config){
         setConfigValues(config);
         islandShape.create();
@@ -67,9 +63,11 @@ public class IslandGenerator {
             List<CentroidNode> nodes = CentroidNode.getNodes(pModList, vList);
             List<CentroidNode> cityNodes = CityAdder.getCityNodes(nodes);
             CentroidNode hub = CityAdder.findCentralCity(cityNodes);
+            vList.set(hub.centroidIdx, PropertyAdder.addProperty(hub.getVertex(), "rgb_color", "0,0,255"));
             MeshGraph graph = new MeshGraph(pModList, vList);
             sList.addAll(RoadAdder.addRoads(hub, cityNodes, graph));
         }
+        
         return Structs.Mesh.newBuilder().addAllPolygons(pModList).addAllSegments(sList).addAllVertices(vList).build();
     }
     

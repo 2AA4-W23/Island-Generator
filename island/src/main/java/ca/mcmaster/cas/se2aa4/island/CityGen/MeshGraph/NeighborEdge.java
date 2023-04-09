@@ -8,7 +8,6 @@ public class NeighborEdge extends Edge<CentroidNode>{
 
     public NeighborEdge(CentroidNode v1, CentroidNode v2) {
         super(v1, v2);
-        //TODO Auto-generated constructor stub
     }
 
     public static List<NeighborEdge> getEdgesFromNodes(List<CentroidNode> nodes){
