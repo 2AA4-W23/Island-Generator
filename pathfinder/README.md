@@ -26,7 +26,7 @@ Now, use these lists to construct a graph.
 Graph<Node, Edge> g = new Graph<>(nodes, edges);
 ```
 
-Alternatively, you can construct the graph with only a list of nodes and edges as follows.
+Alternatively, you can construct the graph with only a list of nodes and construct edges as follows.
 
 ```java
 Graph<Node, Edge> g = new Graph<>(nodes);
@@ -145,7 +145,14 @@ class DirectedGraph<N> extends Graph<N, DirectedEdge> {
         if(!adjacencyList.containsKey(v1.id)) adjacencyList.put(v1.id, new HashSet<>());
         adjacencyList.get(v1.id).add(v2);
     }
+    
+    @Override
+    protected void addDirectedEdge(int v1, int v2){
+        Node a = getNode(v1);
+        Node b = getNode(v2);
+        addEdge(v1, v2);
+    }
 }
 ```
 
-DirectedEdge acts mostly the same as an Edge, but WeightedGraph has an updated addEdge mechanism which adds 1-way connections to the internal adjacency list instead of a 2-way connection.
+DirectedEdge acts mostly the same as an Edge, but WeightedGraph has an updated addEdge mechanism which adds 1-way connections to the internal adjacency list instead of a 2-way connection. There is also a public addDirectedEdge function for users of the class to add edges externally.
