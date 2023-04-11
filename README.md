@@ -103,37 +103,19 @@ To viualize the SVG file:
 - Open it with a web browser
 - Convert it into something else with tool slike `rsvg-convert`
 
-### Scenario
-
-To generate and visualize an irregular mesh, use the above commands in their respective directories with the associated tags. For instance, to generate/visualize an irregular mesh with 500 polygons/centroids, 15 lloyd relaxations, component thickness of 5, and alpha value of 250 in debug mode: 
-
-```
-mosser@azrael A2 % cd generator
-mosser@azrael generator % java -jar generator.jar sample.mesh -mt irregular -np 500 -lr 15
-
-... (debug information printed to stdout) ...
-
-mosser@azrael generator % ls -lh sample.mesh
--rw-r--r--  1 mosser  staff    29K 29 Jan 10:52 sample.mesh
-mosser@azrael generator %
-```
-
-Followed by:
-
-```
-mosser@azrael A2 % cd ../visualizer
-mosser@azrael visualizer % java -jar visualizer.jar ../generator/sample.mesh sample.svg -X -T 5 -A 250
-
-... (debug information printed to stdout) ...
-
-mosser@azrael visualizer % ls -lh sample.svg
--rw-r--r--  1 mosser  staff    56K 29 Jan 10:53 sample.svg
-mosser@azrael visualizer %
-```
-
-If the tags are used in a different order, the result will be the same. This example implements all the possible tags, but they can easily be ommitted, in which case the program will act accordingly and generate/visualize the mesh based on the default values. 
-
 ### Island
+
+To run the island generator, run island.jar from the command line as follows. Ensure that an input mesh is set using the `-i` tag and an output directory for the island mesh is set using `-o`.
+
+```
+mosser@azrael island % java -jar island.jar -i ../generator/sample.mesh -o island.mesh
+```
+
+To control the number of cities generated, use the tag `--cities` followed by a number up to 30. It will default to a random number if omitted.
+
+```
+mosser@azrael island % java -jar island.jar -i ../generator/sample.mesh -o island.mesh --cities 25
+```
 
 To generate a lagoon, use the `-m` or `--mode` tags (Omitting this tag will generate a normal island).
 
@@ -213,7 +195,7 @@ mosser@azrael visualizer % java -jar visualizer.jar ../island/island.mesh sample
 
 ### Scenario
 
-To generate and visualize an island, use the above commands in their respective directories with the associated tags. In this scenario we will generate an Arctic island with an irregular shape, volcanic altitude, 10 lakes, 5 aquifiers, and 30 rivers:
+To generate and visualize an island, use the above commands in their respective directories with the associated tags. In this scenario we will generate an Arctic island with an irregular shape, volcanic altitude, 10 lakes, 5 aquifiers, 30 rivers, and 15 cities:
 
 ```
 mosser@azrael A2 % cd generator
@@ -230,7 +212,7 @@ Followed by:
 
 ```
 mosser@azrael A2 % cd ../island
-mosser@azrael island % java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude volcano --lakes 10 --aquifers 5 --rivers 30 --biomes Arctic
+mosser@azrael island % java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude volcano --lakes 10 --aquifers 5 --rivers 30 --biomes Arctic --cities 15
 
 ... (debug information printed to stdout) ...
 
@@ -263,7 +245,12 @@ When you develop features and enrich the product, remember that you have first t
 
 For a feature to be considered done it must be work without throwing any exceptions. and implement the desired functionality. Also any features dependent on the done feature must be able to use it without problems.
 
-### A2 Backlog
+## A4 Backlog
+
+Available as a Kanban Board on github.com:
+- https://github.com/orgs/2AA4-W23/projects/29
+
+## A2 Backlog
 
 | Id  | Feature title                                                     | Who?      | Start      | End        | Status |
 | :-: | ----------------------------------------------------------------- | --------- | ---------- | ---------- | ------ |
@@ -290,7 +277,7 @@ For a feature to be considered done it must be work without throwing any excepti
 | F21 | Command line help argument                                        | Omar      | 02/22/2023 | 02/22/2023 | D      |
 | F22 | Generate obj files from mesh                                      | Ibrahim   | 02/26/2023 | 02/27/2023 | D      |
 
-### A3 Backlog
+## A3 Backlog
 
 | Id  | Feature title                                                     | Who?      | Start      | End        | Status |
 | :-: | ----------------------------------------------------------------- | --------- | ---------- | ---------- | ------ |
