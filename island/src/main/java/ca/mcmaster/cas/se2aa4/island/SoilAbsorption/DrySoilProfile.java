@@ -13,10 +13,10 @@ public class DrySoilProfile implements SoilProfile {
     }
     @Override
     public int getInitialHumidity(String tiletag) {
-        if(tiletag.equals("lake"))return rng.nextInt(70,80);
-        if(tiletag.equals("endor_lake"))return rng.nextInt(25,35);
-        if(tiletag.equals("aquifer"))return rng.nextInt(50,60);
-        if(tiletag.equals("land"))return rng.nextInt(10,15);
+        if(tiletag.equals("lake"))return rng.nextInt(40,50);
+        if(tiletag.equals("endor_lake"))return rng.nextInt(10,20);
+        if(tiletag.equals("aquifer"))return rng.nextInt(30,40);
+        if(tiletag.equals("land"))return rng.nextInt(3,6);
         return 0;
     }
     

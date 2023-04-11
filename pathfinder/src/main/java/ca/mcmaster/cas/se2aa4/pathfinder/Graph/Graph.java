@@ -8,7 +8,7 @@ import java.util.Set;
 
 public class Graph<N extends Node, E extends Edge<N>> implements Traversable<N> {
 
-    private Map<Integer, Set<N>> adjacencyList;
+    protected Map<Integer, Set<N>> adjacencyList;
     private final int size;
     protected List<N> nodes;
     protected List<E> edges;
@@ -23,7 +23,6 @@ public class Graph<N extends Node, E extends Edge<N>> implements Traversable<N> 
         for(E edge : edges){
             N v1 = edge.v1, v2 = edge.v2;
             addEdge(v1, v2);
-            if(!edge.isDirected()) addEdge(v2, v1);
         }
     }
 
@@ -33,12 +32,6 @@ public class Graph<N extends Node, E extends Edge<N>> implements Traversable<N> 
         size = nodes.size();
         for(N node : nodes) adjacencyList.put(node.id, new HashSet<>());
     }
-
-    public void addDirectedEdge(int a, int b){
-        N n1 = nodes.get(a), n2 = nodes.get(b);
-        addEdge(n1, n2);
-    }
-
 
     public void addUndirectedEdge(int a, int b){
         N n1 = nodes.get(a), n2 = nodes.get(b);
@@ -81,10 +74,11 @@ public class Graph<N extends Node, E extends Edge<N>> implements Traversable<N> 
         return adjacencyList.containsKey(a.id) ? adjacencyList.get(a.id) : new HashSet<>();
     }
 
-    private void addEdge(N v1, N v2){
+    protected void addEdge(N v1, N v2){
         if(!adjacencyList.containsKey(v1.id)) adjacencyList.put(v1.id, new HashSet<>());
         if(!adjacencyList.containsKey(v2.id)) adjacencyList.put(v2.id, new HashSet<>());
         adjacencyList.get(v1.id).add(v2);
+        adjacencyList.get(v2.id).add(v1);
     }
        
     public int size(){

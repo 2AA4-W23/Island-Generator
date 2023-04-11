@@ -1,8 +1,4 @@
 #!/bin/bash
-
-#cd generator
-#java -jar generator.jar sample.mesh -mt irregular -np 2000 -lr 10
-
 if pwd == "*/a4-urbanism-Ibbs620"
 then
     cd island
@@ -14,6 +10,6 @@ then
     cd ../island
 fi
 
-java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape rectangle --altitude mountain --lakes 3 --aquifers 2 --rivers 8 --biomes temperate --soil dry --cities 10 --seed 1
+java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude volcano --lakes 8 --aquifers 10 --rivers 20 --biomes arctic --soil wet --cities 30
 cd ../visualizer
-java -jar visualizer.jar ../island/island.mesh sample.svg -A 255
+java -jar visualizer.jar ../island/island.mesh ../output.svg -A 255 -O

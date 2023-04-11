@@ -11,6 +11,7 @@ import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
@@ -299,8 +300,10 @@ public class GraphicRenderer {
                 double centre_y = v.getY() - (thickness/2.0d);
                 Ellipse2D point = new Ellipse2D.Double(centre_x, centre_y, thickness, thickness);
                 canvas.fill(point);
-                canvas.drawString(extractName(v.getPropertiesList()), (int) v.getX(), (int) v.getY() - 10);
+                canvas.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 10));
                 canvas.setColor(old);
+                canvas.drawString(extractName(v.getPropertiesList()), (int) v.getX() - 10, (int) v.getY() - 5);
+                
             }
         }
 

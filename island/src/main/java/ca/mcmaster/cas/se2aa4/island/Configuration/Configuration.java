@@ -87,7 +87,7 @@ public class Configuration {
         try{
             this.num_cities = Math.min(Integer.parseInt(cities), 30);
         } catch (Exception e) {
-            this.num_cities = rng.nextInt(2, 10);
+            this.num_cities = rng.nextInt(10,30);
         }
         System.out.println("Creating " + this.num_cities + " cities");
     }
@@ -121,21 +121,21 @@ public class Configuration {
         try{
             this.num_lakes = Math.min(Integer.parseInt(lakes), 15);
         } catch (Exception e) {
-            this.num_lakes = rng.nextInt(2, 10);
+            this.num_lakes = rng.nextInt(2, 15);
         }
         System.out.println("Creating " + this.num_lakes + " lakes");
 
         try{
             this.num_aquifers = Math.min(Integer.parseInt(aquifers), 15);
         } catch (Exception e) {
-            this.num_aquifers = rng.nextInt(2,10);
+            this.num_aquifers = rng.nextInt(2,15);
         }
         System.out.println("Creating " + this.num_aquifers + " aquifers");
 
         try{
             this.num_rivers = Math.min(Integer.parseInt(rivers), 30);
         } catch (Exception e) {
-            this.num_rivers = rng.nextInt(2,30);
+            this.num_rivers = rng.nextInt(10,30);
         }
         System.out.println("Creating " + this.num_rivers + " rivers");
     }

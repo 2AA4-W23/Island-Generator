@@ -29,17 +29,17 @@ public class OBJBuilder {
         List<Vertex> VertexList = mesh.getVerticesList();
         List<Segment> SegmentList = mesh.getSegmentsList();
         List<Polygon> PolygonList = mesh.getPolygonsList();
-        File old_obj = new File("mesh.obj");
-        File old_mtl = new File("mesh.mtl");
+        File old_obj = new File("../island.obj");
+        File old_mtl = new File("../island.mtl");
         old_obj.delete();
         old_mtl.delete();
-        new File("mesh.obj");
-        new File("mesh.mtl");
+        new File("../island.obj");
+        new File("../island.mtl");
 
-        FileWriter fwo = new FileWriter("mesh.obj", true);
-        FileWriter fwm = new FileWriter("mesh.mtl", true);
+        FileWriter fwo = new FileWriter("../island.obj", true);
+        FileWriter fwm = new FileWriter("../island.mtl", true);
        
-        fwo.write("mtllib mesh.mtl\n");
+        fwo.write("mtllib island.mtl\n");
 
         List<String> vertexSet = new ArrayList<>();
 
@@ -110,7 +110,12 @@ public class OBJBuilder {
             }
             if(j != 0) {
                 ConvexHull cv = new ConvexHull(points, new GeometryFactory());
-                Coordinate[] orderedPoints = cv.getConvexHull().getCoordinates();    
+                Coordinate[] orderedPoints;
+                try{
+                    orderedPoints = cv.getConvexHull().getCoordinates();   
+            } catch (Exception e) {
+                    continue;
+                } 
                 String polyString = "f ";
                 for(int i = 0; i < orderedPoints.length; i++) {
                     double x = orderedPoints[i].getX();

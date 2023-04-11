@@ -6,8 +6,4 @@ public class Node extends Component{
     public Node(int id) {
         this.id = id;
     }
-
-    public int getID(){
-        return id;
-    }
 }

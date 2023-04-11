@@ -30,8 +30,6 @@ public class EndorheicLake extends WaterBody{
                 if(segTag.equals("river")) return false;
                 Structs.Vertex v1 = vertices.get(s.getV1Idx());
                 Structs.Vertex v2 = vertices.get(s.getV2Idx());
-                if(AddRivers.isWaterVertex(v1, vertices, G, tiles)) return false;
-                if(AddRivers.isWaterVertex(v2, vertices, G, tiles)) return false;
             }
         }
         return true;

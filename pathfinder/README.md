@@ -15,8 +15,8 @@ Next, create a list of Edges, specifying which nodes you want to connect and the
 
 ```java
 List<Edge> edges = new ArrayList<>(); //create edge list
-edges.add(new Edge(nodes.get(1), nodes.get(2))); //connect nodes 1 and 2 with an undirected edge
-edges.add(new Edge(nodes.get(3), nodes.get(2), true)); //connect nodes 3 and 2 with a directed edge
+edges.add(new Edge(nodes.get(1), nodes.get(2))); //connect nodes 1 and 2 with an edge
+edges.add(new Edge(nodes.get(3), nodes.get(2))); //connect nodes 3 and 2 with an edge
 ...
 ```
 
@@ -31,7 +31,7 @@ Alternatively, you can construct the graph with only a list of nodes and edges a
 ```java
 Graph<Node, Edge> g = new Graph<>(nodes);
 g.addUndirectedEdge(1, 2); //connect nodes 1 and 2 with an undirected edge
-g.addDirectedEdge(3, 2); //connect nodes 3 and 2 with a directed edge
+g.addUndirectedEdge(3, 2); //connect nodes 1 and 2 with an undirected edge
 ```
 
 ## Getters
@@ -47,7 +47,6 @@ To get an edge by the nodes it connects:
 ```java
 Edge e = G.getEdge(id1, id2);
 ```
-_Note: if the edge is directed, this will only work if a direct edge from node 1 to node 2 exists_
 
 Alternatively, if the index of the edge is known, you can use that to retrieve it. The index of edges are the order it was added in starting from 0.
 
@@ -127,40 +126,26 @@ Path newPath = shortestPath.appendNode(new Node(id));
 
 ## Extending the library
 
-For this example, we will be extending the library to include weights. We begin by extending the Edge class.
+Since the Graph data structure allows for the use of any class that extends edges and nodes, these components can be easily extended to add additional functionality. For example, we can create a directed graph as follows
 
 ```java
-public class WeightedEdge extends Edge<Node> {
-
-    public final int weight;
-
-    public WeightedEdge(Node v1, Node v2, int weight) {
+class DirectedEdge<N> extends Edge<N> {
+    public DirectedEdge(N v1, N v2){
         super(v1, v2);
-        this.weight = weight;
+    }   
+}
+
+class DirectedGraph<N> extends Graph<N, DirectedEdge> {
+    public DirectedGraph(List<N> nodes, List<E> edges){
+        super(node, edges);
+    }
+
+    @Override
+    protected void addEdge(N v1, N v2){
+        if(!adjacencyList.containsKey(v1.id)) adjacencyList.put(v1.id, new HashSet<>());
+        adjacencyList.get(v1.id).add(v2);
     }
 }
 ```
 
-We will now extend the Graph class.
-
-```java
-public class WeightedGraph extends Graph<Node, WeightedEdge> {
-
-    public WeightedGraph(List<Node> nodes) {
-        super(nodes);   
-    }
-}
-```
-
-And finally the Path class.
-
-```java
-public class WeightedPath extends Path<Node> {
-    public WeightedPath(){
-        super();
-    }
-}
-```
-
-In the WeightedGraph class, 
-
+DirectedEdge acts mostly the same as an Edge, but WeightedGraph has an updated addEdge mechanism which adds 1-way connections to the internal adjacency list instead of a 2-way connection.

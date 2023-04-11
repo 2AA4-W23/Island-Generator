@@ -35,11 +35,4 @@ public class Path<N extends Node> {
     public int size(){
         return size;
     }
-
-    @Override
-    public String toString(){
-        String pathString = "";
-        for(N n : path) pathString += n.id + " ";
-        return pathString;
-    }
 }
