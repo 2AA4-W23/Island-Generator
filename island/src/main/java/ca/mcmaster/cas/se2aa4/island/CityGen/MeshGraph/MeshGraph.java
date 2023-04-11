@@ -18,12 +18,4 @@ public class MeshGraph extends Graph<CentroidNode, NeighborEdge>{
     public MeshGraph(List<Polygon> tiles, List<Vertex> vertices){
         this(CentroidNode.getNodes(tiles, vertices));
     }
-
-    public List<CentroidNode> getNodes(){
-        return this.nodes;
-    }
-
-    public List<NeighborEdge> getEdges(){
-        return this.edges;
-    }
 }

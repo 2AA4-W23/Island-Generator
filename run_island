@@ -10,6 +10,6 @@ then
     cd ../island
 fi
 
-java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude volcano --lakes 8 --aquifers 10 --rivers 20 --biomes arctic --soil wet --cities 30
+java -jar island.jar -i ../generator/sample.mesh -o island.mesh --shape irregular --altitude volcano --lakes 8 --aquifers 10 --rivers 0 --biomes arctic --soil wet --cities 30
 cd ../visualizer
 java -jar visualizer.jar ../island/island.mesh ../output.svg -A 255 -O

@@ -10,7 +10,6 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws ParseException, IOException{
-        System.out.println("Hello world!");
         Options options = new Options();
         options.addOption("m", "mode", true, "Decide whether it is lagoon or normal generation");
         options.addOption("i", true, "Input Mesh");
@@ -57,7 +56,8 @@ public class Main {
 
         Configuration config = new Configuration();
         config.generateConfig(args, options);
-
+        
+        System.out.println("Generating island...");
         if(mode == null || !(mode.equals("lagoon"))){
             outputMesh = IslandGenerator.Generate(config);
         } else {
@@ -66,6 +66,7 @@ public class Main {
         }
         MeshFactory factory = new MeshFactory();
         factory.write(outputMesh, cmd.getOptionValue("o"));
+        System.out.println("Done generating");
     }
 
 }

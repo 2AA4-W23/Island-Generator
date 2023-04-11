@@ -18,6 +18,13 @@ participant Graph
 participant TileHumidifier
 participant SoilAbsorption
 
+participant CityAdder
+participant CentroidNode
+participant NeighborEdge
+participant NameGenerator
+participant RoadAdder
+participant MeshGraph
+
 participant Extractor
 
 Main -> IslandGenerator: Generate(Configuration)
@@ -122,6 +129,70 @@ IslandGenerator -> LakeAdder: fixLakeAltitudes(numLakes, pModList, sList, vList)
 activate LakeAdder
 LakeAdder -> IslandGenerator
 deactivate LakeAdder
+
+IslandGenerator -> CityAdder: addCities(tiles, vertices, numCities)
+activate CityAdder
+CityAdder -> CityAdder: checkEligible(tile)
+CityAdder -> PropertyAdder: addProperty(vertex, key, value)
+activate PropertyAdder
+PropertyAdder -> CityAdder
+deactivate PropertyAdder
+CityAdder -> NameGenerator: generateName(data)
+activate NameGenerator
+NameGenerator -> CityAdder
+deactivate NameGenerator
+CityAdder -> Trainer: getData()
+activate Trainer
+Trainer -> CityAdder
+deactivate Trainer
+CityAdder -> IslandGenerator
+deactivate CityAdder
+
+IslandGenerator -> CentroidNode: getNodes(pModList, vList)
+activate CentroidNode
+CentroidNode -> Extractor: extractValues(properties)
+activate Extractor
+Extractor -> CentroidNode
+deactivate Extractor
+CentroidNode -> CentroidNode: addAttributesFromProperties()
+CentroidNode -> IslandGenerator
+deactivate CentroidNode
+
+IslandGenerator -> CityAdder: getCityNodes(nodes)
+activate CityAdder
+CityAdder -> CentroidNode: getValue(key)
+activate CentroidNode
+CentroidNode -> CityAdder
+deactivate CentroidNode
+CityAdder -> IslandGenerator
+deactivate CityAdder
+
+IslandGenerator -> CityAdder: findCentralCity(cityNodes)
+activate CityAdder
+CityAdder -> CentroidNode: getTile()
+CityAdder -> CentroidNode: getVerte()
+activate CentroidNode
+CentroidNode -> CityAdder
+deactivate CentroidNode
+CityAdder -> Extractor: extractValues(properties)
+activate Extractor
+Extractor -> CityAdder
+deactivate Extractor
+CityAdder -> IslandGenerator
+deactivate CityAdder
+
+IslandGenerator -> RoadAdder: addRoads(hub, cities, graph)
+activate RoadAdder
+RoadAdder -> MeshGraph: shortestPath(hub, city)
+activate MeshGraph
+MeshGraph -> RoadAdder
+deactivate MeshGraph
+RoadAdder -> PropertyAdder: addProperty(segment, key, value)
+activate PropertyAdder
+PropertyAdder -> RoadAdder
+deactivate PropertyAdder
+RoadAdder -> IslandGenerator
+deactivate RoadAdder
 
 IslandGenerator -> Mesh: build Mesh
 activate Mesh

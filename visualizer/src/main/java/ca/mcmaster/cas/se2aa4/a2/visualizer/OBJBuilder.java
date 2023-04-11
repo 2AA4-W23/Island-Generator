@@ -26,6 +26,7 @@ public class OBJBuilder {
 
 
     public void generateOBJ(Mesh mesh) throws IOException {
+        System.out.println("Building 3D OBJ file...");
         List<Vertex> VertexList = mesh.getVerticesList();
         List<Segment> SegmentList = mesh.getSegmentsList();
         List<Polygon> PolygonList = mesh.getPolygonsList();
@@ -143,7 +144,7 @@ public class OBJBuilder {
         }
         fwo.close();
         fwm.close();
-        System.out.println("Created OBJ and MTL files");
+        System.out.println("Created island.obj and island.mtl");
     }
 
     // fwm.write("new mtl " + mtlName + "\n");
