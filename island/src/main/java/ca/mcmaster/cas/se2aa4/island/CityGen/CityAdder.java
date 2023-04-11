@@ -31,19 +31,21 @@ public class CityAdder {
             Polygon cityTile;
             do { 
                 cityTile = tiles.get(rng.nextInt(tiles.size()));
-            } while(!checkEligible(cityTile));
+            } while(!checkEligible(cityTile)); //pick random tile that is not ocean or lake
             Vertex centroid = vertices.get(cityTile.getCentroidIdx());
             centroid = PropertyAdder.addProperty(centroid, "city_name", NameGenerator.generateName(Trainer.getData()));
             centroid = PropertyAdder.addProperty(centroid, "rgb_color", "255,0,0");
             centroid = PropertyAdder.addProperty(centroid, "thickness", rng.nextInt(3, 7) + "");
+            //add properties for visualizing
             vertices.set(cityTile.getCentroidIdx(), centroid);
+            //replace existing vertex with new one
         }
         return vertices;
     }
 
     public static List<CentroidNode> getCityNodes(List<CentroidNode> nodes){
         List<CentroidNode> cities = new ArrayList<>();
-        for(CentroidNode node : nodes) {
+        for(CentroidNode node : nodes) { //find and return all nodes with a city tag
             if(node.getValue("city_name").equals("null")) continue;
             cities.add(node);
         }
@@ -59,17 +61,25 @@ public class CityAdder {
             int saturation = 0;
             int thickness = 0;
             int alt = 0;
+            //scoring criteria
             Polygon tile = city.getTile();
             Vertex centroid = city.getVertex();
+
             int centrality = (int) Math.abs(centroid.getX() - 250) + (int) Math.abs(centroid.getY() - 250); 
+            //compute centrality score
+
             try{
                 humid = Integer.parseInt(humidEx.extractValues(tile.getPropertiesList()));
                 saturation = Integer.parseInt(satEx.extractValues(tile.getPropertiesList()));
                 thickness = Integer.parseInt(thickEx.extractValues(centroid.getPropertiesList()));
                 alt = Integer.parseInt(altEx.extractValues(tile.getPropertiesList()));
+                //extract values
             }  catch (Exception e ) {}
+
             score += humid * 30 + saturation * 30 + thickness * 70 - centrality - alt * 2;
-            if(score > maxScore) {
+            //compute weighted score based on attributes
+
+            if(score > maxScore) { //replace current hub with new city if it has a higher score
                 hub = city;
                 maxScore = score;
             }
@@ -77,6 +87,7 @@ public class CityAdder {
         return hub;
     }
 
+    //ensures cities dont spawn on ocean or lakes
     private static boolean checkEligible(Polygon tile){
         if(tile == null) return false;
         String tag = tagEx.extractValues(tile.getPropertiesList());

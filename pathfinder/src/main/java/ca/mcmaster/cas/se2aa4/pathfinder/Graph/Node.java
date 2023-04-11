@@ -4,6 +4,6 @@ public class Node extends Component{
     public final int id;
 
     public Node(int id) {
-        this.id = id;
+        this.id = id; //set id for easy node comparisons
     }
 }

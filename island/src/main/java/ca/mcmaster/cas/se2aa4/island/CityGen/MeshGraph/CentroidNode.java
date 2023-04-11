@@ -24,12 +24,14 @@ public class CentroidNode extends Node {
         this.centroidIdx = tile.getCentroidIdx();
     }
 
+    //construct list of nodes usable with MeshGraph
     public static List<CentroidNode> getNodes(List<Polygon> tiles, List<Vertex> vertices){
         List<CentroidNode> nodes = new ArrayList<>();
         int i = -1;
         for(Polygon tile : tiles) {
             i++;
             String tag = tagEx.extractValues(tile.getPropertiesList());
+            //dont add water tiles
             if(tag.equals("ocean") || tag.equals("lake") || tag.equals("endor_lake")) continue;
             CentroidNode node = new CentroidNode(tile, vertices, i);
             node.addAttributesFromProperties();
@@ -38,6 +40,7 @@ public class CentroidNode extends Node {
         return nodes;
     }
 
+    //search nodes list for a node that matches the given id
     public static CentroidNode getNodeById(List<CentroidNode> nodes, int id) {
         for(CentroidNode node : nodes) {
             if(node.id == id) return node;
@@ -45,6 +48,7 @@ public class CentroidNode extends Node {
         return null;
     }
 
+    //converts Structs.Property into Attributes from pathfinder library
     public void addAttributesFromProperties(){
         List<Property> props = this.getVertex().getPropertiesList();
         for(Property prop : props){
@@ -52,6 +56,8 @@ public class CentroidNode extends Node {
         }
     }
 
+
+    //getters
     public Polygon getTile() {
         return tile;
     }

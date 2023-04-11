@@ -40,18 +40,19 @@ public class NameGenerator {
     public static String generateName(List<String> data){
         String name = "";
         Random rng = RandomNumber.getRandomInstance();
-        int length = data.get(rng.nextInt(data.size())).length();
-        char seed = (char) (97 + rng.nextInt(26));
+        int length = data.get(rng.nextInt(data.size())).length(); //set generated length 
+        char seed = (char) (97 + rng.nextInt(26)); //start with random letter
         char next = ' ';
+
         for(int i = 0; i < length; i++) {
-            name += seed;
+            name += seed; //append letter to name
             if(i >= 1) 
-            if(name.charAt(i) == name.charAt(i-1)) {
+            if(name.charAt(i) == name.charAt(i-1)) { //prevents long strings of the same letter
                 name = name.substring(0, i);
                 i--;
             }
             
-            int newLetter = rng.nextInt(rowSum[seed-97]);
+            int newLetter = rng.nextInt(rowSum[seed-97]); //set new letter based on data
             for(int j = 1; j < 26; j++) {
 				if(newLetter >= letters[seed-97][j-1] && newLetter <= letters[seed-97][j]) {
 					next = (char)(j+97);
