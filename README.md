@@ -1,10 +1,61 @@
 # Assignment A4: Urbanism
 
-- Ibrahim Quraishi [quraishi@mcmaster.ca]
+## Contributions
+
+### A2 - Mesh Generation
+Ibrahim:
+- Creation and rendering of polygons
+- Color, thickness, and transparency of shapes
+- Voronoi Diagram constuction for irregular meshes
+- Convex Hull computuation
+- OBJ file converter
+
+Virochaan:
+- Creation and rendering of segments and vertices
+- Colour averaging for segments
+- Neighbor and centroid referencing for polygons
+- Debug visualization mode
+- Llyod relaxation of irregular meshes 
+
+Omar:
+- Two decimal point coordinate precision
+- Command line interface and help command
+
+### A3 - Island Generation
+Ibrahim:
+- Lake generation
+- Aquifer generation
+- River generation, thickness and merging
+- Humidity calculations
+- Soil absorption profiles
+- Height map for generated OBJ file
+- Lake, aquifer, and soil command line arguments
+
+Virochaan:
+- Lagoon generation
+- Island shape profiles
+- Altitude profiles
+- Biome profiles based on Whittaker diagrams
+- Seed generation and reuse
+- Humidity and Altitude heatmaps
+- Lagoon, shape, altitude, biome, seed and heatmap command line arguments
+
+Omar:
+- River pathfinding calculations
+- River and help command line arguments
+
+### A4 - City Generation 
+Ibrahim:
+- Cities with randomized sizes
+- Randomized names using Markov chains
+- Capital city based on location, size, humidity, etc.
+- Road networks between cities and capital
+
+### Other Features (Personal Extensions)
+Ibrahim:
+- Graphical user interface
 
 ## How to run the product
-
-_This section needs to be edited to reflect how the user can interact with thefeature released in your project_
 
 ### Installation instructions
 
