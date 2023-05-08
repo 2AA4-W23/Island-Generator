@@ -10,3 +10,4 @@ target
 *.obj
 run_*
 *.png
+*.lnk
