@@ -1,14 +1,13 @@
 package ca.mcmaster.cas.se2aa4.a2.generator;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.*;
-import jdk.jshell.spi.ExecutionControl;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class GridMeshGenerator implements  MeshGenerator{
+public class GridMeshGenerator implements MeshGenerator{
     
     @Override
     public Mesh generate() {

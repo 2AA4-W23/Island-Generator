@@ -23,10 +23,13 @@ public class BiomeValCalculator {
         this.amin = amin;
     }
     public double[] modifiedInputs(Structs.Polygon p, double[] range){
-        double alt = Double.parseDouble(altEx.extractValues(p.getPropertiesList()));
-        double humid = Double.parseDouble(humidEx.extractValues(p.getPropertiesList()));
-        double altMod = amax + (((alt - range[2]) * (amin - amax)) / (range[3] - range[2]));
-        double humidMod = hmin + (((humid - range[0]) * (hmax - hmin)) / (range[1] - range[0]));
+        double alt = 0, humid = 0, altMod = 0, humidMod = 0;
+        try {
+             alt = Double.parseDouble(altEx.extractValues(p.getPropertiesList()));
+             humid = Double.parseDouble(humidEx.extractValues(p.getPropertiesList()));
+             altMod = amax + (((alt - range[2]) * (amin - amax)) / (range[3] - range[2]));
+             humidMod = hmin + (((humid - range[0]) * (hmax - hmin)) / (range[1] - range[0]));
+        } catch (Exception e) {}
         return new double[]{altMod, humidMod};
     }
     public double[] findRange(List<Structs.Polygon> pList){
@@ -36,10 +39,12 @@ public class BiomeValCalculator {
         double maxHumid = 0;
         for(Structs.Polygon p: pList){
             if(!tileTagEx.extractValues(p.getPropertiesList()).equals("ocean")){
-                minHumid = Math.min(Double.parseDouble(humidEx.extractValues(p.getPropertiesList())), minHumid);
-                minAlt = Math.min(Double.parseDouble(altEx.extractValues(p.getPropertiesList())), minAlt);
-                maxHumid = Math.max(Double.parseDouble(humidEx.extractValues(p.getPropertiesList())), maxHumid);
-                maxAlt = Math.max(Double.parseDouble(altEx.extractValues(p.getPropertiesList())), maxAlt);
+                try{
+                    minHumid = Math.min(Double.parseDouble(humidEx.extractValues(p.getPropertiesList())), minHumid);
+                    minAlt = Math.min(Double.parseDouble(altEx.extractValues(p.getPropertiesList())), minAlt);
+                    maxHumid = Math.max(Double.parseDouble(humidEx.extractValues(p.getPropertiesList())), maxHumid);
+                    maxAlt = Math.max(Double.parseDouble(altEx.extractValues(p.getPropertiesList())), maxAlt);
+                } catch (Exception e) {}
             }
         }
         return new double[]{minHumid, maxHumid, minAlt, maxAlt};

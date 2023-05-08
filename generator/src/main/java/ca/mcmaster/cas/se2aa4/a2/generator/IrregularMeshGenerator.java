@@ -20,6 +20,8 @@ public class IrregularMeshGenerator implements MeshGenerator{
     public Structs.Mesh generate(int num_iterations, int numPolygons) {
         ArrayList<Structs.Vertex> centroids = new ArrayList<>();
         ArrayList<Coordinate> centroidCoordinates = new ArrayList<>();
+        int width = 500;
+        int height = 500;
         // Create all the vertices
         int numCentroids = numPolygons;
         int spacing = width / 3;
@@ -379,8 +381,9 @@ public class IrregularMeshGenerator implements MeshGenerator{
         return result;
     }
 
+
     @Override
     public Mesh generate() {
-        return null;
+        return generate(5, 200);
     }
 }

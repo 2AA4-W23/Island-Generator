@@ -25,22 +25,25 @@ public class OBJBuilder {
     Set<String> ids = new HashSet<>();
 
 
-    public void generateOBJ(Mesh mesh) throws IOException {
+    public void generateOBJ(Mesh mesh, String path) throws IOException {
         System.out.println("Building 3D OBJ file...");
         List<Vertex> VertexList = mesh.getVerticesList();
         List<Segment> SegmentList = mesh.getSegmentsList();
         List<Polygon> PolygonList = mesh.getPolygonsList();
-        File old_obj = new File("../island.obj");
-        File old_mtl = new File("../island.mtl");
+        path = path.substring(0, path.lastIndexOf("."));
+        String filename = path.substring(path.lastIndexOf("/") + 1);
+        File old_obj = new File(path + ".obj");
+        File old_mtl = new File(path + ".mtl");
         old_obj.delete();
         old_mtl.delete();
-        new File("../island.obj");
-        new File("../island.mtl");
 
-        FileWriter fwo = new FileWriter("../island.obj", true);
-        FileWriter fwm = new FileWriter("../island.mtl", true);
+        new File(path + ".obj");
+        new File(path + ".mtl");
+
+        FileWriter fwo = new FileWriter(path + ".obj", true);
+        FileWriter fwm = new FileWriter(path + ".mtl", true);
        
-        fwo.write("mtllib island.mtl\n");
+        fwo.write("mtllib " + filename + ".mtl\n");
 
         List<String> vertexSet = new ArrayList<>();
 

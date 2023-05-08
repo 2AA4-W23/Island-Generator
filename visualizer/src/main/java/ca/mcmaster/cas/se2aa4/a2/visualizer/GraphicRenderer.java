@@ -51,11 +51,14 @@ public class GraphicRenderer {
             System.out.println("Creating altitude heatmap...");
             double max = 0;
             double min = Double.POSITIVE_INFINITY;
-            for (Polygon p: PolygonList){
-                if(!extractValues(p.getPropertiesList(), "tile_tag").equals("ocean")){
-                    max =  Math.max(max,Double.parseDouble(extractValues(p.getPropertiesList(),"altitude")));
-                    min =  Math.min(min,Double.parseDouble(extractValues(p.getPropertiesList(),"altitude")));
+            try {
+                for (Polygon p: PolygonList){
+                    if(!extractValues(p.getPropertiesList(), "tile_tag").equals("ocean")){
+                        max =  Math.max(max,Double.parseDouble(extractValues(p.getPropertiesList(),"altitude")));
+                        min =  Math.min(min,Double.parseDouble(extractValues(p.getPropertiesList(),"altitude")));
+                    }
                 }
+            } catch (Exception e) {
             }
             for (Polygon p : PolygonList) {
                 Coordinate points[] = new Coordinate[p.getSegmentIdxsCount()];

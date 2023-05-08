@@ -18,6 +18,7 @@
 		<module>island</module>
         <module>visualizer</module>
         <module>pathfinder</module>
+        <module>GUI</module>
 	</modules>
 
     <properties>
